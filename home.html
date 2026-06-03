@@ -27,7 +27,6 @@
       background: var(--bg);
       color: var(--text);
       height: 100%;
-      overflow: hidden;
     }
 
     /* ── TOP BAR ── */
@@ -37,12 +36,13 @@
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      padding: 0 20px;
+      padding: 0 24px;
       gap: 12px;
-      position: relative;
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
     .brand { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-    .brand-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
     .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
     .pill {
       font-size: 11px;
@@ -65,245 +65,324 @@
     }
     .settings-btn:hover { color: var(--text); border-color: var(--text); }
 
-    /* ── LAYOUT ── */
-    .layout {
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      height: calc(100vh - 52px);
-      overflow: hidden;
-    }
-
-    /* ── LEFT PANEL ── */
-    .left {
-      overflow-y: auto;
-      padding: 24px 28px;
-      border-right: 1px solid var(--border);
+    /* ── MAIN SCROLL AREA ── */
+    .main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 28px;
     }
 
-    .welcome-block { display: flex; flex-direction: column; gap: 8px; }
-    .welcome-title { font-size: 22px; font-weight: 700; line-height: 1.3; }
-    .welcome-desc  { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 520px; }
+    /* ── WELCOME ── */
+    .welcome-title { font-size: 24px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+    .welcome-desc  { font-size: 14px; color: var(--muted); line-height: 1.75; }
 
-    /* Quick Start */
+    /* ── SECTION LABEL ── */
     .section-label {
       font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: .08em;
       color: var(--muted);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
-    .steps { display: flex; flex-direction: column; gap: 10px; }
-    .step {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
+    /* ── QUICK CAPTURE ── */
+    .capture-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 14px 16px;
-    }
-    .step-num {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      font-size: 13px;
-      font-weight: 700;
+      padding: 16px 18px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
+      flex-direction: column;
+      gap: 10px;
     }
-    .step-num.done { background: var(--green); }
-    .step-body { flex: 1; }
-    .step-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
-    .step-desc  { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .step-desc a { color: var(--accent); text-decoration: none; }
-    .step-desc a:hover { text-decoration: underline; }
-    .step-action {
-      margin-top: 8px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 7px 14px;
-      border-radius: var(--radius);
+    .capture-card .card-title {
       font-size: 13px;
       font-weight: 600;
-      cursor: pointer;
-      transition: background .2s;
-    }
-    .step-action:hover { background: var(--accent-h); }
-
-    /* Section Cards */
-    .section-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 10px;
-    }
-    .sec-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      cursor: pointer;
-      transition: border-color .2s, background .2s;
-    }
-    .sec-card:hover { border-color: var(--accent); background: var(--surface2); }
-    .sec-card-icon  { font-size: 20px; margin-bottom: 6px; }
-    .sec-card-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-    .sec-card-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
-
-    /* Callout */
-    .callout {
-      background: #1e2a1e;
-      border: 1px solid #3a5a3a;
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      font-size: 13px;
-      color: #90c890;
-      line-height: 1.6;
-    }
-    .callout strong { color: #b8e8b8; }
-
-    /* ── RIGHT PANEL — AI ASSISTANT ── */
-    .right {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: var(--bg);
-    }
-
-    .ai-header {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
+      gap: 6px;
     }
-    .ai-header-title { font-size: 14px; font-weight: 600; }
-    .ai-header-sub   { font-size: 11px; color: var(--muted); margin-top: 1px; }
-    .model-badge {
-      margin-left: auto;
-      font-size: 11px;
-      color: var(--muted);
-      background: var(--surface2);
-      padding: 2px 8px;
-      border-radius: 99px;
-      border: 1px solid var(--border);
-    }
-
-    .ai-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px 16px;
+    .capture-row {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
-
-    .no-key-banner {
-      background: #1f2a1f;
-      border: 1px solid #3a5a3a;
-      border-radius: var(--radius);
-      padding: 10px 14px;
-      font-size: 13px;
-      color: #90c890;
-      cursor: pointer;
-      display: none;
-    }
-    .no-key-banner:hover { border-color: #5a8a5a; }
-
-    select, input[type="text"], textarea {
-      width: 100%;
-      background: var(--surface);
+    .capture-row input {
+      flex: 1;
+      background: var(--surface2);
       border: 1px solid var(--border);
       color: var(--text);
       padding: 9px 13px;
       border-radius: var(--radius);
       font-size: 13px;
       font-family: inherit;
-      appearance: none;
-      transition: border-color .2s;
     }
-    select { padding-right: 30px; cursor: pointer; }
-    select:focus, input:focus, textarea:focus { outline: none; border-color: var(--accent); }
-
-    .select-wrap { position: relative; }
-    .select-wrap::after {
-      content: '▾';
-      position: absolute;
-      right: 12px; top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      pointer-events: none;
-      font-size: 11px;
-    }
-
-    .field-group { display: flex; flex-direction: column; gap: 5px; }
-    label.field-label { font-size: 12px; font-weight: 500; color: var(--muted); }
-    textarea { min-height: 80px; resize: vertical; line-height: 1.6; }
-
-    .send-btn {
+    .capture-row input:focus { outline: none; border-color: var(--accent); }
+    .capture-row input::placeholder { color: var(--muted); }
+    .capture-btn {
       background: var(--accent);
       color: white;
       border: none;
-      padding: 11px;
+      padding: 9px 16px;
       border-radius: var(--radius);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      width: 100%;
+      white-space: nowrap;
       transition: background .2s;
     }
-    .send-btn:hover:not(:disabled) { background: var(--accent-h); }
-    .send-btn:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; }
+    .capture-btn:hover { background: var(--accent-h); }
+    .capture-link {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .capture-link a { color: var(--accent); text-decoration: none; }
+    .capture-link a:hover { text-decoration: underline; }
+    .copy-confirm {
+      font-size: 12px;
+      color: var(--green);
+      display: none;
+    }
 
-    .response-wrap { display: none; flex-direction: column; gap: 7px; }
-    .response-wrap.visible { display: flex; }
-    .resp-head { display: flex; align-items: center; justify-content: space-between; }
-    .resp-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-
-    .response-area {
+    /* ── TODAY'S FOCUS ── */
+    .focus-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 12px 14px;
-      font-size: 13px;
-      line-height: 1.75;
-      white-space: pre-wrap;
-      word-break: break-word;
-      min-height: 70px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .thinking { color: var(--muted); font-style: italic; }
-
-    .reset-btn {
+    .focus-card .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .focus-items { display: flex; flex-direction: column; gap: 6px; }
+    .focus-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .focus-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .focus-check {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .focus-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 0;
+      font-size: 13px;
+      font-family: inherit;
+      transition: border-color .2s;
+    }
+    .focus-input:focus { outline: none; border-bottom-color: var(--accent); }
+    .focus-input::placeholder { color: var(--muted); }
+    .focus-input.done { text-decoration: line-through; color: var(--muted); }
+    .focus-clear {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--muted);
-      padding: 7px 14px;
+      padding: 5px 12px;
       border-radius: var(--radius);
       font-size: 12px;
       cursor: pointer;
-      align-self: flex-start;
-      transition: color .2s, border-color .2s;
+      align-self: flex-end;
+      transition: color .2s;
     }
-    .reset-btn:hover { color: var(--text); border-color: var(--text); }
+    .focus-clear:hover { color: var(--text); }
 
-    .ai-footer {
+    /* ── ENERGY CHECK-IN ── */
+    .energy-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .energy-card .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .energy-btns { display: flex; gap: 8px; }
+    .energy-btn {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 10px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
       text-align: center;
+      transition: all .2s;
+    }
+    .energy-btn:hover { color: var(--text); border-color: var(--text); }
+    .energy-btn.active-high  { background: #1e3a1e; border-color: var(--green);  color: var(--green); }
+    .energy-btn.active-med   { background: #3a2e10; border-color: var(--amber);  color: var(--amber); }
+    .energy-btn.active-low   { background: #2a1e3a; border-color: var(--purple); color: var(--purple); }
+    .energy-note { font-size: 12px; color: var(--muted); line-height: 1.5; display: none; }
+    .energy-note.visible { display: block; }
+
+    /* ── FEED CARDS ── */
+    .feed { display: flex; flex-direction: column; gap: 10px; }
+
+    .feed-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: border-color .2s, background .2s, transform .1s;
+    }
+    .feed-card:hover { border-color: var(--accent); background: var(--surface2); transform: translateX(2px); }
+    .feed-card.dimmed { opacity: 0.45; }
+    .feed-card.highlighted { border-color: var(--green); }
+
+    .feed-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+    .feed-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .feed-title { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .feed-tagline { font-size: 12px; color: var(--accent); font-weight: 500; }
+    .feed-arrow { margin-left: auto; color: var(--muted); font-size: 16px; }
+    .feed-desc { font-size: 13px; color: var(--muted); line-height: 1.7; padding-left: 36px; }
+    .feed-tags { display: flex; gap: 6px; flex-wrap: wrap; padding-left: 36px; margin-top: 8px; }
+    .feed-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .feed-tag.high  { border-color: #3a5a3a; color: var(--green); }
+    .feed-tag.med   { border-color: #5a3a10; color: var(--amber); }
+    .feed-tag.low   { border-color: #3a2a5a; color: var(--purple); }
+
+    /* ── HOVER NAV DRAWER ── */
+    .nav-drawer-trigger {
+      position: fixed;
+      top: 52px;
+      right: 0;
+      width: 20px;
+      height: calc(100vh - 52px);
+      z-index: 100;
+      cursor: pointer;
+    }
+    .nav-drawer {
+      position: fixed;
+      top: 52px;
+      right: -260px;
+      width: 260px;
+      height: calc(100vh - 52px);
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      z-index: 99;
+      transition: right .25s cubic-bezier(.4,0,.2,1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .nav-drawer.open { right: 0; }
+    .nav-drawer-tab {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+      padding: 12px 6px;
+      z-index: 100;
+      cursor: pointer;
+      writing-mode: vertical-rl;
       font-size: 11px;
       color: var(--muted);
-      padding: 8px;
+      letter-spacing: .05em;
+      transition: color .2s, border-color .2s;
+    }
+    .nav-drawer-tab:hover { color: var(--text); border-color: var(--text); }
+    .nav-drawer-tab.hidden { display: none; }
+
+    .nav-header {
+      padding: 16px 18px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-close {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      padding: 0;
+    }
+    .nav-close:hover { color: var(--text); }
+    .nav-links { padding: 8px 0; flex: 1; }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 18px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 13px;
+      transition: background .15s;
+    }
+    .nav-link:hover { background: var(--surface2); }
+    .nav-link-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+    .nav-footer {
+      padding: 12px 18px;
       border-top: 1px solid var(--border);
-      flex-shrink: 0;
+      font-size: 11px;
+      color: var(--muted);
     }
 
     /* ── SETTINGS OVERLAY ── */
@@ -318,7 +397,6 @@
       padding: 20px;
     }
     .overlay.visible { display: flex; }
-
     .setup-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -396,10 +474,11 @@
     }
     .btn-secondary:hover { color: var(--text); }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 700px) {
-      .layout { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-      .left   { border-right: none; border-bottom: 1px solid var(--border); max-height: 55vh; }
+    .footer-note {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      padding-top: 8px;
     }
   </style>
 </head>
@@ -407,13 +486,32 @@
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <div>
-    <div class="brand">🧠 ADHD Brain OS</div>
-  </div>
+  <div class="brand">🧠 ADHD Brain OS</div>
   <div class="topbar-right">
     <span class="pill" id="connectionPill">Not connected</span>
     <button class="settings-btn" onclick="openSettings()">⚙ AI Settings</button>
   </div>
+</div>
+
+<!-- HOVER NAV TAB -->
+<div class="nav-drawer-tab" id="navTab" onclick="toggleDrawer()">Sections ▸</div>
+
+<!-- NAV DRAWER -->
+<div class="nav-drawer" id="navDrawer">
+  <div class="nav-header">
+    Navigate
+    <button class="nav-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent"><span class="nav-link-icon">🧠</span>Brain Dump</a>
+    <a class="nav-link" href="https://www.notion.so/36d1aaa83752814ba0bdd76ff4efecfb" target="_parent"><span class="nav-link-icon">✅</span>Task Manager</a>
+    <a class="nav-link" href="https://www.notion.so/36d1aaa8375281f09bebf671fb062692" target="_parent"><span class="nav-link-icon">📅</span>Daily Planner</a>
+    <a class="nav-link" href="https://www.notion.so/36d1aaa83752814a80efd380b4037174" target="_parent"><span class="nav-link-icon">🔄</span>Habit Tracker</a>
+    <a class="nav-link" href="https://www.notion.so/36d1aaa8375281e89de5cfdaaf05bb63" target="_parent"><span class="nav-link-icon">📊</span>Weekly Review</a>
+    <a class="nav-link" href="https://www.notion.so/36d1aaa8375281fd8d57d6329e6e491d" target="_parent"><span class="nav-link-icon">🧰</span>ADHD Toolbox</a>
+    <a class="nav-link" href="https://www.notion.so/36d1aaa83752811ab5ddfd9240e88690" target="_parent"><span class="nav-link-icon">💡</span>AI Assistant</a>
+  </div>
+  <div class="nav-footer">Click any section to open it →</div>
 </div>
 
 <!-- SETTINGS OVERLAY -->
@@ -464,148 +562,198 @@
   </div>
 </div>
 
-<!-- SPLIT LAYOUT -->
-<div class="layout">
+<!-- MAIN FEED -->
+<div class="main">
 
-  <!-- LEFT: Welcome + Setup + Section nav -->
-  <div class="left">
-
-    <div class="welcome-block">
-      <div class="welcome-title">Welcome to your ADHD Brain OS 🧠</div>
-      <div class="welcome-desc">
-        A Notion workspace designed around how your brain actually works — not how productivity gurus think it should. The AI assistant on the right is always here to help you get unstuck, plan your day, or just figure out what to do next.
-      </div>
+  <!-- Welcome -->
+  <div>
+    <div class="welcome-title">Welcome to your ADHD Brain OS 🧠</div>
+    <div class="welcome-desc">
+      A Notion workspace designed around how your brain actually works — not how productivity gurus say it should. Capture, plan, and move when you're ready. The system will still be here.
     </div>
-
-    <!-- Quick Start -->
-    <div>
-      <div class="section-label">Quick Start</div>
-      <div class="steps">
-        <div class="step" id="step1">
-          <div class="step-num" id="step1num">1</div>
-          <div class="step-body">
-            <div class="step-title">Connect your AI (optional but powerful)</div>
-            <div class="step-desc">
-              Add a free API key to unlock the AI assistant on the right. Works with Groq (free), OpenAI, Claude, or any compatible provider.
-            </div>
-            <button class="step-action" onclick="openSettings()" id="step1btn">Connect AI →</button>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-body">
-            <div class="step-title">Start with Brain Dump</div>
-            <div class="step-desc">
-              Got things swirling in your head? Open 🧠 Brain Dump, get everything out, then use the AI prompt to sort it all. This alone is worth the whole system.
-            </div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <div class="step-title">Set up your Daily Planner</div>
-            <div class="step-desc">
-              Each morning: open 📅 Daily Planner, pick your Top 3, and do the morning intention. Takes 5 minutes. Changes everything.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Section Cards -->
-    <div>
-      <div class="section-label">Your 9 Sections</div>
-      <div class="section-grid">
-        <div class="sec-card">
-          <div class="sec-card-icon">🏠</div>
-          <div class="sec-card-title">Home Dashboard</div>
-          <div class="sec-card-desc">Today's top 3, energy check-in, quick capture</div>
-        </div>
-        <div class="sec-card">
-          <div class="sec-card-icon">🧠</div>
-          <div class="sec-card-title">Brain Dump</div>
-          <div class="sec-card-desc">Capture everything. AI sorts it into tasks, ideas, or trash</div>
-        </div>
-        <div class="sec-card">
-          <div class="sec-card-icon">✅</div>
-          <div class="sec-card-title">Task Manager</div>
-          <div class="sec-card-desc">Priority + energy views. AI breaks tasks into micro-steps</div>
-        </div>
-        <div class="sec-card">
-          <div class="sec-card-icon">📅</div>
-          <div class="sec-card-title">Daily Planner</div>
-          <div class="sec-card-desc">Morning intention, time blocks, evening reflection</div>
-        </div>
-        <div class="sec-card">
-          <div class="sec-card-icon">🔄</div>
-          <div class="sec-card-title">Habit Tracker</div>
-          <div class="sec-card-desc">Simple yes/no. Forgiving design. Easy reset</div>
-        </div>
-        <div class="sec-card">
-          <div class="sec-card-icon">📊</div>
-          <div class="sec-card-title">Weekly Review</div>
-          <div class="sec-card-desc">AI-powered wins summary and next week's focus</div>
-        </div>
-        <div class="sec-card">
-          <div class="sec-card-icon">🚀</div>
-          <div class="sec-card-title">Project Hub</div>
-          <div class="sec-card-desc">AI turns goals into step-by-step plans</div>
-        </div>
-        <div class="sec-card">
-          <div class="sec-card-icon">🧰</div>
-          <div class="sec-card-title">ADHD Toolbox</div>
-          <div class="sec-card-desc">Paralysis Picker, Dopamine Menu, body doubling</div>
-        </div>
-        <div class="sec-card">
-          <div class="sec-card-icon">💡</div>
-          <div class="sec-card-title">AI Prompt Library</div>
-          <div class="sec-card-desc">All prompts in one place, organized by use case</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="callout">
-      💡 <strong>No AI key?</strong> Every section has pre-written prompts you can copy and paste into Claude.ai, ChatGPT, or any AI chat — no setup required. The AI assistant just makes it faster.
-    </div>
-
   </div>
 
-  <!-- RIGHT: AI Assistant -->
-  <div class="right">
-    <div class="ai-header">
-      <div>
-        <div class="ai-header-title">🤖 AI Assistant</div>
-        <div class="ai-header-sub">Ask anything. Always here.</div>
+  <!-- Quick Capture -->
+  <div>
+    <div class="section-label">⚡ Quick Capture</div>
+    <div class="capture-card">
+      <div class="card-title">📥 Got something in your head?</div>
+      <div class="capture-row">
+        <input type="text" id="captureInput" placeholder="Type anything — task, idea, worry..." onkeydown="if(event.key==='Enter')captureIt()">
+        <button class="capture-btn" onclick="captureIt()">Copy & Open Brain Dump</button>
       </div>
-      <div class="model-badge" id="modelBadge">Not connected</div>
-    </div>
-
-    <div class="ai-body">
-      <div class="no-key-banner" id="noKeyBanner" onclick="openSettings()">
-        🔑 No AI key yet — click here to connect. (It's free with Groq.)
-      </div>
-
-      <div class="select-wrap">
-        <select id="templateSelect" onchange="onTemplateChange()"></select>
-      </div>
-
-      <div id="fields"></div>
-
-      <button class="send-btn" id="sendBtn" onclick="sendPrompt()">
-        <span id="btnText">Send to AI →</span>
-      </button>
-
-      <div class="response-wrap" id="responseWrap">
-        <div class="resp-head">
-          <div class="resp-label">AI Response</div>
-        </div>
-        <div class="response-area" id="responseArea"></div>
-        <button class="reset-btn" onclick="resetResponse()">← Ask another question</button>
+      <div class="copy-confirm" id="copyConfirm">✓ Copied to clipboard — paste it into Brain Dump</div>
+      <div class="capture-link">
+        Or go straight to <a href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent">🧠 Brain Dump →</a>
       </div>
     </div>
-
-    <div class="ai-footer" id="aiFooter">Your key, your usage · No data shared</div>
   </div>
+
+  <!-- Today's Focus -->
+  <div>
+    <div class="section-label">🎯 Today's Top 3</div>
+    <div class="focus-card">
+      <div class="card-title">✅ If you do only these 3 things today, it's a win.</div>
+      <div class="focus-items">
+        <div class="focus-item">
+          <div class="focus-num">1</div>
+          <input type="checkbox" class="focus-check" id="check1" onchange="toggleFocus(1)">
+          <input type="text" class="focus-input" id="focus1" placeholder="Most important thing today..." oninput="saveFocus()">
+        </div>
+        <div class="focus-item">
+          <div class="focus-num">2</div>
+          <input type="checkbox" class="focus-check" id="check2" onchange="toggleFocus(2)">
+          <input type="text" class="focus-input" id="focus2" placeholder="Second priority..." oninput="saveFocus()">
+        </div>
+        <div class="focus-item">
+          <div class="focus-num">3</div>
+          <input type="checkbox" class="focus-check" id="check3" onchange="toggleFocus(3)">
+          <input type="text" class="focus-input" id="focus3" placeholder="Third priority..." oninput="saveFocus()">
+        </div>
+      </div>
+      <button class="focus-clear" onclick="clearFocus()">Reset for tomorrow</button>
+    </div>
+  </div>
+
+  <!-- Energy Check-In -->
+  <div>
+    <div class="section-label">🔋 Energy Right Now</div>
+    <div class="energy-card">
+      <div class="card-title">How's your energy? (Filters sections below)</div>
+      <div class="energy-btns">
+        <button class="energy-btn" id="eHigh" onclick="setEnergy('high')">🔋 High</button>
+        <button class="energy-btn" id="eMed"  onclick="setEnergy('med')">⚡ Medium</button>
+        <button class="energy-btn" id="eLow"  onclick="setEnergy('low')">😴 Low</button>
+      </div>
+      <div class="energy-note" id="energyNote"></div>
+    </div>
+  </div>
+
+  <!-- Section Feed -->
+  <div>
+    <div class="section-label">🗂 Your Sections</div>
+    <div class="feed" id="feed">
+
+      <a class="feed-card" href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent" data-energy="all">
+        <div class="feed-card-top">
+          <div class="feed-icon">🧠</div>
+          <div>
+            <div class="feed-title">Brain Dump</div>
+            <div class="feed-tagline">Empty your head first</div>
+          </div>
+          <div class="feed-arrow">›</div>
+        </div>
+        <div class="feed-desc">Everything swirling in your head goes here — tasks, ideas, worries, half-formed plans. Get it out first, sort it second. An AI prompt inside helps you triage it all into Tasks, Ideas, Reference, or Delete.</div>
+        <div class="feed-tags">
+          <span class="feed-tag high">High energy</span>
+          <span class="feed-tag med">Medium energy</span>
+          <span class="feed-tag low">Low energy</span>
+        </div>
+      </a>
+
+      <a class="feed-card" href="https://www.notion.so/36d1aaa83752814ba0bdd76ff4efecfb" target="_parent" data-energy="high,med">
+        <div class="feed-card-top">
+          <div class="feed-icon">✅</div>
+          <div>
+            <div class="feed-title">Task Manager</div>
+            <div class="feed-tagline">What actually needs to happen</div>
+          </div>
+          <div class="feed-arrow">›</div>
+        </div>
+        <div class="feed-desc">Your task database with priority and energy-level tags. Views for Today, Quick Wins, and Urgent let you work at whatever capacity you have. AI prompt breaks any task into ADHD-friendly micro-steps.</div>
+        <div class="feed-tags">
+          <span class="feed-tag high">High energy</span>
+          <span class="feed-tag med">Medium energy</span>
+        </div>
+      </a>
+
+      <a class="feed-card" href="https://www.notion.so/36d1aaa8375281f09bebf671fb062692" target="_parent" data-energy="high,med">
+        <div class="feed-card-top">
+          <div class="feed-icon">📅</div>
+          <div>
+            <div class="feed-title">Daily Planner</div>
+            <div class="feed-tagline">Morning intention → time blocks → evening reflection</div>
+          </div>
+          <div class="feed-arrow">›</div>
+        </div>
+        <div class="feed-desc">5 minutes each morning. Set your intention, block time for your Top 3, log distractions as they happen. Evening reflection takes 3 minutes and tells you what actually went well — not what you think went badly.</div>
+        <div class="feed-tags">
+          <span class="feed-tag high">High energy</span>
+          <span class="feed-tag med">Medium energy</span>
+        </div>
+      </a>
+
+      <a class="feed-card" href="https://www.notion.so/36d1aaa83752814a80efd380b4037174" target="_parent" data-energy="all">
+        <div class="feed-card-top">
+          <div class="feed-icon">🔄</div>
+          <div>
+            <div class="feed-title">Habit Tracker</div>
+            <div class="feed-tagline">Simple yes/no. Forgiving by design.</div>
+          </div>
+          <div class="feed-arrow">›</div>
+        </div>
+        <div class="feed-desc">No streaks to break, no guilt if you miss a day. Just a simple checkbox system designed to be picked back up, not abandoned. Works best when your habits are small enough to do on a bad day.</div>
+        <div class="feed-tags">
+          <span class="feed-tag high">High energy</span>
+          <span class="feed-tag med">Medium energy</span>
+          <span class="feed-tag low">Low energy</span>
+        </div>
+      </a>
+
+      <a class="feed-card" href="https://www.notion.so/36d1aaa8375281e89de5cfdaaf05bb63" target="_parent" data-energy="high,med">
+        <div class="feed-card-top">
+          <div class="feed-icon">📊</div>
+          <div>
+            <div class="feed-title">Weekly Review</div>
+            <div class="feed-tagline">Wins first, then what's next</div>
+          </div>
+          <div class="feed-arrow">›</div>
+        </div>
+        <div class="feed-desc">A structured weekly reflection that forces you to acknowledge what you actually did before you spiral into what you didn't. AI prompt gives you an honest summary and a focused direction for next week — not a to-do avalanche.</div>
+        <div class="feed-tags">
+          <span class="feed-tag high">High energy</span>
+          <span class="feed-tag med">Medium energy</span>
+        </div>
+      </a>
+
+      <a class="feed-card" href="https://www.notion.so/36d1aaa8375281fd8d57d6329e6e491d" target="_parent" data-energy="all">
+        <div class="feed-card-top">
+          <div class="feed-icon">🧰</div>
+          <div>
+            <div class="feed-title">ADHD Toolbox</div>
+            <div class="feed-tagline">When nothing else is working</div>
+          </div>
+          <div class="feed-arrow">›</div>
+        </div>
+        <div class="feed-desc">Paralysis Picker (can't choose → it picks for you), 5-min Dopamine Menu (low energy boosts), body doubling resources, and an emotional regulation check-in. Go here when you're stuck and nothing sounds doable.</div>
+        <div class="feed-tags">
+          <span class="feed-tag high">High energy</span>
+          <span class="feed-tag med">Medium energy</span>
+          <span class="feed-tag low">Low energy</span>
+        </div>
+      </a>
+
+      <a class="feed-card" href="https://www.notion.so/36d1aaa83752811ab5ddfd9240e88690" target="_parent" data-energy="all">
+        <div class="feed-card-top">
+          <div class="feed-icon">💡</div>
+          <div>
+            <div class="feed-title">AI Assistant</div>
+            <div class="feed-tagline">30+ prompts, organized by section</div>
+          </div>
+          <div class="feed-arrow">›</div>
+        </div>
+        <div class="feed-desc">Every AI prompt in one place — or connect directly to your AI of choice (Groq is free). Prompts cover Brain Dump sorting, task breakdown, daily planning, paralysis rescue, weekly review, and more. No key needed: just copy and paste into Claude.ai or ChatGPT.</div>
+        <div class="feed-tags">
+          <span class="feed-tag high">High energy</span>
+          <span class="feed-tag med">Medium energy</span>
+          <span class="feed-tag low">Low energy</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="footer-note">ADHD Brain OS · Your key, your data · No tracking</div>
 
 </div>
 
@@ -616,126 +764,169 @@
 const PROVIDERS = {
   groq: {
     name: 'Groq', keyPlaceholder: 'gsk_...', keyLabel: 'Groq API Key',
-    endpoint: 'https://api.groq.com/openai/v1/chat/completions',
-    format: 'openai', free: true,
-    hint: '✅ <strong>Groq is free — no credit card needed.</strong><br><br>1. Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> and sign up<br>2. Sidebar → API Keys → Create API Key<br>3. Copy and paste below<br><br>⚠️ Key is shown once — copy before closing.',
+    hint: '✅ <strong>Groq is free — no credit card needed.</strong><br><br>1. Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> and sign up<br>2. Sidebar → API Keys → Create API Key<br>3. Copy and paste below',
     hintClass: 'free',
     models: [
       { value: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B — Best quality' },
-      { value: 'llama-3.1-8b-instant',    label: 'Llama 3.1 8B — Fastest'       },
-      { value: 'gemma2-9b-it',            label: 'Gemma 2 9B — Google'           },
-      { value: 'mixtral-8x7b-32768',      label: 'Mixtral 8x7B — Strong reasoning' },
-    ],
-    footerText: 'Groq · Free tier · Your key, your usage'
+      { value: 'llama-3.1-8b-instant',    label: 'Llama 3.1 8B — Fastest' },
+      { value: 'gemma2-9b-it',            label: 'Gemma 2 9B — Google' },
+    ]
   },
   openai: {
     name: 'OpenAI', keyPlaceholder: 'sk-...', keyLabel: 'OpenAI API Key',
-    endpoint: 'https://api.openai.com/v1/chat/completions',
-    format: 'openai', free: false,
-    hint: '💳 <strong>OpenAI requires a paid account.</strong><br><br>1. Go to <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a><br>2. Create new secret key<br>3. Copy and paste below<br><br>Tip: GPT-4o Mini is most affordable.',
+    hint: '💳 <strong>OpenAI requires a paid account.</strong><br><br>1. Go to <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a><br>2. Create new secret key<br>3. Copy and paste below',
     hintClass: 'paid',
     models: [
       { value: 'gpt-4o-mini', label: 'GPT-4o Mini — Most affordable' },
-      { value: 'gpt-4o',      label: 'GPT-4o — Best quality'         },
-    ],
-    footerText: 'OpenAI · Paid tier · Your key, your usage'
+      { value: 'gpt-4o',      label: 'GPT-4o — Best quality' },
+    ]
   },
   anthropic: {
     name: 'Claude', keyPlaceholder: 'sk-ant-...', keyLabel: 'Anthropic API Key',
-    endpoint: 'https://api.anthropic.com/v1/messages',
-    format: 'anthropic', free: false,
-    hint: '💳 <strong>Anthropic requires a paid account.</strong><br><br>1. Go to <a href="https://console.anthropic.com/api-keys" target="_blank">console.anthropic.com/api-keys</a><br>2. Create Key<br>3. Copy and paste below<br><br>Tip: Claude Haiku is most affordable.',
+    hint: '💳 <strong>Anthropic requires a paid account.</strong><br><br>1. Go to <a href="https://console.anthropic.com/api-keys" target="_blank">console.anthropic.com/api-keys</a><br>2. Create Key<br>3. Copy and paste below',
     hintClass: 'paid',
     models: [
       { value: 'claude-haiku-4-5-20251001', label: 'Claude Haiku — Fastest & cheapest' },
-      { value: 'claude-sonnet-4-6',         label: 'Claude Sonnet — Best balance'       },
-      { value: 'claude-opus-4-6',           label: 'Claude Opus — Highest quality'      },
-    ],
-    footerText: 'Anthropic Claude · Paid tier · Your key, your usage'
+      { value: 'claude-sonnet-4-6',         label: 'Claude Sonnet — Best balance' },
+    ]
   },
   custom: {
     name: 'Custom', keyPlaceholder: 'Your API key...', keyLabel: 'API Key',
-    endpoint: '', format: 'openai', free: false,
-    hint: '⚙️ <strong>Custom OpenAI-compatible provider.</strong><br><br>Works with OpenRouter, Together AI, Ollama, LM Studio, and any OpenAI-compatible API.<br><br>Enter your base URL and model name below.',
+    hint: '⚙️ <strong>Custom OpenAI-compatible provider.</strong><br><br>Works with OpenRouter, Together AI, Ollama, LM Studio, and any OpenAI-compatible API.',
     hintClass: 'custom-hint',
-    models: [],
-    footerText: 'Custom provider · Your key, your usage'
+    models: []
   }
 };
 
-// ─────────────────────────────────────────────────────────────
-//  STORAGE — shared with index.html via same localStorage keys
-// ─────────────────────────────────────────────────────────────
 const LS = {
   provider: 'adhd_provider', key: 'adhd_api_key',
-  model: 'adhd_model', customUrl: 'adhd_custom_url', customModel: 'adhd_custom_model'
+  model: 'adhd_model', customUrl: 'adhd_custom_url', customModel: 'adhd_custom_model',
+  focus: 'adhd_focus', checks: 'adhd_checks', energy: 'adhd_energy'
 };
 const get = k      => localStorage.getItem(k) || '';
 const set = (k, v) => localStorage.setItem(k, v);
-function getProvider()  { return get(LS.provider) || ''; }
+function getProvider()  { return get(LS.provider); }
 function getKey()       { return get(LS.key); }
 function getModel()     { const p = getProvider(); return get(LS.model) || (p && PROVIDERS[p] ? PROVIDERS[p].models[0]?.value || '' : ''); }
 function getCustomUrl() { return get(LS.customUrl); }
 
 // ─────────────────────────────────────────────────────────────
-//  PROMPT TEMPLATES
+//  NAV DRAWER
 // ─────────────────────────────────────────────────────────────
-const TEMPLATES = [
-  {
-    label: "🏠 I'm stuck — help me figure out what to do",
-    fields: [{ id: 'situation', label: "What's going on?", type: 'textarea', placeholder: "Describe what you're stuck on..." }],
-    build: f => `I have ADHD and I'm stuck. Help me figure out the single best next action right now.\n\nSituation: ${f.situation}\n\nBe direct. One thing to do, why it's the right call, first step as small as possible.`
-  },
-  {
-    label: "🏠 I'm overwhelmed — help me triage",
-    fields: [{ id: 'items', label: "What's on your mind right now?", type: 'textarea', placeholder: "List everything — tasks, worries, anything..." }],
-    build: f => `I have ADHD and I'm overwhelmed. Everything on my mind:\n\n${f.items}\n\nHelp me triage. What needs attention today? What can wait? What should I drop? Direct, not reassuring.`
-  },
-  {
-    label: "🏠 Pick my Top 3 for today",
-    fields: [
-      { id: 'everything', label: "What's on your plate today?", type: 'textarea', placeholder: "Meetings, tasks, commitments, anything..." },
-      { id: 'energy', label: "Energy level", type: 'select', options: ['🔋 High', '⚡ Medium', '😴 Low'] }
-    ],
-    build: f => `Help me pick my Top 3 priorities for today. I have ADHD and I need a realistic list, not an aspirational one.\n\nEverything on my plate:\n${f.everything}\n\nEnergy: ${f.energy}\n\nGive me exactly 3. If I only do these 3 today, the day is a win. Be ruthless.`
-  },
-  {
-    label: "📅 Help me plan my day",
-    fields: [
-      { id: 'tasks', label: "What needs to happen today?", type: 'textarea', placeholder: 'Tasks, meetings, commitments...' },
-      { id: 'energy', label: 'Energy level', type: 'select', options: ['🔋 High', '⚡ Medium', '😴 Low'] },
-      { id: 'available', label: 'Hours realistically available', type: 'select', options: ['1–2 hours', '3–4 hours', '5–6 hours', 'Full day'] }
-    ],
-    build: f => `Help me plan my day. I have ADHD and I consistently overestimate what I can do.\n\nWhat needs to happen:\n${f.tasks}\n\nEnergy: ${f.energy}\nRealistic hours: ${f.available}\n\nRealistic plan, suggested order, one thing to protect no matter what.`
-  },
-  {
-    label: "🧠 Sort my brain dump",
-    fields: [{ id: 'dump', label: "Paste your brain dump here", type: 'textarea', placeholder: "Everything in your head..." }],
-    build: f => `Help me sort my brain dump. I have ADHD.\n\nBrain dump:\n${f.dump}\n\nSort everything into: ✅ Tasks (needs action), 💡 Ideas (worth keeping), 📁 Reference (save for later), 🗑️ Delete (let it go). Be decisive. If something is vague, either sharpen it or put it in Delete.`
-  },
-  {
-    label: "✅ Break this task into micro-steps",
-    fields: [
-      { id: 'task', label: "What's the task?", type: 'text', placeholder: "e.g. Write the quarterly report..." },
-      { id: 'context', label: "Any context or blockers?", type: 'textarea', placeholder: "What makes this hard? What have you tried?" }
-    ],
-    build: f => `Break this task into ADHD-friendly micro-steps.\n\nTask: ${f.task}\nContext: ${f.context}\n\nSteps should be: concrete (not vague), 5–15 min each, start with something instantly doable. First step should be so small I can't say no to it.`
-  },
-  {
-    label: "🧰 I'm in paralysis — get me unstuck",
-    fields: [{ id: 'context', label: "What's the spiral about?", type: 'textarea', placeholder: "Too many options, can't start, everything feels equal..." }],
-    build: f => `I'm in a full ADHD paralysis spiral.\n\nContext: ${f.context}\n\nSkip explaining what paralysis is. Give me: one thing to do in the next 90 seconds to interrupt the spiral, one decision I can just make right now, and the absolute minimum to do today if everything else stays stuck.`
-  },
-  {
-    label: "📊 Weekly review — what actually happened?",
-    fields: [
-      { id: 'wins', label: "What went well this week?", type: 'textarea', placeholder: "Even small things count..." },
-      { id: 'struggles', label: "What was hard?", type: 'textarea', placeholder: "What kept getting avoided or derailed?" },
-      { id: 'next', label: "What matters most next week?", type: 'text', placeholder: "1–2 things..." }
-    ],
-    build: f => `Help me close out my week. I have ADHD and I tend to dismiss what I did and catastrophize what I didn't.\n\nWins: ${f.wins}\nStruggles: ${f.struggles}\nNext week priority: ${f.next}\n\nGive me: one honest observation about this week, one thing to carry forward, and a realistic focus for next week.`
+function toggleDrawer() {
+  const d = document.getElementById('navDrawer');
+  const t = document.getElementById('navTab');
+  d.classList.toggle('open');
+  t.classList.toggle('hidden', d.classList.contains('open'));
+}
+function closeDrawer() {
+  document.getElementById('navDrawer').classList.remove('open');
+  document.getElementById('navTab').classList.remove('hidden');
+}
+document.addEventListener('click', e => {
+  const drawer = document.getElementById('navDrawer');
+  const tab    = document.getElementById('navTab');
+  if (drawer.classList.contains('open') && !drawer.contains(e.target) && !tab.contains(e.target)) closeDrawer();
+});
+
+// ─────────────────────────────────────────────────────────────
+//  QUICK CAPTURE
+// ─────────────────────────────────────────────────────────────
+function captureIt() {
+  const val = document.getElementById('captureInput').value.trim();
+  if (!val) return;
+  navigator.clipboard.writeText(val).then(() => {
+    const confirm = document.getElementById('copyConfirm');
+    confirm.style.display = 'block';
+    setTimeout(() => { confirm.style.display = 'none'; }, 3000);
+    document.getElementById('captureInput').value = '';
+  }).catch(() => {
+    alert('Clipboard blocked. Please copy manually: ' + val);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+//  TODAY'S FOCUS
+// ─────────────────────────────────────────────────────────────
+function saveFocus() {
+  const vals = [1,2,3].map(i => document.getElementById(`focus${i}`).value);
+  set(LS.focus, JSON.stringify(vals));
+}
+function toggleFocus(i) {
+  const inp = document.getElementById(`focus${i}`);
+  const chk = document.getElementById(`check${i}`);
+  inp.classList.toggle('done', chk.checked);
+  const checks = [1,2,3].map(n => document.getElementById(`check${n}`).checked);
+  set(LS.checks, JSON.stringify(checks));
+}
+function clearFocus() {
+  [1,2,3].forEach(i => {
+    document.getElementById(`focus${i}`).value = '';
+    document.getElementById(`focus${i}`).classList.remove('done');
+    document.getElementById(`check${i}`).checked = false;
+  });
+  localStorage.removeItem(LS.focus);
+  localStorage.removeItem(LS.checks);
+}
+function loadFocus() {
+  try {
+    const vals   = JSON.parse(get(LS.focus)  || '[]');
+    const checks = JSON.parse(get(LS.checks) || '[]');
+    [1,2,3].forEach((_, idx) => {
+      if (vals[idx])   document.getElementById(`focus${idx+1}`).value = vals[idx];
+      if (checks[idx]) {
+        document.getElementById(`check${idx+1}`).checked = true;
+        document.getElementById(`focus${idx+1}`).classList.add('done');
+      }
+    });
+  } catch {}
+}
+
+// ─────────────────────────────────────────────────────────────
+//  ENERGY FILTER
+// ─────────────────────────────────────────────────────────────
+const ENERGY_NOTES = {
+  high:  '🔋 High energy — all sections available. Good time for focused work, planning, or review.',
+  med:   '⚡ Medium energy — showing sections that work well at moderate focus. Sections requiring deep effort are dimmed.',
+  low:   '😴 Low energy — showing your best low-effort options. Be gentle with yourself today.'
+};
+
+function setEnergy(level) {
+  set(LS.energy, level);
+  applyEnergy(level);
+}
+
+function applyEnergy(level) {
+  ['eHigh','eMed','eLow'].forEach(id => {
+    document.getElementById(id).className = 'energy-btn';
+  });
+  const map = { high: 'eHigh', med: 'eMed', low: 'eLow' };
+  if (level && map[level]) {
+    document.getElementById(map[level]).className = `energy-btn active-${level}`;
   }
-];
+  const note = document.getElementById('energyNote');
+  if (level) {
+    note.textContent = ENERGY_NOTES[level];
+    note.classList.add('visible');
+  } else {
+    note.classList.remove('visible');
+  }
+  // Filter feed cards
+  document.querySelectorAll('.feed-card').forEach(card => {
+    if (!level) {
+      card.classList.remove('dimmed', 'highlighted');
+      return;
+    }
+    const energies = card.dataset.energy.split(',');
+    if (energies.includes('all') || energies.includes(level)) {
+      card.classList.remove('dimmed');
+      card.classList.add('highlighted');
+    } else {
+      card.classList.add('dimmed');
+      card.classList.remove('highlighted');
+    }
+  });
+}
 
 // ─────────────────────────────────────────────────────────────
 //  SETTINGS OVERLAY
@@ -763,8 +954,7 @@ function populateModels(pk) {
   sel.innerHTML = '';
   PROVIDERS[pk].models.forEach(m => {
     const opt = document.createElement('option');
-    opt.value = m.value;
-    opt.textContent = m.label;
+    opt.value = m.value; opt.textContent = m.label;
     sel.appendChild(opt);
   });
 }
@@ -796,9 +986,7 @@ function openSettings() {
   document.getElementById('overlay').classList.add('visible');
 }
 
-function closeSettings() {
-  document.getElementById('overlay').classList.remove('visible');
-}
+function closeSettings() { document.getElementById('overlay').classList.remove('visible'); }
 
 function saveSettings() {
   const key = document.getElementById('keyInput').value.trim();
@@ -822,15 +1010,13 @@ function saveSettings() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  APP
+//  UI STATE
 // ─────────────────────────────────────────────────────────────
 function updateUI() {
   const hasKey = !!getKey();
   const pk     = getProvider();
   const p      = pk && PROVIDERS[pk];
-  document.getElementById('noKeyBanner').style.display = hasKey ? 'none' : 'block';
-  document.getElementById('aiFooter').textContent      = p ? p.footerText : 'Your key, your usage · No data shared';
-  const pill = document.getElementById('connectionPill');
+  const pill   = document.getElementById('connectionPill');
   if (hasKey && p) {
     pill.textContent = `Connected · ${p.name}`;
     pill.classList.add('connected');
@@ -838,163 +1024,17 @@ function updateUI() {
     pill.textContent = 'Not connected';
     pill.classList.remove('connected');
   }
-  updateModelBadge();
-  // Update step 1 button
-  const btn = document.getElementById('step1btn');
-  const num = document.getElementById('step1num');
-  if (hasKey) {
-    btn.textContent = '✓ Connected — change settings';
-    btn.style.background = 'var(--green)';
-    num.classList.add('done');
-  } else {
-    btn.textContent = 'Connect AI →';
-    btn.style.background = '';
-    num.classList.remove('done');
-  }
 }
 
-function updateModelBadge() {
-  const pk    = getProvider();
-  const p     = PROVIDERS[pk];
-  const model = getModel();
-  if (!pk || !getKey()) { document.getElementById('modelBadge').textContent = 'Not connected'; return; }
-  let label;
-  if (pk === 'custom') { label = model || 'Custom'; }
-  else {
-    const found = (p?.models || []).find(m => m.value === model);
-    label = found ? found.label.split(' — ')[0] : model;
-  }
-  document.getElementById('modelBadge').textContent = `${p?.name || ''} · ${label}`;
-}
-
+// ─────────────────────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────────────────────
 function init() {
-  const sel = document.getElementById('templateSelect');
-  TEMPLATES.forEach((t, i) => {
-    const opt = document.createElement('option');
-    opt.value = i; opt.textContent = t.label;
-    sel.appendChild(opt);
-  });
-  renderFields(0);
   updateUI();
+  loadFocus();
+  const savedEnergy = get(LS.energy);
+  if (savedEnergy) applyEnergy(savedEnergy);
 }
-
-function onTemplateChange() {
-  renderFields(parseInt(document.getElementById('templateSelect').value));
-  resetResponse();
-}
-
-function renderFields(idx) {
-  const tpl = TEMPLATES[idx];
-  const container = document.getElementById('fields');
-  container.innerHTML = '';
-  tpl.fields.forEach(f => {
-    const group = document.createElement('div');
-    group.className = 'field-group';
-    const lbl = document.createElement('label');
-    lbl.className = 'field-label';
-    lbl.textContent = f.label;
-    lbl.htmlFor = `f-${f.id}`;
-    group.appendChild(lbl);
-    let el;
-    if (f.type === 'textarea') {
-      el = document.createElement('textarea');
-      el.placeholder = f.placeholder || '';
-    } else if (f.type === 'select') {
-      el = document.createElement('select');
-      f.options.forEach(o => { const opt = document.createElement('option'); opt.value = opt.textContent = o; el.appendChild(opt); });
-    } else {
-      el = document.createElement('input');
-      el.type = 'text';
-      el.placeholder = f.placeholder || '';
-    }
-    el.id = `f-${f.id}`;
-    group.appendChild(el);
-    container.appendChild(group);
-  });
-}
-
-// ─────────────────────────────────────────────────────────────
-//  SEND PROMPT
-// ─────────────────────────────────────────────────────────────
-async function sendPrompt() {
-  const apiKey = getKey();
-  if (!apiKey) { openSettings(); return; }
-  const idx = parseInt(document.getElementById('templateSelect').value);
-  const tpl = TEMPLATES[idx];
-  const vals = {}; let empty = false;
-  tpl.fields.forEach(f => {
-    const el = document.getElementById(`f-${f.id}`);
-    const val = el.value.trim();
-    if (!val && f.type !== 'select') empty = true;
-    vals[f.id] = val;
-  });
-  if (empty) { alert('Please fill in all fields before sending.'); return; }
-  const prompt = tpl.build(vals);
-  const pk     = getProvider();
-  const p      = PROVIDERS[pk];
-  const model  = getModel();
-  const endpoint = pk === 'custom' ? (getCustomUrl().replace(/\/$/, '') + '/chat/completions') : p.endpoint;
-  const btn    = document.getElementById('sendBtn');
-  const btnTxt = document.getElementById('btnText');
-  const wrap   = document.getElementById('responseWrap');
-  const area   = document.getElementById('responseArea');
-  btn.disabled = true; btnTxt.textContent = 'Thinking...';
-  wrap.classList.add('visible');
-  area.innerHTML = '<span class="thinking">Getting your answer…</span>';
-  const sys = 'You are a practical ADHD productivity coach. Be direct and concise. Give specific, actionable advice. No filler. Short paragraphs or numbered steps where helpful.';
-  try {
-    if (p.format === 'anthropic') {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-        body: JSON.stringify({ model, max_tokens: 600, stream: true, system: sys, messages: [{ role: 'user', content: prompt }] })
-      });
-      if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `HTTP ${res.status}`); }
-      area.textContent = '';
-      const reader = res.body.getReader(); const dec = new TextDecoder(); let buf = ''; let lastEv = '';
-      while (true) {
-        const { done, value } = await reader.read(); if (done) break;
-        buf += dec.decode(value, { stream: true });
-        const lines = buf.split('\n'); buf = lines.pop();
-        for (const line of lines) {
-          if (line.startsWith('event: ')) { lastEv = line.slice(7).trim(); }
-          else if (line.startsWith('data: ') && lastEv === 'content_block_delta') {
-            try { area.textContent += JSON.parse(line.slice(6))?.delta?.text || ''; area.scrollTop = area.scrollHeight; } catch {}
-          }
-        }
-      }
-    } else {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model, stream: true, temperature: 0.7, max_tokens: 600, messages: [{ role: 'system', content: sys }, { role: 'user', content: prompt }] })
-      });
-      if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `HTTP ${res.status}`); }
-      area.textContent = '';
-      const reader = res.body.getReader(); const dec = new TextDecoder(); let buf = '';
-      while (true) {
-        const { done, value } = await reader.read(); if (done) break;
-        buf += dec.decode(value, { stream: true });
-        const lines = buf.split('\n'); buf = lines.pop();
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          const raw = line.slice(6); if (raw === '[DONE]') continue;
-          try { area.textContent += JSON.parse(raw).choices?.[0]?.delta?.content || ''; area.scrollTop = area.scrollHeight; } catch {}
-        }
-      }
-    }
-  } catch (err) {
-    area.textContent = `Error: ${err.message}\n\nCheck your API key in AI Settings.`;
-  } finally {
-    btn.disabled = false; btnTxt.textContent = 'Send to AI →';
-  }
-}
-
-function resetResponse() {
-  document.getElementById('responseWrap').classList.remove('visible');
-  document.getElementById('responseArea').textContent = '';
-}
-
 init();
 </script>
 </body>
