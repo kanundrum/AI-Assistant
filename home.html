@@ -21,490 +21,164 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      height: 100%;
-    }
+    html, body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); height: 100%; overflow: hidden; }
 
     /* ── TOP BAR ── */
-    .topbar {
-      height: 52px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      padding: 0 24px;
-      gap: 12px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-    .brand { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .topbar { height: 52px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 12px; position: relative; z-index: 50; }
+    .brand { font-size: 16px; font-weight: 700; }
     .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-    .pill {
-      font-size: 11px;
-      padding: 3px 9px;
-      border-radius: 99px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      cursor: default;
-    }
+    .pill { font-size: 11px; padding: 3px 9px; border-radius: 99px; border: 1px solid var(--border); color: var(--muted); }
     .pill.connected { border-color: var(--green); color: var(--green); }
-    .settings-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 5px 12px;
-      border-radius: var(--radius);
-      font-size: 12px;
-      cursor: pointer;
-      transition: color .2s, border-color .2s;
-    }
+    .settings-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 5px 12px; border-radius: var(--radius); font-size: 12px; cursor: pointer; transition: color .2s, border-color .2s; }
     .settings-btn:hover { color: var(--text); border-color: var(--text); }
 
-    /* ── MAIN SCROLL AREA ── */
-    .main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 32px 24px 80px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-    }
+    /* ── SPLIT LAYOUT ── */
+    .layout { display: grid; grid-template-columns: 1fr 360px; height: calc(100vh - 52px); overflow: hidden; }
 
-    /* ── WELCOME ── */
-    .welcome-title { font-size: 24px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
-    .welcome-desc  { font-size: 14px; color: var(--muted); line-height: 1.75; }
+    /* ── LEFT PANEL ── */
+    .left { overflow-y: auto; padding: 20px 22px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 14px; }
 
-    /* ── SECTION LABEL ── */
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
+    /* Welcome block */
+    .welcome-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+    .welcome-title { font-size: 18px; font-weight: 700; line-height: 1.3; }
+    .welcome-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .inline-sep { border-top: 1px solid var(--border); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .inline-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; display: flex; align-items: center; justify-content: space-between; }
 
-    /* ── WELCOME BLOCK FULL ── */
-    .welcome-block-full {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-    .inline-section {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-    }
-    .inline-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .06em;
-    }
-
-    /* ── QUICK CAPTURE ── */
-    .capture-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .capture-card .card-title {
-      font-size: 13px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .capture-row {
-      display: flex;
-      gap: 8px;
-    }
-    .capture-row input {
-      flex: 1;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 9px 13px;
-      border-radius: var(--radius);
-      font-size: 13px;
-      font-family: inherit;
-    }
+    /* Quick Capture */
+    .capture-row { display: flex; gap: 7px; }
+    .capture-row input { flex: 1; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 8px 11px; border-radius: var(--radius); font-size: 13px; font-family: inherit; }
     .capture-row input:focus { outline: none; border-color: var(--accent); }
     .capture-row input::placeholder { color: var(--muted); }
-    .capture-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 9px 16px;
-      border-radius: var(--radius);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background .2s;
-    }
+    .capture-btn { background: var(--accent); color: white; border: none; padding: 8px 13px; border-radius: var(--radius); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background .2s; }
     .capture-btn:hover { background: var(--accent-h); }
-    .capture-link {
-      font-size: 12px;
-      color: var(--muted);
-    }
+    .copy-confirm { font-size: 11px; color: var(--green); display: none; }
+    .capture-link { font-size: 12px; color: var(--muted); }
     .capture-link a { color: var(--accent); text-decoration: none; }
     .capture-link a:hover { text-decoration: underline; }
-    .copy-confirm {
-      font-size: 12px;
-      color: var(--green);
-      display: none;
-    }
 
-    /* ── TODAY'S FOCUS ── */
-    .focus-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .focus-card .card-title {
-      font-size: 13px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    /* Today's Top 3 */
     .focus-items { display: flex; flex-direction: column; gap: 6px; }
-    .focus-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .focus-num {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .focus-check {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
-    .focus-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-      padding: 4px 0;
-      font-size: 13px;
-      font-family: inherit;
-      transition: border-color .2s;
-    }
+    .focus-item { display: flex; align-items: center; gap: 8px; }
+    .focus-num { width: 20px; height: 20px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .focus-check { width: 15px; height: 15px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+    .focus-input { flex: 1; background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); padding: 3px 0; font-size: 13px; font-family: inherit; transition: border-color .2s; }
     .focus-input:focus { outline: none; border-bottom-color: var(--accent); }
     .focus-input::placeholder { color: var(--muted); }
     .focus-input.done { text-decoration: line-through; color: var(--muted); }
-    .focus-clear {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 5px 12px;
-      border-radius: var(--radius);
-      font-size: 12px;
-      cursor: pointer;
-      align-self: flex-end;
-      transition: color .2s;
-    }
+    .focus-clear { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 3px 9px; border-radius: var(--radius); font-size: 11px; cursor: pointer; transition: color .2s; }
     .focus-clear:hover { color: var(--text); }
 
-    /* ── ENERGY CHECK-IN ── */
-    .energy-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .energy-card .card-title {
-      font-size: 13px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .energy-btns { display: flex; gap: 8px; }
-    .energy-btn {
-      flex: 1;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 10px;
-      border-radius: var(--radius);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: center;
-      transition: all .2s;
-    }
+    /* Energy */
+    .energy-btns { display: flex; gap: 7px; }
+    .energy-btn { flex: 1; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 8px; border-radius: var(--radius); font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; transition: all .2s; }
     .energy-btn:hover { color: var(--text); border-color: var(--text); }
-    .energy-btn.active-high  { background: #1e3a1e; border-color: var(--green);  color: var(--green); }
-    .energy-btn.active-med   { background: #3a2e10; border-color: var(--amber);  color: var(--amber); }
-    .energy-btn.active-low   { background: #2a1e3a; border-color: var(--purple); color: var(--purple); }
-    .energy-note { font-size: 12px; color: var(--muted); line-height: 1.5; display: none; }
+    .energy-btn.active-high { background: #1e3a1e; border-color: var(--green); color: var(--green); }
+    .energy-btn.active-med  { background: #3a2e10; border-color: var(--amber); color: var(--amber); }
+    .energy-btn.active-low  { background: #2a1e3a; border-color: var(--purple); color: var(--purple); }
+    .energy-note { font-size: 11px; color: var(--muted); line-height: 1.5; display: none; }
     .energy-note.visible { display: block; }
 
-    /* ── FEED CARDS ── */
-    .feed { display: flex; flex-direction: column; gap: 10px; }
-
-    .feed-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 20px;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      transition: border-color .2s, background .2s, transform .1s;
-    }
+    /* Section label + feed */
+    .section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .feed { display: flex; flex-direction: column; gap: 8px; }
+    .feed-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: border-color .2s, background .2s, transform .1s; }
     .feed-card:hover { border-color: var(--accent); background: var(--surface2); transform: translateX(2px); }
-    .feed-card.no-nav:hover { border-color: var(--border); background: var(--surface); transform: none; }
-    .feed-card.dimmed { opacity: 0.45; }
-    .feed-card.highlighted { border-color: var(--green); }
+    .feed-card.dimmed { opacity: 0.4; }
+    .feed-card.highlighted { border-color: #3a5a3a; }
+    .feed-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 7px; }
+    .feed-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .feed-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .feed-tagline { font-size: 11px; color: var(--accent); font-weight: 500; }
+    .feed-arrow { margin-left: auto; color: var(--muted); font-size: 15px; }
+    .feed-desc { font-size: 12px; color: var(--muted); line-height: 1.65; padding-left: 30px; }
+    .feed-tags { display: flex; gap: 5px; flex-wrap: wrap; padding-left: 30px; margin-top: 7px; }
+    .feed-tag { font-size: 10px; padding: 2px 7px; border-radius: 99px; border: 1px solid var(--border); color: var(--muted); }
+    .feed-tag.high   { border-color: #3a5a3a; color: var(--green); }
+    .feed-tag.med    { border-color: #5a3a10; color: var(--amber); }
+    .feed-tag.low    { border-color: #3a2a5a; color: var(--purple); }
 
-    .feed-card-top {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 10px;
-    }
-    .feed-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
-    .feed-title { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-    .feed-tagline { font-size: 12px; color: var(--accent); font-weight: 500; }
-    .feed-arrow { margin-left: auto; color: var(--muted); font-size: 16px; }
-    .feed-desc { font-size: 13px; color: var(--muted); line-height: 1.7; padding-left: 36px; }
-    .feed-tags { display: flex; gap: 6px; flex-wrap: wrap; padding-left: 36px; margin-top: 8px; }
-    .feed-tag {
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 99px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
-    .feed-tag.high  { border-color: #3a5a3a; color: var(--green); }
-    .feed-tag.med   { border-color: #5a3a10; color: var(--amber); }
-    .feed-tag.low   { border-color: #3a2a5a; color: var(--purple); }
+    /* ── RIGHT PANEL — AI ASSISTANT ── */
+    .right { display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+    .ai-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .ai-header-title { font-size: 14px; font-weight: 600; }
+    .ai-header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .model-badge { margin-left: auto; font-size: 11px; color: var(--muted); background: var(--surface2); padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border); }
+    .ai-body { flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 9px; }
+    .ai-footer { text-align: center; font-size: 11px; color: var(--muted); padding: 7px; border-top: 1px solid var(--border); flex-shrink: 0; }
 
-    /* ── HOVER NAV DRAWER ── */
-    .nav-drawer-trigger {
-      position: fixed;
-      top: 52px;
-      right: 0;
-      width: 20px;
-      height: calc(100vh - 52px);
-      z-index: 100;
-      cursor: pointer;
-    }
-    .nav-drawer {
-      position: fixed;
-      top: 52px;
-      right: -260px;
-      width: 260px;
-      height: calc(100vh - 52px);
-      background: var(--surface);
-      border-left: 1px solid var(--border);
-      z-index: 99;
-      transition: right .25s cubic-bezier(.4,0,.2,1);
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-    }
-    .nav-drawer.open { right: 0; }
-    .nav-drawer-tab {
-      position: fixed;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-right: none;
-      border-radius: 6px 0 0 6px;
-      padding: 12px 6px;
-      z-index: 100;
-      cursor: pointer;
-      writing-mode: vertical-rl;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: .05em;
-      transition: color .2s, border-color .2s;
-    }
-    .nav-drawer-tab:hover { color: var(--text); border-color: var(--text); }
-    .nav-drawer-tab.hidden { display: none; }
+    .no-key-banner { background: #1f2a1f; border: 1px solid #3a5a3a; border-radius: var(--radius); padding: 9px 13px; font-size: 12px; color: #90c890; cursor: pointer; display: none; }
+    .no-key-banner:hover { border-color: #5a8a5a; }
 
-    .nav-header {
-      padding: 16px 18px 10px;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* Category tabs */
+    .cat-tabs { display: flex; gap: 5px; flex-wrap: wrap; }
+    .cat-tab { background: var(--surface); border: 1px solid var(--border); color: var(--muted); padding: 4px 10px; border-radius: 99px; font-size: 11px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+    .cat-tab:hover { color: var(--text); border-color: var(--text); }
+    .cat-tab.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    select, input[type="text"], textarea {
+      width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: var(--radius); font-size: 13px; font-family: inherit; appearance: none; transition: border-color .2s;
     }
-    .nav-close {
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 1;
-      padding: 0;
-    }
-    .nav-close:hover { color: var(--text); }
-    .nav-links { padding: 8px 0; flex: 1; }
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 18px;
-      text-decoration: none;
-      color: var(--text);
-      font-size: 13px;
-      transition: background .15s;
-    }
-    .nav-link:hover { background: var(--surface2); }
-    .nav-link-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
-    .nav-footer {
-      padding: 12px 18px;
-      border-top: 1px solid var(--border);
-      font-size: 11px;
-      color: var(--muted);
-    }
+    select { padding-right: 28px; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23888' d='M5 6L0 0h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 11px center; }
+    select:focus, input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+    textarea { min-height: 70px; resize: vertical; line-height: 1.6; }
+
+    .field-group { display: flex; flex-direction: column; gap: 5px; }
+    label.field-label { font-size: 11px; font-weight: 500; color: var(--muted); }
+
+    .send-btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: var(--radius); font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; transition: background .2s; }
+    .send-btn:hover:not(:disabled) { background: var(--accent-h); }
+    .send-btn:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; }
+
+    .response-wrap { display: none; flex-direction: column; gap: 7px; }
+    .response-wrap.visible { display: flex; }
+    .resp-head { display: flex; align-items: center; justify-content: space-between; }
+    .resp-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .response-area { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 11px 13px; font-size: 13px; line-height: 1.75; white-space: pre-wrap; word-break: break-word; min-height: 60px; }
+    .thinking { color: var(--muted); font-style: italic; }
+    .reset-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 6px 13px; border-radius: var(--radius); font-size: 12px; cursor: pointer; align-self: flex-start; transition: color .2s, border-color .2s; }
+    .reset-btn:hover { color: var(--text); border-color: var(--text); }
 
     /* ── SETTINGS OVERLAY ── */
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.75);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
     .overlay.visible { display: flex; }
-    .setup-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px;
-      width: 100%;
-      max-width: 500px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      max-height: 92vh;
-      overflow-y: auto;
-    }
-    .setup-title { font-size: 18px; font-weight: 700; }
-    .setup-desc  { font-size: 13px; color: var(--muted); line-height: 1.65; margin-top: 5px; }
+    .setup-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 26px; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 14px; max-height: 92vh; overflow-y: auto; }
+    .setup-title { font-size: 17px; font-weight: 700; }
+    .setup-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-top: 4px; }
     .setup-desc a { color: var(--accent); text-decoration: none; }
     .setup-field { display: flex; flex-direction: column; gap: 6px; }
     .setup-field label { font-size: 13px; font-weight: 500; color: var(--muted); }
-    .setup-field input, .setup-field select {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: var(--radius);
-      font-size: 14px;
-      font-family: inherit;
-      width: 100%;
-      transition: border-color .2s;
-    }
+    .setup-field input, .setup-field select { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 10px 13px; border-radius: var(--radius); font-size: 13px; font-family: inherit; width: 100%; }
     .setup-field input:focus, .setup-field select:focus { outline: none; border-color: var(--accent); }
-    .setup-field select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      cursor: pointer;
-      padding-right: 36px;
-    }
-    .hint {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-      background: var(--surface2);
-      border-radius: var(--radius);
-      padding: 10px 12px;
-      border-left: 3px solid var(--border);
-    }
+    .setup-field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23888' d='M5 6L0 0h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; cursor: pointer; padding-right: 34px; }
+    .hint { font-size: 12px; color: var(--muted); line-height: 1.5; background: var(--surface2); border-radius: var(--radius); padding: 10px 12px; border-left: 3px solid var(--border); }
     .hint a { color: var(--accent); text-decoration: none; }
-    .hint.free        { border-left-color: #4caf82; }
-    .hint.paid        { border-left-color: #f5a623; }
+    .hint.free { border-left-color: #4caf82; }
+    .hint.paid { border-left-color: #f5a623; }
     .hint.custom-hint { border-left-color: #9b7fe8; }
     .setup-actions { display: flex; gap: 10px; }
-    .btn-primary {
-      flex: 1;
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 11px 20px;
-      border-radius: var(--radius);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background .2s;
-    }
+    .btn-primary { flex: 1; background: var(--accent); color: white; border: none; padding: 10px 18px; border-radius: var(--radius); font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s; }
     .btn-primary:hover { background: var(--accent-h); }
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 11px 16px;
-      border-radius: var(--radius);
-      font-size: 14px;
-      cursor: pointer;
-      transition: color .2s;
-    }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 10px 14px; border-radius: var(--radius); font-size: 13px; cursor: pointer; transition: color .2s; }
     .btn-secondary:hover { color: var(--text); }
 
-    .footer-note {
-      font-size: 11px;
-      color: var(--muted);
-      text-align: center;
-      padding-top: 8px;
+    /* ── NAV DRAWER ── */
+    .nav-tab { position: fixed; top: 50%; right: 0; transform: translateY(-50%); background: var(--surface); border: 1px solid var(--border); border-right: none; border-radius: 6px 0 0 6px; padding: 12px 5px; z-index: 100; cursor: pointer; writing-mode: vertical-rl; font-size: 11px; color: var(--muted); letter-spacing: .05em; transition: color .2s; }
+    .nav-tab:hover { color: var(--text); }
+    .nav-tab.hidden { display: none; }
+    .nav-drawer { position: fixed; top: 52px; right: -240px; width: 240px; height: calc(100vh - 52px); background: var(--surface); border-left: 1px solid var(--border); z-index: 99; transition: right .25s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; overflow-y: auto; }
+    .nav-drawer.open { right: 0; }
+    .nav-header { padding: 14px 16px 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .nav-close { background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 16px; line-height: 1; }
+    .nav-close:hover { color: var(--text); }
+    .nav-links { padding: 6px 0; flex: 1; }
+    .nav-link { display: flex; align-items: center; gap: 10px; padding: 10px 16px; text-decoration: none; color: var(--text); font-size: 13px; transition: background .15s; }
+    .nav-link:hover { background: var(--surface2); }
+    .nav-link-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+      .left { border-right: none; border-bottom: 1px solid var(--border); max-height: 55vh; }
     }
   </style>
 </head>
@@ -519,15 +193,10 @@
   </div>
 </div>
 
-<!-- HOVER NAV TAB -->
-<div class="nav-drawer-tab" id="navTab" onclick="toggleDrawer()">Sections ▸</div>
-
-<!-- NAV DRAWER -->
+<!-- NAV TAB + DRAWER -->
+<div class="nav-tab" id="navTab" onclick="toggleDrawer()">Sections ▸</div>
 <div class="nav-drawer" id="navDrawer">
-  <div class="nav-header">
-    Navigate
-    <button class="nav-close" onclick="closeDrawer()">✕</button>
-  </div>
+  <div class="nav-header">Navigate <button class="nav-close" onclick="closeDrawer()">✕</button></div>
   <div class="nav-links">
     <a class="nav-link" href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent"><span class="nav-link-icon">🧠</span>Brain Dump</a>
     <a class="nav-link" href="https://www.notion.so/36d1aaa83752814ba0bdd76ff4efecfb" target="_parent"><span class="nav-link-icon">✅</span>Task Manager</a>
@@ -537,7 +206,6 @@
     <a class="nav-link" href="https://www.notion.so/36d1aaa8375281fd8d57d6329e6e491d" target="_parent"><span class="nav-link-icon">🧰</span>ADHD Toolbox</a>
     <a class="nav-link" href="https://www.notion.so/36d1aaa83752811ab5ddfd9240e88690" target="_parent"><span class="nav-link-icon">💡</span>AI Assistant</a>
   </div>
-  <div class="nav-footer">Click any section to open it →</div>
 </div>
 
 <!-- SETTINGS OVERLAY -->
@@ -545,13 +213,11 @@
   <div class="setup-card">
     <div>
       <div class="setup-title" id="setupTitle">👋 Connect your AI</div>
-      <div class="setup-desc">
-        Choose any AI provider — your key is saved in your browser only, never shared.<br><br>
-        <strong style="color:var(--text)">Which should I pick?</strong><br>
-        • <strong>Groq</strong> — free, no credit card, great for getting started<br>
-        • <strong>OpenAI</strong> — if you already have a ChatGPT/API account<br>
-        • <strong>Claude</strong> — if you use Anthropic / Claude.ai<br>
-        • <strong>Custom</strong> — OpenRouter, Ollama, LM Studio, or any OpenAI-compatible API
+      <div class="setup-desc">Your key is saved in your browser only, never shared.<br><br>
+        • <strong>Groq</strong> — free, no credit card needed<br>
+        • <strong>OpenAI</strong> — if you have a ChatGPT/API account<br>
+        • <strong>Claude</strong> — if you use Anthropic/Claude.ai<br>
+        • <strong>Custom</strong> — OpenRouter, Ollama, LM Studio
       </div>
     </div>
     <div class="setup-field">
@@ -579,7 +245,7 @@
     </div>
     <div class="setup-field" id="customModelField" style="display:none">
       <label for="customModelInput">Model Name</label>
-      <input type="text" id="customModelInput" placeholder="e.g. openai/gpt-4o or meta-llama/llama-3.3-70b" autocomplete="off" spellcheck="false">
+      <input type="text" id="customModelInput" placeholder="e.g. openai/gpt-4o" autocomplete="off" spellcheck="false">
     </div>
     <div class="setup-actions">
       <button class="btn-primary" onclick="saveSettings()">Save & Connect</button>
@@ -588,477 +254,421 @@
   </div>
 </div>
 
-<!-- MAIN FEED -->
-<div class="main">
+<!-- SPLIT LAYOUT -->
+<div class="layout">
 
-  <!-- Welcome + Quick Capture + Today's Focus -->
-  <div class="welcome-block-full">
-    <div class="welcome-title">Welcome to your ADHD Brain OS 🧠</div>
-    <div class="welcome-desc">
-      A Notion workspace designed around how your brain actually works. Capture, plan, and move when you're ready.
-    </div>
+  <!-- LEFT: Feed -->
+  <div class="left">
 
-    <!-- Quick Capture -->
-    <div class="inline-section">
-      <div class="inline-label">📥 Quick Capture</div>
-      <div class="capture-row">
-        <input type="text" id="captureInput" placeholder="Type anything — task, idea, worry..." onkeydown="if(event.key==='Enter')captureIt()">
-        <button class="capture-btn" onclick="captureIt()">Copy &amp; Open Brain Dump</button>
-      </div>
-      <div class="copy-confirm" id="copyConfirm">✓ Copied — paste into Brain Dump</div>
-      <div class="capture-link">
-        Or go straight to <a href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent">🧠 Brain Dump →</a>
-      </div>
-    </div>
+    <!-- Welcome + Quick Capture + Today's Top 3 -->
+    <div class="welcome-card">
+      <div class="welcome-title">Welcome to your ADHD Brain OS 🧠</div>
+      <div class="welcome-desc">A workspace designed around how your brain actually works. Capture, plan, and move when you're ready.</div>
 
-    <!-- Today's Top 3 -->
-    <div class="inline-section">
-      <div class="inline-label" style="display:flex;align-items:center;justify-content:space-between;">
-        <span>🎯 Today's Top 3 — if you do only these, it's a win</span>
-        <button class="focus-clear" onclick="clearFocus()">Reset</button>
-      </div>
-      <div class="focus-items">
-        <div class="focus-item">
-          <div class="focus-num">1</div>
-          <input type="checkbox" class="focus-check" id="check1" onchange="toggleFocus(1)">
-          <input type="text" class="focus-input" id="focus1" placeholder="Most important thing today..." oninput="saveFocus()">
+      <div class="inline-sep">
+        <div class="inline-label">📥 Quick Capture</div>
+        <div class="capture-row">
+          <input type="text" id="captureInput" placeholder="Type anything — task, idea, worry..." onkeydown="if(event.key==='Enter')captureIt()">
+          <button class="capture-btn" onclick="captureIt()">Copy &amp; Open Brain Dump</button>
         </div>
-        <div class="focus-item">
-          <div class="focus-num">2</div>
-          <input type="checkbox" class="focus-check" id="check2" onchange="toggleFocus(2)">
-          <input type="text" class="focus-input" id="focus2" placeholder="Second priority..." oninput="saveFocus()">
-        </div>
-        <div class="focus-item">
-          <div class="focus-num">3</div>
-          <input type="checkbox" class="focus-check" id="check3" onchange="toggleFocus(3)">
-          <input type="text" class="focus-input" id="focus3" placeholder="Third priority..." oninput="saveFocus()">
+        <div class="copy-confirm" id="copyConfirm">✓ Copied — paste into Brain Dump</div>
+        <div class="capture-link">Or go straight to <a href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent">🧠 Brain Dump →</a></div>
+      </div>
+
+      <div class="inline-sep">
+        <div class="inline-label">🎯 Today's Top 3 — if you do only these, it's a win <button class="focus-clear" onclick="clearFocus()">Reset</button></div>
+        <div class="focus-items">
+          <div class="focus-item"><div class="focus-num">1</div><input type="checkbox" class="focus-check" id="check1" onchange="toggleFocus(1)"><input type="text" class="focus-input" id="focus1" placeholder="Most important thing today..." oninput="saveFocus()"></div>
+          <div class="focus-item"><div class="focus-num">2</div><input type="checkbox" class="focus-check" id="check2" onchange="toggleFocus(2)"><input type="text" class="focus-input" id="focus2" placeholder="Second priority..." oninput="saveFocus()"></div>
+          <div class="focus-item"><div class="focus-num">3</div><input type="checkbox" class="focus-check" id="check3" onchange="toggleFocus(3)"><input type="text" class="focus-input" id="focus3" placeholder="Third priority..." oninput="saveFocus()"></div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Feed -->
-  <div class="feed" id="feed">
-
-    <!-- Energy -->
-    <div class="feed-card no-nav" style="cursor:default;" data-energy="all">
-      <div class="feed-card-top">
-        <div class="feed-icon">🔋</div>
-        <div>
-          <div class="feed-title">Energy Right Now</div>
-          <div class="feed-tagline">Filters the sections below to match your capacity</div>
+      <div class="inline-sep">
+        <div class="inline-label">🔋 Energy Right Now — filters sections below</div>
+        <div class="energy-btns">
+          <button class="energy-btn" id="eHigh" onclick="setEnergy('high')">🔋 High</button>
+          <button class="energy-btn" id="eMed"  onclick="setEnergy('med')">⚡ Medium</button>
+          <button class="energy-btn" id="eLow"  onclick="setEnergy('low')">😴 Low</button>
         </div>
+        <div class="energy-note" id="energyNote"></div>
       </div>
-      <div class="energy-btns">
-        <button class="energy-btn" id="eHigh" onclick="setEnergy('high')">🔋 High</button>
-        <button class="energy-btn" id="eMed"  onclick="setEnergy('med')">⚡ Medium</button>
-        <button class="energy-btn" id="eLow"  onclick="setEnergy('low')">😴 Low</button>
-      </div>
-      <div class="energy-note" id="energyNote"></div>
     </div>
 
-    <!-- divider -->
-    <div style="border-top:1px solid var(--border); margin: 4px 0;"></div>
-    <div class="section-label" style="margin-bottom:0;">🗂 Your Sections — click any to open it</div>
+    <!-- Section Feed -->
+    <div class="section-label">🗂 Your Sections — click any to open</div>
+    <div class="feed" id="feed">
 
       <a class="feed-card" href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent" data-energy="all">
-        <div class="feed-card-top">
-          <div class="feed-icon">🧠</div>
-          <div>
-            <div class="feed-title">Brain Dump</div>
-            <div class="feed-tagline">Empty your head first</div>
-          </div>
-          <div class="feed-arrow">›</div>
-        </div>
-        <div class="feed-desc">Everything swirling in your head goes here — tasks, ideas, worries, half-formed plans. Get it out first, sort it second. An AI prompt inside helps you triage it all into Tasks, Ideas, Reference, or Delete.</div>
-        <div class="feed-tags">
-          <span class="feed-tag high">High energy</span>
-          <span class="feed-tag med">Medium energy</span>
-          <span class="feed-tag low">Low energy</span>
-        </div>
+        <div class="feed-top"><div class="feed-icon">🧠</div><div><div class="feed-title">Brain Dump</div><div class="feed-tagline">Empty your head first</div></div><div class="feed-arrow">›</div></div>
+        <div class="feed-desc">Everything swirling in your head goes here — tasks, ideas, worries. Get it out first, sort it second. AI prompt inside sorts everything into Tasks, Ideas, Reference, or Delete.</div>
+        <div class="feed-tags"><span class="feed-tag high">High</span><span class="feed-tag med">Medium</span><span class="feed-tag low">Low</span></div>
       </a>
 
       <a class="feed-card" href="https://www.notion.so/36d1aaa83752814ba0bdd76ff4efecfb" target="_parent" data-energy="high,med">
-        <div class="feed-card-top">
-          <div class="feed-icon">✅</div>
-          <div>
-            <div class="feed-title">Task Manager</div>
-            <div class="feed-tagline">What actually needs to happen</div>
-          </div>
-          <div class="feed-arrow">›</div>
-        </div>
-        <div class="feed-desc">Your task database with priority and energy-level tags. Views for Today, Quick Wins, and Urgent let you work at whatever capacity you have. AI prompt breaks any task into ADHD-friendly micro-steps.</div>
-        <div class="feed-tags">
-          <span class="feed-tag high">High energy</span>
-          <span class="feed-tag med">Medium energy</span>
-        </div>
+        <div class="feed-top"><div class="feed-icon">✅</div><div><div class="feed-title">Task Manager</div><div class="feed-tagline">What actually needs to happen</div></div><div class="feed-arrow">›</div></div>
+        <div class="feed-desc">Task database with priority and energy-level tags. Views for Today, Quick Wins, and Urgent. AI prompt breaks any task into ADHD-friendly micro-steps.</div>
+        <div class="feed-tags"><span class="feed-tag high">High</span><span class="feed-tag med">Medium</span></div>
       </a>
 
       <a class="feed-card" href="https://www.notion.so/36d1aaa8375281f09bebf671fb062692" target="_parent" data-energy="high,med">
-        <div class="feed-card-top">
-          <div class="feed-icon">📅</div>
-          <div>
-            <div class="feed-title">Daily Planner</div>
-            <div class="feed-tagline">Morning intention → time blocks → evening reflection</div>
-          </div>
-          <div class="feed-arrow">›</div>
-        </div>
-        <div class="feed-desc">5 minutes each morning. Set your intention, block time for your Top 3, log distractions as they happen. Evening reflection takes 3 minutes and tells you what actually went well — not what you think went badly.</div>
-        <div class="feed-tags">
-          <span class="feed-tag high">High energy</span>
-          <span class="feed-tag med">Medium energy</span>
-        </div>
+        <div class="feed-top"><div class="feed-icon">📅</div><div><div class="feed-title">Daily Planner</div><div class="feed-tagline">Morning intention → time blocks → reflection</div></div><div class="feed-arrow">›</div></div>
+        <div class="feed-desc">5 minutes each morning. Set your intention, block time for your Top 3, log distractions as they happen. Evening reflection takes 3 minutes.</div>
+        <div class="feed-tags"><span class="feed-tag high">High</span><span class="feed-tag med">Medium</span></div>
       </a>
 
       <a class="feed-card" href="https://www.notion.so/36d1aaa83752814a80efd380b4037174" target="_parent" data-energy="all">
-        <div class="feed-card-top">
-          <div class="feed-icon">🔄</div>
-          <div>
-            <div class="feed-title">Habit Tracker</div>
-            <div class="feed-tagline">Simple yes/no. Forgiving by design.</div>
-          </div>
-          <div class="feed-arrow">›</div>
-        </div>
-        <div class="feed-desc">No streaks to break, no guilt if you miss a day. Just a simple checkbox system designed to be picked back up, not abandoned. Works best when your habits are small enough to do on a bad day.</div>
-        <div class="feed-tags">
-          <span class="feed-tag high">High energy</span>
-          <span class="feed-tag med">Medium energy</span>
-          <span class="feed-tag low">Low energy</span>
-        </div>
+        <div class="feed-top"><div class="feed-icon">🔄</div><div><div class="feed-title">Habit Tracker</div><div class="feed-tagline">Simple yes/no. Forgiving by design.</div></div><div class="feed-arrow">›</div></div>
+        <div class="feed-desc">No streaks to break, no guilt if you miss a day. Designed to be picked back up, not abandoned. Works best when habits are small enough to do on a bad day.</div>
+        <div class="feed-tags"><span class="feed-tag high">High</span><span class="feed-tag med">Medium</span><span class="feed-tag low">Low</span></div>
       </a>
 
       <a class="feed-card" href="https://www.notion.so/36d1aaa8375281e89de5cfdaaf05bb63" target="_parent" data-energy="high,med">
-        <div class="feed-card-top">
-          <div class="feed-icon">📊</div>
-          <div>
-            <div class="feed-title">Weekly Review</div>
-            <div class="feed-tagline">Wins first, then what's next</div>
-          </div>
-          <div class="feed-arrow">›</div>
-        </div>
-        <div class="feed-desc">A structured weekly reflection that forces you to acknowledge what you actually did before you spiral into what you didn't. AI prompt gives you an honest summary and a focused direction for next week — not a to-do avalanche.</div>
-        <div class="feed-tags">
-          <span class="feed-tag high">High energy</span>
-          <span class="feed-tag med">Medium energy</span>
-        </div>
+        <div class="feed-top"><div class="feed-icon">📊</div><div><div class="feed-title">Weekly Review</div><div class="feed-tagline">Wins first, then what's next</div></div><div class="feed-arrow">›</div></div>
+        <div class="feed-desc">Forces you to acknowledge what you actually did before spiraling into what you didn't. AI gives an honest summary and focused direction for next week.</div>
+        <div class="feed-tags"><span class="feed-tag high">High</span><span class="feed-tag med">Medium</span></div>
       </a>
 
       <a class="feed-card" href="https://www.notion.so/36d1aaa8375281fd8d57d6329e6e491d" target="_parent" data-energy="all">
-        <div class="feed-card-top">
-          <div class="feed-icon">🧰</div>
-          <div>
-            <div class="feed-title">ADHD Toolbox</div>
-            <div class="feed-tagline">When nothing else is working</div>
-          </div>
-          <div class="feed-arrow">›</div>
-        </div>
-        <div class="feed-desc">Paralysis Picker (can't choose → it picks for you), 5-min Dopamine Menu (low energy boosts), body doubling resources, and an emotional regulation check-in. Go here when you're stuck and nothing sounds doable.</div>
-        <div class="feed-tags">
-          <span class="feed-tag high">High energy</span>
-          <span class="feed-tag med">Medium energy</span>
-          <span class="feed-tag low">Low energy</span>
-        </div>
+        <div class="feed-top"><div class="feed-icon">🧰</div><div><div class="feed-title">ADHD Toolbox</div><div class="feed-tagline">When nothing else is working</div></div><div class="feed-arrow">›</div></div>
+        <div class="feed-desc">Paralysis Picker, 5-min Dopamine Menu, body doubling resources, emotional regulation check-in. Go here when you're stuck and nothing sounds doable.</div>
+        <div class="feed-tags"><span class="feed-tag high">High</span><span class="feed-tag med">Medium</span><span class="feed-tag low">Low</span></div>
       </a>
 
       <a class="feed-card" href="https://www.notion.so/36d1aaa83752811ab5ddfd9240e88690" target="_parent" data-energy="all">
-        <div class="feed-card-top">
-          <div class="feed-icon">💡</div>
-          <div>
-            <div class="feed-title">AI Assistant</div>
-            <div class="feed-tagline">30+ prompts, organized by section</div>
-          </div>
-          <div class="feed-arrow">›</div>
-        </div>
-        <div class="feed-desc">Every AI prompt in one place — or connect directly to your AI of choice (Groq is free). Prompts cover Brain Dump sorting, task breakdown, daily planning, paralysis rescue, weekly review, and more. No key needed: just copy and paste into Claude.ai or ChatGPT.</div>
-        <div class="feed-tags">
-          <span class="feed-tag high">High energy</span>
-          <span class="feed-tag med">Medium energy</span>
-          <span class="feed-tag low">Low energy</span>
-        </div>
+        <div class="feed-top"><div class="feed-icon">💡</div><div><div class="feed-title">AI Prompt Library</div><div class="feed-tagline">All 30+ prompts, organized by section</div></div><div class="feed-arrow">›</div></div>
+        <div class="feed-desc">Every AI prompt in one place. No key needed — copy and paste into Claude.ai or ChatGPT. Or connect your AI on the right for one-click use.</div>
+        <div class="feed-tags"><span class="feed-tag high">High</span><span class="feed-tag med">Medium</span><span class="feed-tag low">Low</span></div>
       </a>
 
+    </div>
+  </div>
+
+  <!-- RIGHT: AI ASSISTANT -->
+  <div class="right">
+    <div class="ai-header">
+      <div>
+        <div class="ai-header-title">🤖 AI Assistant</div>
+        <div class="ai-header-sub">30+ prompts across all sections</div>
+      </div>
+      <div class="model-badge" id="modelBadge">Not connected</div>
+    </div>
+
+    <div class="ai-body">
+      <div class="no-key-banner" id="noKeyBanner" onclick="openSettings()">🔑 No AI key yet — click to connect. (Groq is free.)</div>
+
+      <!-- Category tabs -->
+      <div class="cat-tabs" id="catTabs"></div>
+
+      <!-- Prompt selector -->
+      <div class="field-group">
+        <label class="field-label">Prompt</label>
+        <select id="templateSelect" onchange="onTemplateChange()"></select>
+      </div>
+
+      <div id="fields"></div>
+
+      <button class="send-btn" id="sendBtn" onclick="sendPrompt()"><span id="btnText">Send to AI →</span></button>
+
+      <div class="response-wrap" id="responseWrap">
+        <div class="resp-head">
+          <div class="resp-label">AI Response</div>
+        </div>
+        <div class="response-area" id="responseArea"></div>
+        <button class="reset-btn" onclick="resetResponse()">← Ask another question</button>
+      </div>
+    </div>
+
+    <div class="ai-footer" id="aiFooter">Your key, your usage · No data shared</div>
   </div>
 
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────────
-//  PROVIDER CONFIG
-// ─────────────────────────────────────────────────────────────
+// ─── PROVIDERS ───────────────────────────────────────────────
 const PROVIDERS = {
   groq: {
     name: 'Groq', keyPlaceholder: 'gsk_...', keyLabel: 'Groq API Key',
-    hint: '✅ <strong>Groq is free — no credit card needed.</strong><br><br>1. Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> and sign up<br>2. Sidebar → API Keys → Create API Key<br>3. Copy and paste below',
-    hintClass: 'free',
+    endpoint: 'https://api.groq.com/openai/v1/chat/completions', format: 'openai',
+    hint: '✅ <strong>Groq is free — no credit card needed.</strong><br>1. Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> and sign up<br>2. API Keys → Create API Key → Copy below', hintClass: 'free',
     models: [
       { value: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B — Best quality' },
       { value: 'llama-3.1-8b-instant',    label: 'Llama 3.1 8B — Fastest' },
       { value: 'gemma2-9b-it',            label: 'Gemma 2 9B — Google' },
-    ]
+      { value: 'mixtral-8x7b-32768',      label: 'Mixtral 8x7B — Strong reasoning' },
+    ], footerText: 'Groq · Free tier · Your key, your usage'
   },
   openai: {
     name: 'OpenAI', keyPlaceholder: 'sk-...', keyLabel: 'OpenAI API Key',
-    hint: '💳 <strong>OpenAI requires a paid account.</strong><br><br>1. Go to <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a><br>2. Create new secret key<br>3. Copy and paste below',
-    hintClass: 'paid',
+    endpoint: 'https://api.openai.com/v1/chat/completions', format: 'openai',
+    hint: '💳 <strong>OpenAI requires a paid account.</strong><br>1. Go to <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a><br>2. Create new secret key → Copy below', hintClass: 'paid',
     models: [
       { value: 'gpt-4o-mini', label: 'GPT-4o Mini — Most affordable' },
       { value: 'gpt-4o',      label: 'GPT-4o — Best quality' },
-    ]
+    ], footerText: 'OpenAI · Paid tier · Your key, your usage'
   },
   anthropic: {
     name: 'Claude', keyPlaceholder: 'sk-ant-...', keyLabel: 'Anthropic API Key',
-    hint: '💳 <strong>Anthropic requires a paid account.</strong><br><br>1. Go to <a href="https://console.anthropic.com/api-keys" target="_blank">console.anthropic.com/api-keys</a><br>2. Create Key<br>3. Copy and paste below',
-    hintClass: 'paid',
+    endpoint: 'https://api.anthropic.com/v1/messages', format: 'anthropic',
+    hint: '💳 <strong>Anthropic requires a paid account.</strong><br>1. Go to <a href="https://console.anthropic.com/api-keys" target="_blank">console.anthropic.com/api-keys</a><br>2. Create Key → Copy below', hintClass: 'paid',
     models: [
       { value: 'claude-haiku-4-5-20251001', label: 'Claude Haiku — Fastest & cheapest' },
       { value: 'claude-sonnet-4-6',         label: 'Claude Sonnet — Best balance' },
-    ]
+      { value: 'claude-opus-4-6',           label: 'Claude Opus — Highest quality' },
+    ], footerText: 'Anthropic Claude · Paid tier · Your key, your usage'
   },
   custom: {
     name: 'Custom', keyPlaceholder: 'Your API key...', keyLabel: 'API Key',
-    hint: '⚙️ <strong>Custom OpenAI-compatible provider.</strong><br><br>Works with OpenRouter, Together AI, Ollama, LM Studio, and any OpenAI-compatible API.',
-    hintClass: 'custom-hint',
-    models: []
+    endpoint: '', format: 'openai',
+    hint: '⚙️ <strong>Custom OpenAI-compatible provider.</strong><br>Works with OpenRouter, Ollama, LM Studio, and any OpenAI-compatible API.', hintClass: 'custom-hint',
+    models: [], footerText: 'Custom provider · Your key, your usage'
   }
 };
 
-const LS = {
-  provider: 'adhd_provider', key: 'adhd_api_key',
-  model: 'adhd_model', customUrl: 'adhd_custom_url', customModel: 'adhd_custom_model',
-  focus: 'adhd_focus', checks: 'adhd_checks', energy: 'adhd_energy'
-};
-const get = k      => localStorage.getItem(k) || '';
-const set = (k, v) => localStorage.setItem(k, v);
-function getProvider()  { return get(LS.provider); }
-function getKey()       { return get(LS.key); }
-function getModel()     { const p = getProvider(); return get(LS.model) || (p && PROVIDERS[p] ? PROVIDERS[p].models[0]?.value || '' : ''); }
-function getCustomUrl() { return get(LS.customUrl); }
+// ─── STORAGE ─────────────────────────────────────────────────
+const LS = { provider:'adhd_provider', key:'adhd_api_key', model:'adhd_model', customUrl:'adhd_custom_url', customModel:'adhd_custom_model', focus:'adhd_focus', checks:'adhd_checks', energy:'adhd_energy' };
+const get = k => localStorage.getItem(k)||'';
+const set = (k,v) => localStorage.setItem(k,v);
+const getProvider  = () => get(LS.provider);
+const getKey       = () => get(LS.key);
+const getModel     = () => { const p=getProvider(); return get(LS.model)||(p&&PROVIDERS[p]?PROVIDERS[p].models[0]?.value||'':''); };
+const getCustomUrl = () => get(LS.customUrl);
 
-// ─────────────────────────────────────────────────────────────
-//  NAV DRAWER
-// ─────────────────────────────────────────────────────────────
-function toggleDrawer() {
-  const d = document.getElementById('navDrawer');
-  const t = document.getElementById('navTab');
-  d.classList.toggle('open');
-  t.classList.toggle('hidden', d.classList.contains('open'));
-}
-function closeDrawer() {
-  document.getElementById('navDrawer').classList.remove('open');
-  document.getElementById('navTab').classList.remove('hidden');
-}
-document.addEventListener('click', e => {
-  const drawer = document.getElementById('navDrawer');
-  const tab    = document.getElementById('navTab');
-  if (drawer.classList.contains('open') && !drawer.contains(e.target) && !tab.contains(e.target)) closeDrawer();
-});
+// ─── ALL PROMPTS ──────────────────────────────────────────────
+const CATEGORIES = [
+  { key: 'general', label: '🏠 General', templates: [
+    { label: "I'm stuck — help me figure out what to do", fields: [{ id:'situation', label:"What's going on?", type:'textarea', placeholder:"Describe what you're stuck on..." }], build: f=>`I have ADHD and I'm stuck. Help me figure out the single best next action right now.\n\nSituation: ${f.situation}\n\nBe direct. One thing to do, why it's the right call, first step as small as possible.` },
+    { label: "I'm overwhelmed — help me triage", fields: [{ id:'items', label:"What's on your mind right now?", type:'textarea', placeholder:"List everything — tasks, worries, anything..." }], build: f=>`I have ADHD and I'm overwhelmed. Everything on my mind:\n\n${f.items}\n\nHelp me triage. What needs attention today? What can wait? What should I drop? Direct, not reassuring.` },
+    { label: "Pick my Top 3 for today", fields: [{ id:'everything', label:"What's on your plate today?", type:'textarea', placeholder:"Meetings, tasks, commitments, anything..." }, { id:'energy', label:"Energy level", type:'select', options:['🔋 High','⚡ Medium','😴 Low'] }], build: f=>`Help me pick my Top 3 priorities for today. I have ADHD and I need a realistic list, not an aspirational one.\n\nEverything on my plate:\n${f.everything}\n\nEnergy: ${f.energy}\n\nGive me exactly 3. If I only do these 3 today, the day is a win. Be ruthless.` },
+    { label: "End of day reflection", fields: [{ id:'did', label:"What did you actually do today?", type:'textarea', placeholder:"Even unplanned things..." }, { id:'missed', label:"What didn't get done?", type:'text', placeholder:"The thing(s) that slipped..." }, { id:'feel', label:"How do you feel about the day?", type:'select', options:['Good — better than expected','Okay — about right','Frustrated — below expectations','Wasted — nothing went right'] }], build: f=>`Help me close out my day. I have ADHD and I tend to either dismiss what I did or spiral about what I didn't.\n\nWhat I did: ${f.did}\nWhat didn't happen: ${f.missed}\nHow I feel: ${f.feel}\n\nOne honest observation about today, what to carry into tomorrow, one thing to acknowledge.` },
+  ]},
+  { key: 'planning', label: '📅 Planning', templates: [
+    { label: "Help me plan my day", fields: [{ id:'tasks', label:"What needs to happen today?", type:'textarea', placeholder:'Tasks, meetings, commitments...' }, { id:'energy', label:'Energy level', type:'select', options:['🔋 High','⚡ Medium','😴 Low'] }, { id:'available', label:'Hours realistically available', type:'select', options:['1–2 hours','3–4 hours','5–6 hours','Full day'] }], build: f=>`Help me plan my day. I have ADHD and I consistently overestimate what I can do.\n\nWhat needs to happen:\n${f.tasks}\n\nEnergy: ${f.energy}\nRealistic hours: ${f.available}\n\nRealistic plan, suggested order, one thing to protect no matter what.` },
+    { label: "Help me time-block my day", fields: [{ id:'tasks', label:'Tasks to schedule', type:'textarea', placeholder:'List tasks with rough time estimates...' }, { id:'hours', label:'Your available hours today', type:'text', placeholder:'e.g. 9am–12pm, 2pm–5pm' }, { id:'energy', label:'When is your peak energy?', type:'select', options:['Morning (before noon)','Midday (noon–2pm)','Afternoon (2–5pm)','Evening (after 5pm)','No clear pattern'] }], build: f=>`Help me time-block my day. I have ADHD — I need structure but not so rigid it breaks the moment one thing shifts.\n\nTasks:\n${f.tasks}\n\nAvailable hours: ${f.hours}\nPeak energy: ${f.energy}\n\nPut hard tasks during peak energy, group similar tasks, include a buffer block, clear stopping point.` },
+    { label: "My day went sideways — help me reset", fields: [{ id:'plan', label:"What was your plan?", type:'textarea', placeholder:'What you intended to do...' }, { id:'reality', label:"What actually happened?", type:'textarea', placeholder:'Interruptions, rabbit holes...' }, { id:'left', label:'Hours left in your day', type:'select', options:['Less than 1 hour','1–2 hours','2–3 hours','More than 3 hours'] }], build: f=>`My day went sideways and I need to reset. I have ADHD.\n\nPlan: ${f.plan}\nWhat happened: ${f.reality}\nHours left: ${f.left}\n\nDon't lecture me. Given what's left, what 1–2 things can I still do, and what's the most useful thing in the next 30 minutes.` },
+  ]},
+  { key: 'tasks', label: '✅ Tasks', templates: [
+    { label: "Break a task into micro-steps", fields: [{ id:'task', label:'What is the task?', type:'text', placeholder:'e.g. Write the quarterly report' }, { id:'energy', label:'Energy level right now', type:'select', options:['🔋 High — sharp and ready','⚡ Medium — functional','😴 Low — running on fumes'] }], build: f=>`Break this task into micro-steps for someone with ADHD.\n\nTask: ${f.task}\nEnergy: ${f.energy}\n\n5–8 steps, each under 10 minutes. So small it's impossible to say no to. Specific physical actions only.` },
+    { label: "Help me pick ONE task to start", fields: [{ id:'tasks', label:'Your options (one per line)', type:'textarea', placeholder:'Task 1\nTask 2\nTask 3...' }, { id:'energy', label:'Energy level', type:'select', options:['🔋 High','⚡ Medium','😴 Low'] }, { id:'time', label:'Time available', type:'select', options:['Under 15 min','15–30 min','30–60 min','Over an hour'] }], build: f=>`I have ADHD and decision paralysis is real. Help me pick ONE task.\n\nOptions:\n${f.tasks}\n\nEnergy: ${f.energy}\nTime: ${f.time}\n\nGive me the answer — not a framework. Then the first action.` },
+    { label: "I'm avoiding a task — help me start", fields: [{ id:'task', label:"What are you avoiding?", type:'text', placeholder:'e.g. Responding to that email' }, { id:'why', label:"Why? (optional)", type:'text', placeholder:'e.g. Feels overwhelming, boring...' }], build: f=>`I'm procrastinating. I have ADHD.\n\nTask: ${f.task}\n${f.why?`Why: ${f.why}`:''}\n\n(1) Realistic take on why I'm stuck, (2) one trick to start in 2 minutes, (3) single first physical action right now.` },
+    { label: "Match my tasks to my energy level", fields: [{ id:'tasks', label:'Your task list for today', type:'textarea', placeholder:'List your tasks...' }, { id:'energy', label:'Energy level right now', type:'select', options:['🔋 High — sharp and ready','⚡ Medium — functional','😴 Low — running on fumes'] }], build: f=>`Help me match my tasks to my energy. I have ADHD — fighting my energy always fails.\n\nTasks:\n${f.tasks}\n\nEnergy: ${f.energy}\n\nSort by which fit my current energy. Tell me exactly what to do first.` },
+    { label: "I have too many urgent tasks — cut it down", fields: [{ id:'tasks', label:'Everything marked urgent', type:'textarea', placeholder:'List them all...' }, { id:'deadline', label:'Any hard deadlines today?', type:'text', placeholder:'e.g. 3pm meeting, EOD email' }], build: f=>`Everything feels urgent. I have ADHD and this is paralyzing me.\n\nAll my "urgent" tasks:\n${f.tasks}\n\nHard deadlines: ${f.deadline||'None stated'}\n\nBe ruthless. What is actually urgent vs fake urgent? Clear cut list: do today vs reschedule.` },
+  ]},
+  { key: 'braindump', label: '🧠 Brain Dump', templates: [
+    { label: "Sort and route my brain dump", fields: [{ id:'dump', label:'Paste your brain dump', type:'textarea', placeholder:'Everything on your mind — tasks, ideas, worries...' }], build: f=>`Sort my brain dump. I have ADHD.\n\n${f.dump}\n\nCategorize each item:\n✅ Task\n💡 Idea\n📚 Reference\n🗑 Delete\n\nFlag the top 3 to act on this week.` },
+    { label: "Help me prioritize my list", fields: [{ id:'items', label:'Your task list', type:'textarea', placeholder:'Paste your tasks...' }, { id:'context', label:'Any deadlines or context?', type:'text', placeholder:'e.g. Work deadline Friday' }], build: f=>`Help me prioritize. I have ADHD — everything feels equally urgent.\n\nTasks:\n${f.items}\n\nContext: ${f.context||'None'}\n\nTop 3 for today, next 3 for later this week, rest deprioritized.` },
+  ]},
+  { key: 'ef', label: '🧩 Exec Function', templates: [
+    { label: "I keep getting distracted — help me refocus", fields: [{ id:'working', label:"What should you be working on?", type:'text', placeholder:'The task or project...' }, { id:'distraction', label:"What keeps pulling you away?", type:'text', placeholder:'e.g. Phone, thoughts, other tasks...' }, { id:'time', label:"How long do you need to focus?", type:'select', options:['15 minutes','30 minutes','45 minutes','1 hour','More than 1 hour'] }], build: f=>`I keep getting distracted. I have ADHD.\n\nTask: ${f.working}\nWhat pulls me away: ${f.distraction}\nFocus needed: ${f.time}\n\nOne environment tweak in 2 minutes, a technique to get back on task when I drift, how to handle ${f.time} without white-knuckling it.` },
+    { label: "I'm in a shame spiral about something I haven't done", fields: [{ id:'task', label:"What haven't you done?", type:'text', placeholder:'The thing that keeps haunting you...' }, { id:'since', label:"How long has it been sitting there?", type:'text', placeholder:'e.g. 3 days, 2 weeks, months...' }, { id:'why', label:"What happens if it stays undone?", type:'text', placeholder:'Real consequences, if any...' }], build: f=>`I'm stuck in a shame spiral. I have ADHD.\n\nTask: ${f.task}\nHow long: ${f.since}\nConsequences: ${f.why||'None stated'}\n\nWhy ADHD makes this spiral so sticky, a realistic reframe (not toxic positivity), smallest action to break the cycle — under 5 minutes.` },
+    { label: "Help me deal with rejection sensitive dysphoria (RSD)", fields: [{ id:'situation', label:"What happened?", type:'textarea', placeholder:'What triggered the RSD...' }, { id:'feeling', label:"What are you feeling?", type:'text', placeholder:'e.g. Crushed, angry, worthless...' }], build: f=>`I'm experiencing rejection sensitive dysphoria (RSD). I have ADHD.\n\nWhat happened: ${f.situation}\nFeeling: ${f.feeling}\n\nWhat RSD is neurologically (briefly), why this reaction feels disproportionate but isn't my fault, 2–3 grounding techniques specifically for RSD.` },
+    { label: "I can't hold onto information — working memory help", fields: [{ id:'situation', label:"What are you trying to keep track of?", type:'textarea', placeholder:'Instructions, steps, what someone told me...' }], build: f=>`I'm struggling with working memory. I have ADHD.\n\n${f.situation}\n\nA simple external system for this specific situation, one immediate trick to capture it before it's gone, how to set up a retrieval cue so I actually find it later.` },
+    { label: "Help me get through a task I really don't want to do", fields: [{ id:'task', label:"What's the task?", type:'text', placeholder:'The thing you dread...' }, { id:'why', label:"Why do you dread it?", type:'select', options:["It's boring",'It feels overwhelming',"I don't know where to start",'I might fail or do it wrong',"It's emotionally difficult"] }, { id:'stake', label:"What happens if you don't do it?", type:'text', placeholder:'Real consequence, if any...' }], build: f=>`I need to get through a task I dread. I have ADHD — low-interest tasks are genuinely harder for my brain.\n\nTask: ${f.task}\nWhy I dread it: ${f.why}\nConsequence: ${f.stake||'None stated'}\n\nWhy this is hard for ADHD, one dopamine hack to make it tolerable, time-based plan in smallest possible chunks.` },
+  ]},
+  { key: 'habits', label: '🔄 Habits', templates: [
+    { label: "Help me build a new habit", fields: [{ id:'habit', label:'What habit do you want to build?', type:'text', placeholder:'e.g. Exercise, drink water' }, { id:'tried', label:"What have you tried before?", type:'text', placeholder:'e.g. Apps, schedules, nothing' }, { id:'barrier', label:"What usually stops you?", type:'text', placeholder:'e.g. Forget, lose motivation' }], build: f=>`Help me build a habit that sticks with an ADHD brain.\n\nHabit: ${f.habit}\nTried: ${f.tried||'Nothing yet'}\nBarrier: ${f.barrier||'Not sure'}\n\nMinimum viable version, habit stacking cue, one trick to remember it.` },
+    { label: "I missed my habit — help me restart", fields: [{ id:'habit', label:'Which habit?', type:'text', placeholder:'e.g. Daily exercise' }, { id:'days', label:'How long since you last did it?', type:'text', placeholder:'e.g. 3 days, 2 weeks' }], build: f=>`I missed my habit. I have ADHD and breaks become permanent.\n\nHabit: ${f.habit}\nTime since: ${f.days}\n\nNo shame. Why this happens with ADHD, smallest restart today, how to make missing a day less catastrophic.` },
+    { label: "Why can't I stick to habits?", fields: [{ id:'habit', label:'Which habit keeps failing?', type:'text', placeholder:'e.g. Exercise, sleep, medication' }, { id:'pattern', label:'What usually happens?', type:'textarea', placeholder:'e.g. Do it 3 days then stop...' }], build: f=>`I keep failing at this habit and I want to understand why, not just get another tip.\n\nHabit: ${f.habit}\nPattern: ${f.pattern}\n\nExplain the ADHD-specific reasons this particular pattern happens — neurologically. Then suggest one structural change (not willpower) that addresses the root cause.` },
+    { label: "Design a minimal habit stack for me", fields: [{ id:'goals', label:'What habits do you want to build?', type:'textarea', placeholder:'List everything you wish you did regularly...' }, { id:'anchor', label:'One thing you already do every day without fail', type:'text', placeholder:'e.g. Morning coffee, brush teeth' }, { id:'time', label:'Max minutes you can realistically give daily', type:'select', options:['5 minutes','10 minutes','15 minutes','20–30 minutes'] }], build: f=>`Help me design a minimal habit stack that works with an ADHD brain.\n\nHabits I want:\n${f.goals}\n\nAnchor: ${f.anchor}\nMax time: ${f.time}\n\nPick 2–3 most impactful habits, attach to my anchor, give me a specific sequence. Warn me if I'm trying to do too much.` },
+  ]},
+  { key: 'weekly', label: '📊 Weekly Review', templates: [
+    { label: "Summarize my week and find the wins", fields: [{ id:'done', label:"What got done this week?", type:'textarea', placeholder:'Even small things count...' }, { id:'missed', label:"What didn't happen?", type:'textarea', placeholder:'Tasks, intentions, goals...' }], build: f=>`Review my week with an ADHD lens.\n\nGot done:\n${f.done}\n\nDidn't happen:\n${f.missed}\n\n(1) Real wins including things I might dismiss, (2) one honest observation about what got in the way, (3) one adjustment for next week.` },
+    { label: "Plan next week's Top 3", fields: [{ id:'projects', label:'Active projects and responsibilities', type:'textarea', placeholder:'List what you have going on...' }, { id:'energy', label:'Expected energy this week', type:'select', options:['High energy week','Normal week','Low energy / rough week'] }], build: f=>`Help me pick my Top 3 focus areas for next week. I have ADHD.\n\nActive:\n${f.projects}\n\nExpected energy: ${f.energy}\n\nExactly 3 focus themes that make next week a win. One concrete first action for each.` },
+    { label: "I keep having the same bad week — break the pattern", fields: [{ id:'pattern', label:"What keeps happening?", type:'textarea', placeholder:"e.g. Start strong Monday then fall apart..." }, { id:'tried', label:"What have you already tried?", type:'text', placeholder:'e.g. Stricter schedule, nothing...' }], build: f=>`I keep repeating the same unproductive pattern. I have ADHD.\n\nPattern: ${f.pattern}\nWhat I've tried: ${f.tried||'Nothing yet'}\n\nIdentify the specific ADHD mechanism driving this (dopamine crash, task initiation, working memory, etc.) and suggest one structural intervention — not a habit or motivation fix.` },
+    { label: "Help me do a quick monthly reset", fields: [{ id:'month', label:"What month are you reviewing?", type:'text', placeholder:'e.g. May' }, { id:'wins', label:"Biggest win this month", type:'text', placeholder:'Even one small thing...' }, { id:'stuck', label:"What's been stuck or stalling?", type:'textarea', placeholder:"Projects, habits, goals that haven't moved..." }, { id:'focus', label:"What do you most want to change next month?", type:'text', placeholder:'One honest answer...' }], build: f=>`Help me do a monthly reset. I have ADHD.\n\nMonth: ${f.month}\nBiggest win: ${f.wins}\nWhat's stuck: ${f.stuck}\nWant to change: ${f.focus}\n\nOne honest pattern, one thing to stop doing, one thing to keep doing, one focus theme for next month.` },
+  ]},
+  { key: 'projects', label: '🚀 Projects', templates: [
+    { label: "Turn a goal into an action plan", fields: [{ id:'goal', label:'What is the goal?', type:'text', placeholder:'e.g. Launch my Gumroad product' }, { id:'deadline', label:'Deadline or timeframe', type:'text', placeholder:'e.g. End of June' }, { id:'constraints', label:'Any constraints?', type:'text', placeholder:'e.g. 1 hour/day' }], build: f=>`Turn this goal into an action plan for someone with ADHD.\n\nGoal: ${f.goal}\nDeadline: ${f.deadline||'None'}\nConstraints: ${f.constraints||'None'}\n\nUp to 4 phases, next 3 actions I can start today, single biggest risk. Practical, not motivational.` },
+    { label: "I'm stuck on a project", fields: [{ id:'project', label:'What is the project?', type:'text', placeholder:'e.g. Redesigning my website' }, { id:'stuck', label:"Where are you stuck?", type:'textarea', placeholder:"What's blocking you..." }], build: f=>`I'm stuck on a project. I have ADHD.\n\nProject: ${f.project}\nStuck: ${f.stuck}\n\nWhat's blocking me, one workaround, smallest possible next action in 30 minutes.` },
+  ]},
+  { key: 'toolbox', label: '🧰 Toolbox', templates: [
+    { label: "I'm overwhelmed right now", fields: [{ id:'situation', label:"What's happening?", type:'textarea', placeholder:"What feels overwhelming..." }], build: f=>`I'm overwhelmed. I have ADHD.\n\nSituation: ${f.situation}\n\nOne thing to do in 5 minutes to reduce overwhelm, one thing to completely ignore, one grounding thought. Brief and direct.` },
+    { label: "I can't start anything", fields: [{ id:'should', label:"What should you be working on?", type:'text', placeholder:"The thing you know you need to do..." }], build: f=>`I have ADHD and I'm completely frozen.\n\nShould be doing: ${f.should}\n\nNot "just start." Why this happens neurologically (briefly), 2-minute trick to get momentum, tiniest possible first action.` },
+    { label: "Emotional regulation check-in", fields: [{ id:'feeling', label:"What are you feeling?", type:'select', options:['Frustrated','Overwhelmed','Anxious','Angry','Sad','Ashamed','Bored','Shut down'] }, { id:'situation', label:"What triggered it?", type:'text', placeholder:'Brief description...' }], build: f=>`Emotional regulation help. I have ADHD.\n\nFeeling: ${f.feeling}\nTriggered by: ${f.situation}\n\nWhy ADHD makes this more intense, one physical action in 5 minutes to regulate, one honest reframe — not toxic positivity.` },
+    { label: "Help me set up a body doubling session", fields: [{ id:'task', label:"What do you need to work on?", type:'text', placeholder:'Task or project...' }, { id:'duration', label:"How long do you want to work?", type:'select', options:['25 minutes','30 minutes','45 minutes','1 hour','90 minutes'] }, { id:'option', label:"Body doubling option", type:'select', options:['Focusmate (virtual co-working)','StudyStream (live rooms)','A friend on video','Going to a café or library','Not sure yet'] }], build: f=>`Help me set up a body doubling session. I have ADHD.\n\nTask: ${f.task}\nDuration: ${f.duration}\nOption: ${f.option}\n\nQuick setup checklist, how to frame the session to stay on task, what to do if I drift.` },
+    { label: "I need a dopamine reset right now", fields: [{ id:'situation', label:"What drained you?", type:'text', placeholder:'e.g. Long meeting, boring task...' }, { id:'time', label:"How much time do you have?", type:'select', options:['2–3 minutes','5 minutes','10 minutes','15–20 minutes'] }, { id:'location', label:"Where are you?", type:'select', options:['At my desk','At home','In an office/public space','Outside already'] }], build: f=>`I need a dopamine reset. I have ADHD.\n\nWhat drained me: ${f.situation}\nTime I have: ${f.time}\nLocation: ${f.location}\n\n2–3 specific dopamine reset options for my time and location. Not generic advice — specific actions right now. When it's safe to go back to work.` },
+    { label: "I'm in an ADHD paralysis spiral", fields: [{ id:'context', label:"What's the spiral about?", type:'textarea', placeholder:"Too many choices, don't know where to start..." }], build: f=>`I'm in a full ADHD paralysis spiral and I need immediate help.\n\nContext: ${f.context}\n\nDon't explain paralysis — I know. One thing I can do in 90 seconds to interrupt the spiral, one decision I can just make right now, and the absolute minimum to do today if everything else stays stuck.` },
+  ]},
+];
 
-// ─────────────────────────────────────────────────────────────
-//  QUICK CAPTURE
-// ─────────────────────────────────────────────────────────────
+let currentCat = 0;
+
+// ─── NAV DRAWER ──────────────────────────────────────────────
+function toggleDrawer() { const d=document.getElementById('navDrawer'); const t=document.getElementById('navTab'); d.classList.toggle('open'); t.classList.toggle('hidden',d.classList.contains('open')); }
+function closeDrawer()  { document.getElementById('navDrawer').classList.remove('open'); document.getElementById('navTab').classList.remove('hidden'); }
+document.addEventListener('click', e => { const d=document.getElementById('navDrawer'),t=document.getElementById('navTab'); if(d.classList.contains('open')&&!d.contains(e.target)&&!t.contains(e.target))closeDrawer(); });
+
+// ─── QUICK CAPTURE ───────────────────────────────────────────
 function captureIt() {
   const val = document.getElementById('captureInput').value.trim();
   if (!val) return;
   navigator.clipboard.writeText(val).then(() => {
-    const confirm = document.getElementById('copyConfirm');
-    confirm.style.display = 'block';
-    setTimeout(() => { confirm.style.display = 'none'; }, 3000);
-    document.getElementById('captureInput').value = '';
-  }).catch(() => {
-    alert('Clipboard blocked. Please copy manually: ' + val);
-  });
+    const c = document.getElementById('copyConfirm'); c.style.display='block';
+    setTimeout(()=>{c.style.display='none';},3000);
+    document.getElementById('captureInput').value='';
+  }).catch(()=>alert('Clipboard blocked. Copy manually: '+val));
 }
 
-// ─────────────────────────────────────────────────────────────
-//  TODAY'S FOCUS
-// ─────────────────────────────────────────────────────────────
-function saveFocus() {
-  const vals = [1,2,3].map(i => document.getElementById(`focus${i}`).value);
-  set(LS.focus, JSON.stringify(vals));
-}
-function toggleFocus(i) {
-  const inp = document.getElementById(`focus${i}`);
-  const chk = document.getElementById(`check${i}`);
-  inp.classList.toggle('done', chk.checked);
-  const checks = [1,2,3].map(n => document.getElementById(`check${n}`).checked);
-  set(LS.checks, JSON.stringify(checks));
-}
-function clearFocus() {
-  [1,2,3].forEach(i => {
-    document.getElementById(`focus${i}`).value = '';
-    document.getElementById(`focus${i}`).classList.remove('done');
-    document.getElementById(`check${i}`).checked = false;
-  });
-  localStorage.removeItem(LS.focus);
-  localStorage.removeItem(LS.checks);
-}
-function loadFocus() {
-  try {
-    const vals   = JSON.parse(get(LS.focus)  || '[]');
-    const checks = JSON.parse(get(LS.checks) || '[]');
-    [1,2,3].forEach((_, idx) => {
-      if (vals[idx])   document.getElementById(`focus${idx+1}`).value = vals[idx];
-      if (checks[idx]) {
-        document.getElementById(`check${idx+1}`).checked = true;
-        document.getElementById(`focus${idx+1}`).classList.add('done');
-      }
-    });
-  } catch {}
-}
+// ─── TODAY'S FOCUS ───────────────────────────────────────────
+function saveFocus() { set(LS.focus, JSON.stringify([1,2,3].map(i=>document.getElementById(`focus${i}`).value))); }
+function toggleFocus(i) { const inp=document.getElementById(`focus${i}`),chk=document.getElementById(`check${i}`); inp.classList.toggle('done',chk.checked); set(LS.checks,JSON.stringify([1,2,3].map(n=>document.getElementById(`check${n}`).checked))); }
+function clearFocus() { [1,2,3].forEach(i=>{document.getElementById(`focus${i}`).value='';document.getElementById(`focus${i}`).classList.remove('done');document.getElementById(`check${i}`).checked=false;}); localStorage.removeItem(LS.focus); localStorage.removeItem(LS.checks); }
+function loadFocus() { try { const v=JSON.parse(get(LS.focus)||'[]'),c=JSON.parse(get(LS.checks)||'[]'); [1,2,3].forEach((_,i)=>{if(v[i])document.getElementById(`focus${i+1}`).value=v[i];if(c[i]){document.getElementById(`check${i+1}`).checked=true;document.getElementById(`focus${i+1}`).classList.add('done');}}); } catch{} }
 
-// ─────────────────────────────────────────────────────────────
-//  ENERGY FILTER
-// ─────────────────────────────────────────────────────────────
-const ENERGY_NOTES = {
-  high:  '🔋 High energy — all sections available. Good time for focused work, planning, or review.',
-  med:   '⚡ Medium energy — showing sections that work well at moderate focus. Sections requiring deep effort are dimmed.',
-  low:   '😴 Low energy — showing your best low-effort options. Be gentle with yourself today.'
-};
-
-function setEnergy(level) {
-  set(LS.energy, level);
-  applyEnergy(level);
-}
-
+// ─── ENERGY ──────────────────────────────────────────────────
+const ENERGY_NOTES = { high:'🔋 High energy — all sections available.', med:'⚡ Medium energy — focused sections highlighted, heavy ones dimmed.', low:'😴 Low energy — your best low-effort options highlighted.' };
+function setEnergy(level) { set(LS.energy,level); applyEnergy(level); }
 function applyEnergy(level) {
-  ['eHigh','eMed','eLow'].forEach(id => {
-    document.getElementById(id).className = 'energy-btn';
-  });
-  const map = { high: 'eHigh', med: 'eMed', low: 'eLow' };
-  if (level && map[level]) {
-    document.getElementById(map[level]).className = `energy-btn active-${level}`;
-  }
-  const note = document.getElementById('energyNote');
-  if (level) {
-    note.textContent = ENERGY_NOTES[level];
-    note.classList.add('visible');
-  } else {
-    note.classList.remove('visible');
-  }
-  // Filter feed cards (never dim utility cards)
-  document.querySelectorAll('.feed-card').forEach(card => {
-    if (card.classList.contains('no-nav')) return;
-    if (!level) {
-      card.classList.remove('dimmed', 'highlighted');
-      return;
-    }
-    const energies = card.dataset.energy.split(',');
-    if (energies.includes('all') || energies.includes(level)) {
-      card.classList.remove('dimmed');
-      card.classList.add('highlighted');
-    } else {
-      card.classList.add('dimmed');
-      card.classList.remove('highlighted');
-    }
+  ['eHigh','eMed','eLow'].forEach(id=>document.getElementById(id).className='energy-btn');
+  const map={high:'eHigh',med:'eMed',low:'eLow'}; if(level&&map[level]) document.getElementById(map[level]).className=`energy-btn active-${level}`;
+  const note=document.getElementById('energyNote'); if(level){note.textContent=ENERGY_NOTES[level];note.classList.add('visible');}else note.classList.remove('visible');
+  document.querySelectorAll('.feed-card').forEach(card=>{
+    if(!level){card.classList.remove('dimmed','highlighted');return;}
+    const energies=card.dataset.energy.split(',');
+    if(energies.includes('all')||energies.includes(level)){card.classList.remove('dimmed');card.classList.add('highlighted');}
+    else{card.classList.add('dimmed');card.classList.remove('highlighted');}
   });
 }
 
-// ─────────────────────────────────────────────────────────────
-//  SETTINGS OVERLAY
-// ─────────────────────────────────────────────────────────────
-function onProviderChange() {
-  const pk = document.getElementById('providerSelect').value;
-  if (!pk) return;
-  const p = PROVIDERS[pk];
-  const hint = document.getElementById('providerHint');
-  const isCustom = pk === 'custom';
-  hint.innerHTML = p.hint;
-  hint.className = `hint ${p.hintClass}`;
-  hint.style.display = 'block';
-  document.getElementById('keyLabel').textContent  = p.keyLabel;
-  document.getElementById('keyInput').placeholder  = p.keyPlaceholder;
-  document.getElementById('keyInput').value        = '';
-  document.getElementById('customUrlField').style.display   = isCustom ? 'block' : 'none';
-  document.getElementById('customModelField').style.display = isCustom ? 'block' : 'none';
-  document.getElementById('modelSelectField').style.display = isCustom ? 'none'  : 'block';
-  if (!isCustom) populateModels(pk);
+// ─── CATEGORY TABS ───────────────────────────────────────────
+function buildCatTabs() {
+  const container = document.getElementById('catTabs');
+  CATEGORIES.forEach((cat, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-tab' + (i===0?' active':'');
+    btn.textContent = cat.label;
+    btn.onclick = () => selectCategory(i);
+    container.appendChild(btn);
+  });
 }
 
-function populateModels(pk) {
-  const sel = document.getElementById('modelSelect');
+function selectCategory(i) {
+  currentCat = i;
+  document.querySelectorAll('.cat-tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  buildTemplateSelect();
+  renderFields(0);
+  resetResponse();
+}
+
+function buildTemplateSelect() {
+  const sel = document.getElementById('templateSelect');
   sel.innerHTML = '';
-  PROVIDERS[pk].models.forEach(m => {
+  CATEGORIES[currentCat].templates.forEach((t, i) => {
     const opt = document.createElement('option');
-    opt.value = m.value; opt.textContent = m.label;
+    opt.value = i; opt.textContent = t.label;
     sel.appendChild(opt);
   });
 }
 
+// ─── FIELDS ──────────────────────────────────────────────────
+function onTemplateChange() { renderFields(parseInt(document.getElementById('templateSelect').value)); resetResponse(); }
+function renderFields(idx) {
+  const tpl = CATEGORIES[currentCat].templates[idx];
+  const container = document.getElementById('fields');
+  container.innerHTML = '';
+  tpl.fields.forEach(f => {
+    const group = document.createElement('div'); group.className='field-group';
+    const lbl = document.createElement('label'); lbl.className='field-label'; lbl.textContent=f.label; lbl.htmlFor=`f-${f.id}`; group.appendChild(lbl);
+    let el;
+    if (f.type==='textarea') { el=document.createElement('textarea'); el.placeholder=f.placeholder||''; }
+    else if (f.type==='select') { el=document.createElement('select'); f.options.forEach(o=>{const opt=document.createElement('option');opt.value=opt.textContent=o;el.appendChild(opt);}); }
+    else { el=document.createElement('input'); el.type='text'; el.placeholder=f.placeholder||''; }
+    el.id=`f-${f.id}`; group.appendChild(el); container.appendChild(group);
+  });
+}
+
+// ─── SETTINGS ────────────────────────────────────────────────
+function onProviderChange() {
+  const pk=document.getElementById('providerSelect').value; if(!pk)return;
+  const p=PROVIDERS[pk],hint=document.getElementById('providerHint'),isCustom=pk==='custom';
+  hint.innerHTML=p.hint; hint.className=`hint ${p.hintClass}`; hint.style.display='block';
+  document.getElementById('keyLabel').textContent=p.keyLabel; document.getElementById('keyInput').placeholder=p.keyPlaceholder; document.getElementById('keyInput').value='';
+  document.getElementById('customUrlField').style.display=isCustom?'block':'none';
+  document.getElementById('customModelField').style.display=isCustom?'block':'none';
+  document.getElementById('modelSelectField').style.display=isCustom?'none':'block';
+  if(!isCustom)populateModels(pk);
+}
+function populateModels(pk) { const sel=document.getElementById('modelSelect'); sel.innerHTML=''; PROVIDERS[pk].models.forEach(m=>{const opt=document.createElement('option');opt.value=m.value;opt.textContent=m.label;sel.appendChild(opt);}); }
 function openSettings() {
-  const hasKey = !!getKey();
-  const pk = getProvider();
-  const p  = pk && PROVIDERS[pk];
-  const isCustom = pk === 'custom';
-  document.getElementById('setupTitle').textContent  = hasKey ? '⚙ AI Settings' : '👋 Connect your AI';
-  document.getElementById('cancelBtn').style.display = hasKey ? 'block' : 'none';
-  document.getElementById('providerSelect').value    = pk || '';
-  document.getElementById('keyInput').value          = getKey();
-  document.getElementById('keyLabel').textContent    = p ? p.keyLabel : 'API Key';
-  document.getElementById('keyInput').placeholder    = p ? p.keyPlaceholder : 'Your API key...';
-  const hint = document.getElementById('providerHint');
-  if (p) { hint.innerHTML = p.hint; hint.className = `hint ${p.hintClass}`; hint.style.display = 'block'; }
-  else   { hint.style.display = 'none'; }
-  document.getElementById('customUrlField').style.display   = isCustom ? 'block' : 'none';
-  document.getElementById('customModelField').style.display = isCustom ? 'block' : 'none';
-  document.getElementById('modelSelectField').style.display = (p && !isCustom) ? 'block' : 'none';
-  if (isCustom) {
-    document.getElementById('customUrlInput').value   = getCustomUrl();
-    document.getElementById('customModelInput').value = getModel();
-  } else if (pk) {
-    populateModels(pk);
-    document.getElementById('modelSelect').value = getModel();
-  }
+  const hasKey=!!getKey(),pk=getProvider(),p=pk&&PROVIDERS[pk],isCustom=pk==='custom';
+  document.getElementById('setupTitle').textContent=hasKey?'⚙ AI Settings':'👋 Connect your AI';
+  document.getElementById('cancelBtn').style.display=hasKey?'block':'none';
+  document.getElementById('providerSelect').value=pk||''; document.getElementById('keyInput').value=getKey();
+  document.getElementById('keyLabel').textContent=p?p.keyLabel:'API Key'; document.getElementById('keyInput').placeholder=p?p.keyPlaceholder:'Your API key...';
+  const hint=document.getElementById('providerHint');
+  if(p){hint.innerHTML=p.hint;hint.className=`hint ${p.hintClass}`;hint.style.display='block';}else hint.style.display='none';
+  document.getElementById('customUrlField').style.display=isCustom?'block':'none';
+  document.getElementById('customModelField').style.display=isCustom?'block':'none';
+  document.getElementById('modelSelectField').style.display=(p&&!isCustom)?'block':'none';
+  if(isCustom){document.getElementById('customUrlInput').value=getCustomUrl();document.getElementById('customModelInput').value=getModel();}
+  else if(pk){populateModels(pk);document.getElementById('modelSelect').value=getModel();}
   document.getElementById('overlay').classList.add('visible');
 }
-
 function closeSettings() { document.getElementById('overlay').classList.remove('visible'); }
-
 function saveSettings() {
-  const key = document.getElementById('keyInput').value.trim();
-  const pk  = document.getElementById('providerSelect').value;
-  const isCustom = pk === 'custom';
-  if (!pk)  { alert('Please select an AI provider.'); return; }
-  if (!key) { alert('Please enter your API key.'); return; }
+  const key=document.getElementById('keyInput').value.trim(),pk=document.getElementById('providerSelect').value,isCustom=pk==='custom';
+  if(!pk){alert('Please select an AI provider.');return;} if(!key){alert('Please enter your API key.');return;}
   let model;
-  if (isCustom) {
-    const url = document.getElementById('customUrlInput').value.trim();
-    const mod = document.getElementById('customModelInput').value.trim();
-    if (!url) { alert('Please enter your base URL.'); return; }
-    if (!mod) { alert('Please enter your model name.'); return; }
-    set(LS.customUrl, url); set(LS.customModel, mod); model = mod;
-  } else {
-    model = document.getElementById('modelSelect').value;
-  }
-  set(LS.provider, pk); set(LS.key, key); set(LS.model, model);
-  closeSettings();
-  updateUI();
+  if(isCustom){const url=document.getElementById('customUrlInput').value.trim(),mod=document.getElementById('customModelInput').value.trim(); if(!url){alert('Please enter your base URL.');return;} if(!mod){alert('Please enter your model name.');return;} set(LS.customUrl,url);set(LS.customModel,mod);model=mod;}
+  else model=document.getElementById('modelSelect').value;
+  set(LS.provider,pk);set(LS.key,key);set(LS.model,model);closeSettings();updateUI();
 }
 
-// ─────────────────────────────────────────────────────────────
-//  UI STATE
-// ─────────────────────────────────────────────────────────────
+// ─── UI STATE ─────────────────────────────────────────────────
 function updateUI() {
-  const hasKey = !!getKey();
-  const pk     = getProvider();
-  const p      = pk && PROVIDERS[pk];
-  const pill   = document.getElementById('connectionPill');
-  if (hasKey && p) {
-    pill.textContent = `Connected · ${p.name}`;
-    pill.classList.add('connected');
-  } else {
-    pill.textContent = 'Not connected';
-    pill.classList.remove('connected');
-  }
+  const hasKey=!!getKey(),pk=getProvider(),p=pk&&PROVIDERS[pk];
+  document.getElementById('noKeyBanner').style.display=hasKey?'none':'block';
+  document.getElementById('aiFooter').textContent=p?p.footerText:'Your key, your usage · No data shared';
+  const pill=document.getElementById('connectionPill');
+  if(hasKey&&p){pill.textContent=`Connected · ${p.name}`;pill.classList.add('connected');}
+  else{pill.textContent='Not connected';pill.classList.remove('connected');}
+  const pk2=getProvider(),prov=PROVIDERS[pk2],model=getModel();
+  if(!pk2||!getKey()){document.getElementById('modelBadge').textContent='Not connected';return;}
+  let label=pk2==='custom'?model||'Custom':((prov?.models||[]).find(m=>m.value===model)?.label.split(' — ')[0]||model);
+  document.getElementById('modelBadge').textContent=`${prov?.name||''} · ${label}`;
 }
 
-// ─────────────────────────────────────────────────────────────
-//  INIT
-// ─────────────────────────────────────────────────────────────
+// ─── SEND PROMPT ──────────────────────────────────────────────
+async function sendPrompt() {
+  const apiKey=getKey(); if(!apiKey){openSettings();return;}
+  const idx=parseInt(document.getElementById('templateSelect').value);
+  const tpl=CATEGORIES[currentCat].templates[idx];
+  const vals={}; let empty=false;
+  tpl.fields.forEach(f=>{const el=document.getElementById(`f-${f.id}`),val=el.value.trim(); if(!val&&f.type!=='select')empty=true; vals[f.id]=val;});
+  if(empty){alert('Please fill in all fields before sending.');return;}
+  const prompt=tpl.build(vals),pk=getProvider(),p=PROVIDERS[pk],model=getModel();
+  const endpoint=pk==='custom'?(getCustomUrl().replace(/\/$/,'')+'/chat/completions'):p.endpoint;
+  const btn=document.getElementById('sendBtn'),btnTxt=document.getElementById('btnText'),wrap=document.getElementById('responseWrap'),area=document.getElementById('responseArea');
+  btn.disabled=true;btnTxt.textContent='Thinking...';wrap.classList.add('visible');area.innerHTML='<span class="thinking">Getting your answer…</span>';
+  const sys='You are a practical ADHD productivity coach. Be direct and concise. Give specific, actionable advice. No filler. Short paragraphs or numbered steps where helpful.';
+  try {
+    if(p.format==='anthropic'){
+      const res=await fetch(endpoint,{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model,max_tokens:600,stream:true,system:sys,messages:[{role:'user',content:prompt}]})});
+      if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
+      area.textContent='';const reader=res.body.getReader(),dec=new TextDecoder();let buf='',lastEv='';
+      while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();
+        for(const line of lines){if(line.startsWith('event: ')){lastEv=line.slice(7).trim();}else if(line.startsWith('data: ')&&lastEv==='content_block_delta'){try{area.textContent+=JSON.parse(line.slice(6))?.delta?.text||'';area.scrollTop=area.scrollHeight;}catch{}}}}
+    } else {
+      const res=await fetch(endpoint,{method:'POST',headers:{'Authorization':`Bearer ${apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model,stream:true,temperature:0.7,max_tokens:600,messages:[{role:'system',content:sys},{role:'user',content:prompt}]})});
+      if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
+      area.textContent='';const reader=res.body.getReader(),dec=new TextDecoder();let buf='';
+      while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();
+        for(const line of lines){if(!line.startsWith('data: '))continue;const raw=line.slice(6);if(raw==='[DONE]')continue;try{area.textContent+=JSON.parse(raw).choices?.[0]?.delta?.content||'';area.scrollTop=area.scrollHeight;}catch{}}}
+    }
+  } catch(err){area.textContent=`Error: ${err.message}\n\nCheck your API key in AI Settings.`;}
+  finally{btn.disabled=false;btnTxt.textContent='Send to AI →';}
+}
+
+function resetResponse(){document.getElementById('responseWrap').classList.remove('visible');document.getElementById('responseArea').textContent='';}
+
+// ─── INIT ─────────────────────────────────────────────────────
 function init() {
+  buildCatTabs();
+  buildTemplateSelect();
+  renderFields(0);
   updateUI();
   loadFocus();
-  const savedEnergy = get(LS.energy);
-  if (savedEnergy) applyEnergy(savedEnergy);
+  const savedEnergy=get(LS.energy); if(savedEnergy)applyEnergy(savedEnergy);
 }
 init();
 </script>
