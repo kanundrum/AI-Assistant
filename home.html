@@ -271,6 +271,7 @@
       transition: border-color .2s, background .2s, transform .1s;
     }
     .feed-card:hover { border-color: var(--accent); background: var(--surface2); transform: translateX(2px); }
+    .feed-card.no-nav:hover { border-color: var(--border); background: var(--surface); transform: none; }
     .feed-card.dimmed { opacity: 0.45; }
     .feed-card.highlighted { border-color: var(--green); }
 
@@ -573,27 +574,39 @@
     </div>
   </div>
 
-  <!-- Quick Capture -->
-  <div>
-    <div class="section-label">⚡ Quick Capture</div>
-    <div class="capture-card">
-      <div class="card-title">📥 Got something in your head?</div>
+  <!-- Unified Feed -->
+  <div class="feed" id="feed">
+
+    <!-- Quick Capture -->
+    <div class="feed-card no-nav" style="cursor:default;" data-energy="all">
+      <div class="feed-card-top">
+        <div class="feed-icon">📥</div>
+        <div>
+          <div class="feed-title">Quick Capture</div>
+          <div class="feed-tagline">Get it out of your head</div>
+        </div>
+      </div>
+      <div class="feed-desc" style="padding-left:0; margin-bottom:12px;">Something swirling in your head? Type it here — copies to clipboard so you can paste it straight into Brain Dump.</div>
       <div class="capture-row">
         <input type="text" id="captureInput" placeholder="Type anything — task, idea, worry..." onkeydown="if(event.key==='Enter')captureIt()">
         <button class="capture-btn" onclick="captureIt()">Copy & Open Brain Dump</button>
       </div>
-      <div class="copy-confirm" id="copyConfirm">✓ Copied to clipboard — paste it into Brain Dump</div>
-      <div class="capture-link">
+      <div class="copy-confirm" id="copyConfirm">✓ Copied — paste into Brain Dump</div>
+      <div class="capture-link" style="margin-top:8px;">
         Or go straight to <a href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent">🧠 Brain Dump →</a>
       </div>
     </div>
-  </div>
 
-  <!-- Today's Focus -->
-  <div>
-    <div class="section-label">🎯 Today's Top 3</div>
-    <div class="focus-card">
-      <div class="card-title">✅ If you do only these 3 things today, it's a win.</div>
+    <!-- Today's Focus -->
+    <div class="feed-card no-nav" style="cursor:default;" data-energy="all">
+      <div class="feed-card-top">
+        <div class="feed-icon">🎯</div>
+        <div>
+          <div class="feed-title">Today's Top 3</div>
+          <div class="feed-tagline">If you do only these today, it's a win</div>
+        </div>
+        <button class="focus-clear" onclick="clearFocus()" style="margin-left:auto;">Reset</button>
+      </div>
       <div class="focus-items">
         <div class="focus-item">
           <div class="focus-num">1</div>
@@ -611,15 +624,17 @@
           <input type="text" class="focus-input" id="focus3" placeholder="Third priority..." oninput="saveFocus()">
         </div>
       </div>
-      <button class="focus-clear" onclick="clearFocus()">Reset for tomorrow</button>
     </div>
-  </div>
 
-  <!-- Energy Check-In -->
-  <div>
-    <div class="section-label">🔋 Energy Right Now</div>
-    <div class="energy-card">
-      <div class="card-title">How's your energy? (Filters sections below)</div>
+    <!-- Energy -->
+    <div class="feed-card no-nav" style="cursor:default;" data-energy="all">
+      <div class="feed-card-top">
+        <div class="feed-icon">🔋</div>
+        <div>
+          <div class="feed-title">Energy Right Now</div>
+          <div class="feed-tagline">Filters the sections below to match your capacity</div>
+        </div>
+      </div>
       <div class="energy-btns">
         <button class="energy-btn" id="eHigh" onclick="setEnergy('high')">🔋 High</button>
         <button class="energy-btn" id="eMed"  onclick="setEnergy('med')">⚡ Medium</button>
@@ -627,12 +642,10 @@
       </div>
       <div class="energy-note" id="energyNote"></div>
     </div>
-  </div>
 
-  <!-- Section Feed -->
-  <div>
-    <div class="section-label">🗂 Your Sections</div>
-    <div class="feed" id="feed">
+    <!-- divider -->
+    <div style="border-top:1px solid var(--border); margin: 4px 0;"></div>
+    <div class="section-label" style="margin-bottom:0;">🗂 Your Sections — click any to open it</div>
 
       <a class="feed-card" href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent" data-energy="all">
         <div class="feed-card-top">
@@ -750,10 +763,7 @@
         </div>
       </a>
 
-    </div>
   </div>
-
-  <div class="footer-note">ADHD Brain OS · Your key, your data · No tracking</div>
 
 </div>
 
@@ -911,8 +921,9 @@ function applyEnergy(level) {
   } else {
     note.classList.remove('visible');
   }
-  // Filter feed cards
+  // Filter feed cards (never dim utility cards)
   document.querySelectorAll('.feed-card').forEach(card => {
+    if (card.classList.contains('no-nav')) return;
     if (!level) {
       card.classList.remove('dimmed', 'highlighted');
       return;
