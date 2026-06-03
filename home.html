@@ -89,6 +89,31 @@
       margin-bottom: 12px;
     }
 
+    /* ── WELCOME BLOCK FULL ── */
+    .welcome-block-full {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .inline-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .inline-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
     /* ── QUICK CAPTURE ── */
     .capture-card {
       background: var(--surface);
@@ -566,46 +591,31 @@
 <!-- MAIN FEED -->
 <div class="main">
 
-  <!-- Welcome -->
-  <div>
+  <!-- Welcome + Quick Capture + Today's Focus -->
+  <div class="welcome-block-full">
     <div class="welcome-title">Welcome to your ADHD Brain OS 🧠</div>
     <div class="welcome-desc">
-      A Notion workspace designed around how your brain actually works — not how productivity gurus say it should. Capture, plan, and move when you're ready. The system will still be here.
+      A Notion workspace designed around how your brain actually works. Capture, plan, and move when you're ready.
     </div>
-  </div>
-
-  <!-- Unified Feed -->
-  <div class="feed" id="feed">
 
     <!-- Quick Capture -->
-    <div class="feed-card no-nav" style="cursor:default;" data-energy="all">
-      <div class="feed-card-top">
-        <div class="feed-icon">📥</div>
-        <div>
-          <div class="feed-title">Quick Capture</div>
-          <div class="feed-tagline">Get it out of your head</div>
-        </div>
-      </div>
-      <div class="feed-desc" style="padding-left:0; margin-bottom:12px;">Something swirling in your head? Type it here — copies to clipboard so you can paste it straight into Brain Dump.</div>
+    <div class="inline-section">
+      <div class="inline-label">📥 Quick Capture</div>
       <div class="capture-row">
         <input type="text" id="captureInput" placeholder="Type anything — task, idea, worry..." onkeydown="if(event.key==='Enter')captureIt()">
-        <button class="capture-btn" onclick="captureIt()">Copy & Open Brain Dump</button>
+        <button class="capture-btn" onclick="captureIt()">Copy &amp; Open Brain Dump</button>
       </div>
       <div class="copy-confirm" id="copyConfirm">✓ Copied — paste into Brain Dump</div>
-      <div class="capture-link" style="margin-top:8px;">
+      <div class="capture-link">
         Or go straight to <a href="https://www.notion.so/36d1aaa83752815eac8bd9681c9d90b8" target="_parent">🧠 Brain Dump →</a>
       </div>
     </div>
 
-    <!-- Today's Focus -->
-    <div class="feed-card no-nav" style="cursor:default;" data-energy="all">
-      <div class="feed-card-top">
-        <div class="feed-icon">🎯</div>
-        <div>
-          <div class="feed-title">Today's Top 3</div>
-          <div class="feed-tagline">If you do only these today, it's a win</div>
-        </div>
-        <button class="focus-clear" onclick="clearFocus()" style="margin-left:auto;">Reset</button>
+    <!-- Today's Top 3 -->
+    <div class="inline-section">
+      <div class="inline-label" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>🎯 Today's Top 3 — if you do only these, it's a win</span>
+        <button class="focus-clear" onclick="clearFocus()">Reset</button>
       </div>
       <div class="focus-items">
         <div class="focus-item">
@@ -625,6 +635,10 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Feed -->
+  <div class="feed" id="feed">
 
     <!-- Energy -->
     <div class="feed-card no-nav" style="cursor:default;" data-energy="all">
