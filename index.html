@@ -316,11 +316,9 @@
   <div class="mob-sheet-handle"></div>
   <div class="mob-sheet-header">
     <span class="mob-sheet-title">🤖 AI Assistant</span>
-    <div style="display:flex;align-items:center;gap:8px">
-      <button class="settings-btn" onclick="openSettings()" style="font-size:11px;padding:4px 10px">⚙ AI Settings</button>
-      <button class="mob-sheet-close" onclick="closeMobSheet()">✕</button>
-    </div>
+    <button class="mob-sheet-close" onclick="closeMobSheet()">✕</button>
   </div>
+  <button class="settings-btn" onclick="openSettings()" style="width:100%;text-align:center;padding:8px;font-size:13px">⚙ AI Settings — tap to connect your AI</button>
   <div class="no-key-banner" id="noKeyBannerMob" onclick="openSettings()" style="display:none">🔑 No AI key — click to connect. (Groq is free.)</div>
   <div class="cat-tabs" id="catTabsMob"></div>
   <div class="field-group"><label class="field-label">Prompt</label><select id="templateSelectMob" onchange="onTemplateChangeMob()"></select></div>
@@ -471,6 +469,7 @@ function updateUI(){
   const hasKey=!!getKey(),pk=getProvider(),p=pk&&PROVIDERS[pk];
   document.getElementById('noKeyBanner').style.display=hasKey?'none':'block';
   const mob=document.getElementById('noKeyBannerMob');if(mob)mob.style.display=hasKey?'none':'block';
+  const mobSettingsBtn=document.querySelector('.mob-sheet .settings-btn');if(mobSettingsBtn)mobSettingsBtn.textContent=hasKey?'⚙ AI Settings':'⚙ AI Settings — tap to connect your AI';
   document.getElementById('aiFooter').textContent=p?p.footerText:'Your key, your usage · No data shared';
   const pill=document.getElementById('connectionPill');if(hasKey&&p){pill.textContent=`Connected · ${p.name}`;pill.classList.add('connected');}else{pill.textContent='Not connected';pill.classList.remove('connected');}
   const model=getModel(),prov=PROVIDERS[pk];let label=pk==='custom'?model||'Custom':((prov?.models||[]).find(m=>m.value===model)?.label.split(' — ')[0]||model);
