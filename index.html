@@ -293,6 +293,7 @@
       <div class="model-badge" id="modelBadge">Not connected</div>
     </div>
     <div class="ai-body" id="desktopAIBody">
+      <button class="settings-btn" id="desktopSettingsBtn" onclick="openSettings()" style="width:100%;text-align:center;padding:8px;font-size:12px">⚙ AI Settings — click to connect your AI</button>
       <div class="no-key-banner" id="noKeyBanner" onclick="openSettings()">🔑 No AI key yet — click to connect. (Groq is free.)</div>
       <div class="cat-tabs" id="catTabs"></div>
       <div class="field-group"><label class="field-label">Prompt</label><select id="templateSelect" onchange="onTemplateChange()"></select></div>
@@ -470,6 +471,7 @@ function updateUI(){
   document.getElementById('noKeyBanner').style.display=hasKey?'none':'block';
   const mob=document.getElementById('noKeyBannerMob');if(mob)mob.style.display=hasKey?'none':'block';
   const mobSettingsBtn=document.querySelector('.mob-sheet .settings-btn');if(mobSettingsBtn)mobSettingsBtn.textContent=hasKey?'⚙ AI Settings':'⚙ AI Settings — tap to connect your AI';
+  const deskSettingsBtn=document.getElementById('desktopSettingsBtn');if(deskSettingsBtn)deskSettingsBtn.textContent=hasKey?'⚙ AI Settings':'⚙ AI Settings — click to connect your AI';
   document.getElementById('aiFooter').textContent=p?p.footerText:'Your key, your usage · No data shared';
   const pill=document.getElementById('connectionPill');if(hasKey&&p){pill.textContent=`Connected · ${p.name}`;pill.classList.add('connected');}else{pill.textContent='Not connected';pill.classList.remove('connected');}
   const model=getModel(),prov=PROVIDERS[pk];let label=pk==='custom'?model||'Custom':((prov?.models||[]).find(m=>m.value===model)?.label.split(' — ')[0]||model);
