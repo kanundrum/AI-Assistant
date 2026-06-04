@@ -21,6 +21,7 @@
     .pill.connected{border-color:var(--green);color:var(--green)}
     .settings-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:var(--radius);font-size:12px;cursor:pointer;transition:color .2s,border-color .2s}
     .settings-btn:hover{color:var(--text);border-color:var(--text)}
+    @media(max-width:700px){.topbar-settings{display:none}}
 
     /* DESKTOP SPLIT LAYOUT */
     .layout{display:grid;grid-template-columns:1fr 360px;height:calc(100vh - 52px);overflow:hidden}
@@ -173,7 +174,7 @@
   <div class="brand">🧠 ADHD Brain OS</div>
   <div class="topbar-right">
     <span class="pill" id="connectionPill">Not connected</span>
-    <button class="settings-btn" onclick="openSettings()">⚙ AI Settings</button>
+    <button class="settings-btn topbar-settings" onclick="openSettings()">⚙ AI Settings</button>
   </div>
 </div>
 
@@ -315,7 +316,10 @@
   <div class="mob-sheet-handle"></div>
   <div class="mob-sheet-header">
     <span class="mob-sheet-title">🤖 AI Assistant</span>
-    <button class="mob-sheet-close" onclick="closeMobSheet()">✕</button>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="settings-btn" onclick="openSettings()" style="font-size:11px;padding:4px 10px">⚙ AI Settings</button>
+      <button class="mob-sheet-close" onclick="closeMobSheet()">✕</button>
+    </div>
   </div>
   <div class="no-key-banner" id="noKeyBannerMob" onclick="openSettings()" style="display:none">🔑 No AI key — click to connect. (Groq is free.)</div>
   <div class="cat-tabs" id="catTabsMob"></div>
