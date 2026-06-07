@@ -183,7 +183,7 @@
 </div>
 
 <!-- SETTINGS OVERLAY -->
-<div class="overlay" id="overlay">
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeSettings()">
   <div class="setup-card">
     <div>
       <div class="setup-title" id="setupTitle">👋 Connect your AI</div>
@@ -210,7 +210,7 @@
     <div class="setup-field" id="customModelField" style="display:none"><label for="customModelInput">Model Name</label><input type="text" id="customModelInput" placeholder="e.g. openai/gpt-4o" autocomplete="off" spellcheck="false"></div>
     <div class="setup-actions">
       <button class="btn-primary" onclick="saveSettings()">Save & Connect</button>
-      <button class="btn-secondary" id="cancelBtn" onclick="closeSettings()" style="display:none">Cancel</button>
+      <button class="btn-secondary" id="cancelBtn" onclick="closeSettings()">Cancel</button>
     </div>
   </div>
 </div>
@@ -485,7 +485,7 @@ function renderFieldsMob(idx){renderFields(idx,'fieldsMob','mob-');}
 // Settings
 function onProviderChange(){const pk=document.getElementById('providerSelect').value;if(!pk)return;const p=PROVIDERS[pk],hint=document.getElementById('providerHint'),isCustom=pk==='custom';hint.innerHTML=p.hint;hint.className=`hint ${p.hintClass}`;hint.style.display='block';document.getElementById('keyLabel').textContent=p.keyLabel;document.getElementById('keyInput').placeholder=p.keyPlaceholder;document.getElementById('keyInput').value='';document.getElementById('customUrlField').style.display=isCustom?'block':'none';document.getElementById('customModelField').style.display=isCustom?'block':'none';document.getElementById('modelSelectField').style.display=isCustom?'none':'block';if(!isCustom)populateModels(pk);}
 function populateModels(pk){const sel=document.getElementById('modelSelect');sel.innerHTML='';PROVIDERS[pk].models.forEach(m=>{const o=document.createElement('option');o.value=m.value;o.textContent=m.label;sel.appendChild(o);});}
-function openSettings(){const hasKey=!!getKey(),pk=getProvider(),p=pk&&PROVIDERS[pk],isCustom=pk==='custom';document.getElementById('setupTitle').textContent=hasKey?'⚙ AI Settings':'👋 Connect your AI';document.getElementById('cancelBtn').style.display=hasKey?'block':'none';document.getElementById('providerSelect').value=pk||'';document.getElementById('keyInput').value=getKey();document.getElementById('keyLabel').textContent=p?p.keyLabel:'API Key';document.getElementById('keyInput').placeholder=p?p.keyPlaceholder:'Your API key...';const hint=document.getElementById('providerHint');if(p){hint.innerHTML=p.hint;hint.className=`hint ${p.hintClass}`;hint.style.display='block';}else hint.style.display='none';document.getElementById('customUrlField').style.display=isCustom?'block':'none';document.getElementById('customModelField').style.display=isCustom?'block':'none';document.getElementById('modelSelectField').style.display=(p&&!isCustom)?'block':'none';if(isCustom){document.getElementById('customUrlInput').value=getCustomUrl();document.getElementById('customModelInput').value=getModel();}else if(pk){populateModels(pk);document.getElementById('modelSelect').value=getModel();}document.getElementById('overlay').classList.add('visible');}
+function openSettings(){const hasKey=!!getKey(),pk=getProvider(),p=pk&&PROVIDERS[pk],isCustom=pk==='custom';document.getElementById('setupTitle').textContent=hasKey?'⚙ AI Settings':'👋 Connect your AI';document.getElementById('cancelBtn').style.display='block';document.getElementById('providerSelect').value=pk||'';document.getElementById('keyInput').value=getKey();document.getElementById('keyLabel').textContent=p?p.keyLabel:'API Key';document.getElementById('keyInput').placeholder=p?p.keyPlaceholder:'Your API key...';const hint=document.getElementById('providerHint');if(p){hint.innerHTML=p.hint;hint.className=`hint ${p.hintClass}`;hint.style.display='block';}else hint.style.display='none';document.getElementById('customUrlField').style.display=isCustom?'block':'none';document.getElementById('customModelField').style.display=isCustom?'block':'none';document.getElementById('modelSelectField').style.display=(p&&!isCustom)?'block':'none';if(isCustom){document.getElementById('customUrlInput').value=getCustomUrl();document.getElementById('customModelInput').value=getModel();}else if(pk){populateModels(pk);document.getElementById('modelSelect').value=getModel();}document.getElementById('overlay').classList.add('visible');}
 function closeSettings(){document.getElementById('overlay').classList.remove('visible');}
 function saveSettings(){const key=document.getElementById('keyInput').value.trim(),pk=document.getElementById('providerSelect').value,isCustom=pk==='custom';if(!pk){alert('Please select a provider.');return;}if(!key){alert('Please enter your API key.');return;}let model;if(isCustom){const url=document.getElementById('customUrlInput').value.trim(),mod=document.getElementById('customModelInput').value.trim();if(!url){alert('Enter your base URL.');return;}if(!mod){alert('Enter your model name.');return;}set(LS.customUrl,url);set(LS.customModel,mod);model=mod;}else model=document.getElementById('modelSelect').value;set(LS.provider,pk);set(LS.key,key);set(LS.model,model);closeSettings();updateUI();}
 
