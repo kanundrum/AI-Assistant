@@ -93,6 +93,10 @@
 
     .no-key-banner{background:#1f2a1f;border:1px solid #3a5a3a;border-radius:var(--radius);padding:10px 13px;font-size:12px;color:#90c890;cursor:pointer;display:none}
     .no-key-banner:hover{border-color:#5a8a5a}
+    .ai-intro{background:linear-gradient(135deg,#1a1f2e,#1e2a1e);border:1px solid #2e4a5a;border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
+    .ai-intro-headline{font-size:13px;font-weight:700;color:#a8d4f0;margin:0 0 8px 0}
+    .ai-intro-body{font-size:11.5px;color:#9ab0c0;margin:0 0 6px 0;line-height:1.5}
+    .ai-intro-body:last-child{margin-bottom:0}
 
     .cat-tabs{display:flex;gap:5px;flex-wrap:wrap}
     .cat-tab{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:99px;font-size:11px;cursor:pointer;transition:all .15s;white-space:nowrap}
@@ -304,12 +308,17 @@
   <!-- RIGHT: AI PANEL (desktop) -->
   <div class="right" id="desktopAI">
     <div class="ai-header">
-      <div><div class="ai-header-title">🤖 AI Assistant</div><div class="ai-header-sub">Energy-matched · 30+ prompts</div></div>
+      <div><div class="ai-header-title">🤖 Your ADHD AI Coach</div><div class="ai-header-sub">Pick a prompt → fill in context → get unstuck</div></div>
       <div class="model-badge" id="modelBadge">Not connected</div>
     </div>
     <div class="ai-body" id="desktopAIBody">
-      <button class="settings-btn" id="desktopSettingsBtn" onclick="openSettings()" style="width:100%;text-align:center;padding:8px;font-size:12px">⚙ AI Settings — click to connect your AI</button>
-      <div class="no-key-banner" id="noKeyBanner" onclick="openSettings()">🔑 No AI key yet — click to connect. (Groq is free.)</div>
+      <div class="ai-intro" id="aiIntro">
+        <p class="ai-intro-headline">Your AI knows you have ADHD.</p>
+        <p class="ai-intro-body">35+ prompts are built in — no copy-pasting into ChatGPT. Pick a category, fill in your situation, and get a direct, actionable answer right here in your OS.</p>
+        <p class="ai-intro-body">Uses are organized by moment: task paralysis, emotion regulation, project planning, daily focus, and more.</p>
+      </div>
+      <button class="settings-btn" id="desktopSettingsBtn" onclick="openSettings()" style="width:100%;text-align:center;padding:8px;font-size:12px">⚙ Connect your AI — it's free with Groq</button>
+      <div class="no-key-banner" id="noKeyBanner" onclick="openSettings()">🔑 Click above to connect. (Groq is free — no credit card.)</div>
       <div class="cat-tabs" id="catTabs"></div>
       <div class="field-group"><label class="field-label">Prompt</label><select id="templateSelect" onchange="onTemplateChange()"></select></div>
       <div id="fields"></div>
@@ -331,7 +340,7 @@
 <div class="mob-sheet" id="mobSheet">
   <div class="mob-sheet-handle"></div>
   <div class="mob-sheet-header">
-    <span class="mob-sheet-title">🤖 AI Assistant</span>
+    <span class="mob-sheet-title">🤖 Your ADHD AI Coach</span>
     <button class="mob-sheet-close" onclick="closeMobSheet()">✕</button>
   </div>
   <button class="settings-btn" onclick="openSettings()" style="width:100%;text-align:center;padding:8px;font-size:13px">⚙ AI Settings — tap to connect your AI</button>
@@ -485,6 +494,7 @@ function updateUI(){
   const hasKey=!!getKey(),pk=getProvider(),p=pk&&PROVIDERS[pk];
   document.getElementById('noKeyBanner').style.display=hasKey?'none':'block';
   const mob=document.getElementById('noKeyBannerMob');if(mob)mob.style.display=hasKey?'none':'block';
+  const intro=document.getElementById('aiIntro');if(intro)intro.style.display=hasKey?'none':'block';
   const mobSettingsBtn=document.querySelector('.mob-sheet .settings-btn');if(mobSettingsBtn)mobSettingsBtn.textContent=hasKey?'⚙ AI Settings':'⚙ AI Settings — tap to connect your AI';
   const deskSettingsBtn=document.getElementById('desktopSettingsBtn');if(deskSettingsBtn)deskSettingsBtn.textContent=hasKey?'⚙ AI Settings':'⚙ AI Settings — click to connect your AI';
   document.getElementById('aiFooter').textContent=p?p.footerText:'Your key, your usage · No data shared';
