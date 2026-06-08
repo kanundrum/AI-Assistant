@@ -91,6 +91,19 @@
     .ai-body{flex:1;overflow-y:auto;padding:13px 15px;display:flex;flex-direction:column;gap:10px}
     .ai-footer{text-align:center;font-size:11px;color:#666;padding:7px;border-top:1px solid var(--border);flex-shrink:0}
 
+    /* Brain Score */
+    .score-card{background:linear-gradient(135deg,#1a2035,#1e2820);border:1px solid #2a4060;border-radius:var(--radius);padding:14px 18px}
+    .score-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .score-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#7ab0e0}
+    .score-pb{font-size:11px;color:#f5c842;background:#2a2010;border:1px solid #5a4010;padding:2px 8px;border-radius:99px}
+    .score-nums{display:flex;align-items:center}
+    .score-block{flex:1;text-align:center}
+    .score-val{font-size:32px;font-weight:800;color:#fff;line-height:1}
+    .score-sub{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
+    .score-divider{width:1px;height:40px;background:var(--border);margin:0 10px;flex-shrink:0}
+    .score-log{margin-top:10px;font-size:11px;color:#666;min-height:14px;transition:color .5s}
+    .score-how{font-size:11px;color:#555;margin-top:6px;line-height:1.6}
+
     .no-key-banner{background:#1f2a1f;border:1px solid #3a5a3a;border-radius:var(--radius);padding:10px 13px;font-size:12px;color:#90c890;cursor:pointer;display:none}
     .no-key-banner:hover{border-color:#5a8a5a}
     .ai-intro{background:linear-gradient(135deg,#1a1f2e,#1e2a1e);border:1px solid #2e4a5a;border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
@@ -253,6 +266,19 @@
         </div>
         <div class="energy-note" id="energyNote"></div>
       </div>
+    </div>
+
+    <div class="score-card" id="scoreCard">
+      <div class="score-header">
+        <span class="score-label">⚡ Brain Score</span>
+        <span class="score-pb" id="scorePB">PB: 0 pts</span>
+      </div>
+      <div class="score-nums">
+        <div class="score-block"><div class="score-val" id="scoreTodayVal">0</div><div class="score-sub">today</div></div>
+        <div class="score-divider"></div>
+        <div class="score-block"><div class="score-val" id="scoreWeekVal">0</div><div class="score-sub">this week</div></div>
+      </div>
+      <div class="score-log" id="scoreLog">Earn points: open daily +15 · Top 3 done +10 · use AI +5</div>
     </div>
 
     <div class="section-label">🗂 Your Sections — click any to open</div>
@@ -442,7 +468,7 @@ function captureIt(){const v=document.getElementById('captureInput').value.trim(
 
 // Focus
 function saveFocus(){set(LS.focus,JSON.stringify([1,2,3].map(i=>document.getElementById(`focus${i}`).value)));}
-function toggleFocus(i){const inp=document.getElementById(`focus${i}`),chk=document.getElementById(`check${i}`);inp.classList.toggle('done',chk.checked);set(LS.checks,JSON.stringify([1,2,3].map(n=>document.getElementById(`check${n}`).checked)));}
+function toggleFocus(i){const inp=document.getElementById(`focus${i}`),chk=document.getElementById(`check${i}`);inp.classList.toggle('done',chk.checked);set(LS.checks,JSON.stringify([1,2,3].map(n=>document.getElementById(`check${n}`).checked)));if(chk.checked)awardOnce('top3_'+i+'_'+bsToday(),10,'✅ +10 — Top 3 item done');}
 function clearFocus(){[1,2,3].forEach(i=>{document.getElementById(`focus${i}`).value='';document.getElementById(`focus${i}`).classList.remove('done');document.getElementById(`check${i}`).checked=false;});localStorage.removeItem(LS.focus);localStorage.removeItem(LS.checks);}
 function loadFocus(){try{const v=JSON.parse(get(LS.focus)||'[]'),c=JSON.parse(get(LS.checks)||'[]');[1,2,3].forEach((_,i)=>{if(v[i])document.getElementById(`focus${i+1}`).value=v[i];if(c[i]){document.getElementById(`check${i+1}`).checked=true;document.getElementById(`focus${i+1}`).classList.add('done');}});}catch{}}
 
@@ -529,14 +555,59 @@ async function doSend(prompt,areaId,btnId,btnTextId,wrapId){
 
 function getFieldVals(prefix=''){const tpl=CATEGORIES[currentCat].templates[parseInt(document.getElementById(prefix?'templateSelectMob':'templateSelect').value)];const vals={};let empty=false;tpl.fields.forEach(f=>{const el=document.getElementById(`${prefix}f-${f.id}`);const val=el?.value.trim()||'';if(!val&&f.type!=='select')empty=true;vals[f.id]=val;});return{tpl,vals,empty};}
 
-function sendPrompt(){const{tpl,vals,empty}=getFieldVals();if(empty){alert('Please fill in all fields.');return;}doSend(tpl.build(vals),'responseArea','sendBtn','btnText','responseWrap');}
-function sendPromptMob(){const{tpl,vals,empty}=getFieldVals('mob-');if(empty){alert('Please fill in all fields.');return;}doSend(tpl.build(vals),'responseAreaMob','sendBtnMob','btnTextMob','responseWrapMob');}
+function sendPrompt(){const{tpl,vals,empty}=getFieldVals();if(empty){alert('Please fill in all fields.');return;}addPoints(5,'🤖 +5 — used AI coach');doSend(tpl.build(vals),'responseArea','sendBtn','btnText','responseWrap');}
+function sendPromptMob(){const{tpl,vals,empty}=getFieldVals('mob-');if(empty){alert('Please fill in all fields.');return;}addPoints(5,'🤖 +5 — used AI coach');doSend(tpl.build(vals),'responseAreaMob','sendBtnMob','btnTextMob','responseWrapMob');}
 function resetResponse(){document.getElementById('responseWrap').classList.remove('visible');document.getElementById('responseArea').textContent='';}
 function resetResponseMob(){document.getElementById('responseWrapMob').classList.remove('visible');document.getElementById('responseAreaMob').textContent='';}
 
+// ── Brain Score ──────────────────────────────────────────
+const BS={td:'bs_td',tp:'bs_tp',ws:'bs_ws',wp:'bs_wp',bw:'bs_bw',aw:'bs_aw'};
+function bsWeekStart(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay());return d.toISOString().slice(0,10);}
+function bsToday(){return new Date().toISOString().slice(0,10);}
+function bsAwarded(){return JSON.parse(localStorage.getItem(BS.aw)||'[]');}
+
+function initScore(){
+  const today=bsToday(),ws=bsWeekStart();
+  // New day reset
+  if(localStorage.getItem(BS.td)!==today){localStorage.setItem(BS.td,today);localStorage.setItem(BS.tp,'0');}
+  // New week reset — save best first
+  if(localStorage.getItem(BS.ws)!==ws){
+    const prev=parseInt(localStorage.getItem(BS.wp)||'0'),best=parseInt(localStorage.getItem(BS.bw)||'0');
+    if(prev>best)localStorage.setItem(BS.bw,String(prev));
+    localStorage.setItem(BS.ws,ws);localStorage.setItem(BS.wp,'0');localStorage.setItem(BS.aw,'[]');
+  }
+  // Daily open bonus — once per day
+  awardOnce('open_'+today,15,'🌅 +15 — opened today');
+}
+
+function addPoints(pts,reason){
+  const tp=parseInt(localStorage.getItem(BS.tp)||'0')+pts;
+  const wp=parseInt(localStorage.getItem(BS.wp)||'0')+pts;
+  localStorage.setItem(BS.tp,String(tp));localStorage.setItem(BS.wp,String(wp));
+  const best=parseInt(localStorage.getItem(BS.bw)||'0');
+  if(wp>best)localStorage.setItem(BS.bw,String(wp));
+  renderScore(reason);
+}
+
+function awardOnce(key,pts,reason){
+  const aw=bsAwarded();if(aw.includes(key))return void renderScore();
+  aw.push(key);localStorage.setItem(BS.aw,JSON.stringify(aw));addPoints(pts,reason);
+}
+
+function renderScore(lastAction){
+  const tp=parseInt(localStorage.getItem(BS.tp)||'0');
+  const wp=parseInt(localStorage.getItem(BS.wp)||'0');
+  const best=parseInt(localStorage.getItem(BS.bw)||'0');
+  const tv=document.getElementById('scoreTodayVal'),wv=document.getElementById('scoreWeekVal'),pb=document.getElementById('scorePB'),log=document.getElementById('scoreLog');
+  if(!tv)return;
+  tv.textContent=tp;wv.textContent=wp;
+  pb.textContent=(wp>0&&wp>=best)?'🏆 Personal Best!':'PB: '+best+' pts';
+  if(lastAction){log.textContent=lastAction;log.style.color='#7ab0e0';setTimeout(()=>{log.style.color='#666';},3000);}
+}
+
 function init(){
   buildCatTabs();buildTemplateSelect();buildTemplateSelectMob();renderFields(0);renderFieldsMob(0);
-  updateUI();loadFocus();
+  updateUI();loadFocus();initScore();
   const e=get(LS.energy);if(e)applyEnergy(e);
 }
 init();
