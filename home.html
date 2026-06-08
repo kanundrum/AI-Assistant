@@ -191,7 +191,7 @@
   <div class="brand">🧠 Brain OS</div>
   <div class="topbar-right">
     <span class="pill" id="connectionPill">Not connected</span>
-    <button class="settings-btn topbar-settings" onclick="openSettings()">âš™ AI Settings</button>
+    <button class="settings-btn topbar-settings" onclick="openSettings()">⚙ AI Settings</button>
   </div>
 </div>
 
@@ -261,7 +261,7 @@
         <div class="inline-label">🔋 Energy Right Now — AI will match suggestions to your level</div>
         <div class="energy-btns">
           <button class="energy-btn" id="eHigh" onclick="setEnergy('high')">🔋 High</button>
-          <button class="energy-btn" id="eMed"  onclick="setEnergy('med')">âš¡ Medium</button>
+          <button class="energy-btn" id="eMed"  onclick="setEnergy('med')">⚡ Medium</button>
           <button class="energy-btn" id="eLow"  onclick="setEnergy('low')">😴 Low</button>
         </div>
         <div class="energy-note" id="energyNote"></div>
@@ -520,4 +520,98 @@ function saveSettings(){const key=document.getElementById('keyInput').value.trim
 function updateUI(){
   const hasKey=!!getKey(),pk=getProvider(),p=pk&&PROVIDERS[pk];
   document.getElementById('noKeyBanner').style.display=hasKey?'none':'block';
-  const mob=document.getElementById('noKeyBannerMob');if(mob)mob.st
+  const mob=document.getElementById('noKeyBannerMob');if(mob)mob.style.display=hasKey?'none':'block';
+  const intro=document.getElementById('aiIntro');if(intro)intro.style.display=hasKey?'none':'block';
+  const mobSettingsBtn=document.querySelector('.mob-sheet .settings-btn');if(mobSettingsBtn)mobSettingsBtn.textContent=hasKey?'⚙ AI Settings':'⚙ AI Settings — tap to connect your AI';
+  const deskSettingsBtn=document.getElementById('desktopSettingsBtn');if(deskSettingsBtn)deskSettingsBtn.textContent=hasKey?'⚙ AI Settings':'⚙ AI Settings — click to connect your AI';
+  document.getElementById('aiFooter').textContent=p?p.footerText:'Your key, your usage · No data shared';
+  const pill=document.getElementById('connectionPill');if(hasKey&&p){pill.textContent=`Connected · ${p.name}`;pill.classList.add('connected');}else{pill.textContent='Not connected';pill.classList.remove('connected');}
+  const model=getModel(),prov=PROVIDERS[pk];let label=pk==='custom'?model||'Custom':((prov?.models||[]).find(m=>m.value===model)?.label.split(' — ')[0]||model);
+  document.getElementById('modelBadge').textContent=(hasKey&&p)?`${prov?.name||''} · ${label}`:'Not connected';
+}
+
+// Send prompt — shared logic
+async function doSend(prompt,areaId,btnId,btnTextId,wrapId){
+  const apiKey=getKey();if(!apiKey){openSettings();return;}
+  const pk=getProvider(),p=PROVIDERS[pk],model=getModel();
+  const endpoint=pk==='custom'?(getCustomUrl().replace(/\/$/,'')+'/chat/completions'):p.endpoint;
+  const btn=document.getElementById(btnId),btnTxt=document.getElementById(btnTextId),wrap=document.getElementById(wrapId),area=document.getElementById(areaId);
+  btn.disabled=true;btnTxt.textContent='Thinking...';wrap.classList.add('visible');area.innerHTML='<span class="thinking">Getting your answer…</span>';
+  const sys='You are a practical ADHD productivity coach. Be direct and concise. Give specific, actionable advice. No filler. Short paragraphs or numbered steps where helpful.';
+  try{
+    if(p.format==='anthropic'){
+      const res=await fetch(endpoint,{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model,max_tokens:600,stream:true,system:sys,messages:[{role:'user',content:prompt}]})});
+      if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
+      area.textContent='';const reader=res.body.getReader(),dec=new TextDecoder();let buf='',lastEv='';
+      while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){if(line.startsWith('event: ')){lastEv=line.slice(7).trim();}else if(line.startsWith('data: ')&&lastEv==='content_block_delta'){try{area.textContent+=JSON.parse(line.slice(6))?.delta?.text||'';area.scrollTop=area.scrollHeight;}catch{}}}}
+    }else{
+      const res=await fetch(endpoint,{method:'POST',headers:{'Authorization':`Bearer ${apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model,stream:true,temperature:0.7,max_tokens:600,messages:[{role:'system',content:sys},{role:'user',content:prompt}]})});
+      if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
+      area.textContent='';const reader=res.body.getReader(),dec=new TextDecoder();let buf='';
+      while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){if(!line.startsWith('data: '))continue;const raw=line.slice(6);if(raw==='[DONE]')continue;try{area.textContent+=JSON.parse(raw).choices?.[0]?.delta?.content||'';area.scrollTop=area.scrollHeight;}catch{}}}
+    }
+  }catch(err){area.textContent=`Error: ${err.message}\n\nCheck your API key in AI Settings.`;}
+  finally{btn.disabled=false;btnTxt.textContent='Send to AI →';}
+}
+
+function getFieldVals(prefix=''){const tpl=CATEGORIES[currentCat].templates[parseInt(document.getElementById(prefix?'templateSelectMob':'templateSelect').value)];const vals={};let empty=false;tpl.fields.forEach(f=>{const el=document.getElementById(`${prefix}f-${f.id}`);const val=el?.value.trim()||'';if(!val&&f.type!=='select')empty=true;vals[f.id]=val;});return{tpl,vals,empty};}
+
+function sendPrompt(){const{tpl,vals,empty}=getFieldVals();if(empty){alert('Please fill in all fields.');return;}addPoints(5,'🤖 +5 — used AI coach');doSend(tpl.build(vals),'responseArea','sendBtn','btnText','responseWrap');}
+function sendPromptMob(){const{tpl,vals,empty}=getFieldVals('mob-');if(empty){alert('Please fill in all fields.');return;}addPoints(5,'🤖 +5 — used AI coach');doSend(tpl.build(vals),'responseAreaMob','sendBtnMob','btnTextMob','responseWrapMob');}
+function resetResponse(){document.getElementById('responseWrap').classList.remove('visible');document.getElementById('responseArea').textContent='';}
+function resetResponseMob(){document.getElementById('responseWrapMob').classList.remove('visible');document.getElementById('responseAreaMob').textContent='';}
+
+// ── Brain Score ──────────────────────────────────────────
+const BS={td:'bs_td',tp:'bs_tp',ws:'bs_ws',wp:'bs_wp',bw:'bs_bw',aw:'bs_aw'};
+function bsWeekStart(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay());return d.toISOString().slice(0,10);}
+function bsToday(){return new Date().toISOString().slice(0,10);}
+function bsAwarded(){return JSON.parse(localStorage.getItem(BS.aw)||'[]');}
+
+function initScore(){
+  const today=bsToday(),ws=bsWeekStart();
+  // New day reset
+  if(localStorage.getItem(BS.td)!==today){localStorage.setItem(BS.td,today);localStorage.setItem(BS.tp,'0');}
+  // New week reset — save best first
+  if(localStorage.getItem(BS.ws)!==ws){
+    const prev=parseInt(localStorage.getItem(BS.wp)||'0'),best=parseInt(localStorage.getItem(BS.bw)||'0');
+    if(prev>best)localStorage.setItem(BS.bw,String(prev));
+    localStorage.setItem(BS.ws,ws);localStorage.setItem(BS.wp,'0');localStorage.setItem(BS.aw,'[]');
+  }
+  // Daily open bonus — once per day
+  awardOnce('open_'+today,15,'🌅 +15 — opened today');
+}
+
+function addPoints(pts,reason){
+  const tp=parseInt(localStorage.getItem(BS.tp)||'0')+pts;
+  const wp=parseInt(localStorage.getItem(BS.wp)||'0')+pts;
+  localStorage.setItem(BS.tp,String(tp));localStorage.setItem(BS.wp,String(wp));
+  const best=parseInt(localStorage.getItem(BS.bw)||'0');
+  if(wp>best)localStorage.setItem(BS.bw,String(wp));
+  renderScore(reason);
+}
+
+function awardOnce(key,pts,reason){
+  const aw=bsAwarded();if(aw.includes(key))return void renderScore();
+  aw.push(key);localStorage.setItem(BS.aw,JSON.stringify(aw));addPoints(pts,reason);
+}
+
+function renderScore(lastAction){
+  const tp=parseInt(localStorage.getItem(BS.tp)||'0');
+  const wp=parseInt(localStorage.getItem(BS.wp)||'0');
+  const best=parseInt(localStorage.getItem(BS.bw)||'0');
+  const tv=document.getElementById('scoreTodayVal'),wv=document.getElementById('scoreWeekVal'),pb=document.getElementById('scorePB'),log=document.getElementById('scoreLog');
+  if(!tv)return;
+  tv.textContent=tp;wv.textContent=wp;
+  pb.textContent=(wp>0&&wp>=best)?'🏆 Personal Best!':'PB: '+best+' pts';
+  if(lastAction){log.textContent=lastAction;log.style.color='#7ab0e0';setTimeout(()=>{log.style.color='#666';},3000);}
+}
+
+function init(){
+  buildCatTabs();buildTemplateSelect();buildTemplateSelectMob();renderFields(0);renderFieldsMob(0);
+  updateUI();loadFocus();initScore();
+  const e=get(LS.energy);if(e)applyEnergy(e);
+}
+init();
+</script>
+</body>
+</html>
