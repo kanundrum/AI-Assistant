@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>ADHD Brain OS — Home</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#5e9cf5">
+
+  <!-- iOS "Add to Home Screen" support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Brain OS">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <style>
     :root {
       --bg:#1a1a1a; --surface:#252525; --surface2:#2f2f2f; --border:#3a3a3a;
@@ -612,6 +622,16 @@ function init(){
   const e=get(LS.energy);if(e)applyEnergy(e);
 }
 init();
+</script>
+
+<script>
+// Register service worker for PWA / offline support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/AI-Assistant/sw.js')
+      .catch(() => {}); // silent fail — page works fine without it
+  });
+}
 </script>
 </body>
 </html>
