@@ -212,16 +212,14 @@
       <div class="setup-title" id="setupTitle">👋 Connect your AI</div>
       <div class="setup-desc">Your key is saved in your browser only, never shared.<br><br>
         • <strong>Groq</strong> — free, no credit card needed<br>
-        • <strong>OpenAI</strong> — if you have a ChatGPT/API account<br>
         • <strong>Claude</strong> — if you use Anthropic/Claude.ai<br>
-        • <strong>Custom</strong> — OpenRouter, Ollama, LM Studio
+        • <strong>Custom</strong> — OpenRouter (incl. GPT models), Ollama, LM Studio
       </div>
     </div>
     <div class="setup-field"><label for="providerSelect">AI Provider</label>
       <select id="providerSelect" onchange="onProviderChange()">
         <option value="" disabled selected>— Select your AI provider —</option>
         <option value="groq">Groq (Free — no credit card needed)</option>
-        <option value="openai">OpenAI / ChatGPT (Paid)</option>
         <option value="anthropic">Claude / Anthropic (Paid)</option>
         <option value="custom">Custom / Other (Advanced)</option>
       </select>
@@ -396,9 +394,8 @@
 <script>
 const PROVIDERS={
   groq:{name:'Groq',keyPlaceholder:'gsk_...',keyLabel:'Groq API Key',endpoint:'https://api.groq.com/openai/v1/chat/completions',format:'openai',hint:'✅ <strong>Groq is free — no credit card needed.</strong><br>1. Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> and sign up<br>2. API Keys → Create API Key → Copy below',hintClass:'free',models:[{value:'llama-3.3-70b-versatile',label:'Llama 3.3 70B — Best quality'},{value:'llama-3.1-8b-instant',label:'Llama 3.1 8B — Fastest'},{value:'gemma2-9b-it',label:'Gemma 2 9B — Google'},{value:'mixtral-8x7b-32768',label:'Mixtral 8x7B — Strong reasoning'}],footerText:'Groq · Free tier · Your key, your usage'},
-  openai:{name:'OpenAI',keyPlaceholder:'sk-...',keyLabel:'OpenAI API Key',endpoint:'https://api.openai.com/v1/chat/completions',format:'openai',hint:'💳 <strong>OpenAI requires a paid account.</strong><br>1. Go to <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a><br>2. Create new secret key → Copy below',hintClass:'paid',models:[{value:'gpt-4o-mini',label:'GPT-4o Mini — Most affordable'},{value:'gpt-4o',label:'GPT-4o — Best quality'}],footerText:'OpenAI · Paid tier · Your key, your usage'},
   anthropic:{name:'Claude',keyPlaceholder:'sk-ant-...',keyLabel:'Anthropic API Key',endpoint:'https://api.anthropic.com/v1/messages',format:'anthropic',hint:'💳 <strong>Anthropic requires a paid account.</strong><br>1. Go to <a href="https://console.anthropic.com/api-keys" target="_blank">console.anthropic.com/api-keys</a><br>2. Create Key → Copy below',hintClass:'paid',models:[{value:'claude-haiku-4-5-20251001',label:'Claude Haiku — Fastest & cheapest'},{value:'claude-sonnet-4-6',label:'Claude Sonnet — Best balance'},{value:'claude-opus-4-6',label:'Claude Opus — Highest quality'}],footerText:'Anthropic Claude · Paid tier · Your key, your usage'},
-  custom:{name:'Custom',keyPlaceholder:'Your API key...',keyLabel:'API Key',endpoint:'',format:'openai',hint:'⚙️ <strong>Custom OpenAI-compatible provider.</strong><br>Works with OpenRouter, Ollama, LM Studio.',hintClass:'custom-hint',models:[],footerText:'Custom provider · Your key, your usage'}
+  custom:{name:'Custom',keyPlaceholder:'Your API key...',keyLabel:'API Key',endpoint:'',format:'openai',hint:'⚙️ <strong>Custom OpenAI-compatible provider.</strong><br>Works with OpenRouter (GPT models too), Ollama, LM Studio.<br>OpenRouter: base URL <code>https://openrouter.ai/api/v1</code>',hintClass:'custom-hint',models:[],footerText:'Custom provider · Your key, your usage'}
 };
 
 const LS={provider:'adhd_provider',key:'adhd_api_key',model:'adhd_model',customUrl:'adhd_custom_url',customModel:'adhd_custom_model',focus:'adhd_focus',checks:'adhd_checks',energy:'adhd_energy'};
