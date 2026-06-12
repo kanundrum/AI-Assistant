@@ -83,7 +83,8 @@
     /* Section feed */
     .section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#666}
     .feed{display:flex;flex-direction:column;gap:9px}
-    .feed-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px 17px;color:inherit;display:block}
+    .feed-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px 17px;cursor:pointer;text-decoration:none;color:inherit;display:block;transition:border-color .2s,background .2s}
+    .feed-card:hover{border-color:var(--accent);background:var(--surface2)}
     .feed-top{display:flex;align-items:flex-start;gap:13px;margin-bottom:8px}
     .feed-icon{font-size:20px;flex-shrink:0;margin-top:1px}
     .feed-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px}
@@ -254,7 +255,7 @@
           <button class="capture-btn" onclick="captureIt()">Copy &amp; Open Brain Dump</button>
         </div>
         <div class="copy-confirm" id="copyConfirm">✓ Copied — paste into Brain Dump</div>
-        <div class="capture-link">Then paste it into the 🧠 Brain Dump page in your Notion sidebar.</div>
+        <div class="capture-link">Or go straight to <a href="https://www.notion.so/3751aaa8375281048850f2f8fcb2e39c" target="_blank">🧠 Brain Dump →</a></div>
       </div>
 
       <div class="inline-sep">
@@ -291,53 +292,53 @@
       <div class="score-log" id="scoreLog"></div>
     </div>
 
-    <div class="section-label">🗂 Your Sections — open them from your Notion sidebar</div>
+    <div class="section-label">🗂 Your Sections — click any to open</div>
     <div class="feed">
 
-      <div class="feed-card">
-        <div class="feed-top"><div class="feed-icon">🧠</div><div><div class="feed-title">Brain Dump</div><div class="feed-tagline">Empty your head first</div></div></div>
+      <a class="feed-card" href="https://www.notion.so/3751aaa8375281048850f2f8fcb2e39c" target="_blank">
+        <div class="feed-top"><div class="feed-icon">🧠</div><div><div class="feed-title">Brain Dump</div><div class="feed-tagline">Empty your head first</div></div><div class="feed-arrow">›</div></div>
         <div class="feed-desc">Everything swirling in your head goes here — tasks, ideas, worries. Get it out first, sort it second. AI prompt inside sorts everything into Tasks, Ideas, Reference, or Delete.</div>
-      </div>
+      </a>
 
-      <div class="feed-card">
-        <div class="feed-top"><div class="feed-icon">✅</div><div><div class="feed-title">Task Manager</div><div class="feed-tagline">What actually needs to happen</div></div></div>
+      <a class="feed-card" href="https://www.notion.so/3751aaa837528102bcfad3f78a9f3090" target="_blank">
+        <div class="feed-top"><div class="feed-icon">✅</div><div><div class="feed-title">Task Manager</div><div class="feed-tagline">What actually needs to happen</div></div><div class="feed-arrow">›</div></div>
         <div class="feed-desc">Task database with priority and energy-level tags. Views for Today, Quick Wins, and Urgent. AI breaks any task into ADHD-friendly micro-steps.</div>
-      </div>
+      </a>
 
-      <div class="feed-card">
-        <div class="feed-top"><div class="feed-icon">📅</div><div><div class="feed-title">Daily Planner</div><div class="feed-tagline">Morning intention → time blocks → reflection</div></div></div>
+      <a class="feed-card" href="https://www.notion.so/3751aaa83752812da782efd6f84690d4" target="_blank">
+        <div class="feed-top"><div class="feed-icon">📅</div><div><div class="feed-title">Daily Planner</div><div class="feed-tagline">Morning intention → time blocks → reflection</div></div><div class="feed-arrow">›</div></div>
         <div class="feed-desc">5 minutes each morning. Set your intention, block time for your Top 3, log distractions. Evening reflection takes 3 minutes.</div>
-      </div>
+      </a>
 
-      <div class="feed-card">
-        <div class="feed-top"><div class="feed-icon">🔄</div><div><div class="feed-title">Habit Tracker</div><div class="feed-tagline">Simple yes/no. Forgiving by design.</div></div></div>
+      <a class="feed-card" href="https://www.notion.so/3751aaa8375281899040ed3a1d107823" target="_blank">
+        <div class="feed-top"><div class="feed-icon">🔄</div><div><div class="feed-title">Habit Tracker</div><div class="feed-tagline">Simple yes/no. Forgiving by design.</div></div><div class="feed-arrow">›</div></div>
         <div class="feed-desc">No streaks to break, no guilt if you miss a day. Designed to be picked back up, not abandoned.</div>
-      </div>
+      </a>
 
-      <div class="feed-card">
-        <div class="feed-top"><div class="feed-icon">📊</div><div><div class="feed-title">Weekly Review</div><div class="feed-tagline">Wins first, then what's next</div></div></div>
+      <a class="feed-card" href="https://www.notion.so/3751aaa8375281d88821c22ee393214c" target="_blank">
+        <div class="feed-top"><div class="feed-icon">📊</div><div><div class="feed-title">Weekly Review</div><div class="feed-tagline">Wins first, then what's next</div></div><div class="feed-arrow">›</div></div>
         <div class="feed-desc">Forces you to acknowledge what you did before spiraling about what you didn't. AI gives an honest summary and direction for next week.</div>
-      </div>
+      </a>
 
-      <div class="feed-card">
-        <div class="feed-top"><div class="feed-icon">🧰</div><div><div class="feed-title">ADHD Toolbox</div><div class="feed-tagline">When nothing else is working</div></div></div>
+      <a class="feed-card" href="https://www.notion.so/3751aaa837528112b771d12850faa8bc" target="_blank">
+        <div class="feed-top"><div class="feed-icon">🧰</div><div><div class="feed-title">ADHD Toolbox</div><div class="feed-tagline">When nothing else is working</div></div><div class="feed-arrow">›</div></div>
         <div class="feed-desc">Paralysis Picker, 5-min Dopamine Menu, body doubling resources, emotional regulation check-in.</div>
-      </div>
+      </a>
 
-      <div class="feed-card">
-        <div class="feed-top"><div class="feed-icon">🚀</div><div><div class="feed-title">Project Hub</div><div class="feed-tagline">Goals linked to action</div></div></div>
+      <a class="feed-card" href="https://www.notion.so/3751aaa83752816387a6e635c07b48b1" target="_blank">
+        <div class="feed-top"><div class="feed-icon">🚀</div><div><div class="feed-title">Project Hub</div><div class="feed-tagline">Goals linked to action</div></div><div class="feed-arrow">›</div></div>
         <div class="feed-desc">All your projects in one place, linked to tasks. AI prompt turns any vague goal into a step-by-step plan you can actually start.</div>
-      </div>
+      </a>
 
-      <div class="feed-card">
-        <div class="feed-top"><div class="feed-icon">💡</div><div><div class="feed-title">AI Prompt Library</div><div class="feed-tagline">Every prompt in one place</div></div></div>
+      <a class="feed-card" href="https://www.notion.so/3751aaa8375281b888f2f3f798c249f0" target="_blank">
+        <div class="feed-top"><div class="feed-icon">💡</div><div><div class="feed-title">AI Prompt Library</div><div class="feed-tagline">Every prompt in one place</div></div><div class="feed-arrow">›</div></div>
         <div class="feed-desc">35 pre-written prompts organized by situation. Copy → paste into Claude.ai or ChatGPT. No key needed.</div>
-      </div>
+      </a>
 
-      <div class="feed-card">
-        <div class="feed-top"><div class="feed-icon">📱</div><div><div class="feed-title">Mobile Capture</div><div class="feed-tagline">Quick capture from your phone</div></div></div>
+      <a class="feed-card" href="https://www.notion.so/3781aaa8375281d28bd5eff87f50fa8e" target="_blank">
+        <div class="feed-top"><div class="feed-icon">📱</div><div><div class="feed-title">Mobile Capture</div><div class="feed-tagline">Quick capture from your phone</div></div><div class="feed-arrow">›</div></div>
         <div class="feed-desc">Stripped-down capture page for when you're on the go. One tap, one field, no friction. Syncs back to your Brain Dump.</div>
-      </div>
+      </a>
 
     </div>
   </div>
@@ -394,9 +395,9 @@
 
 <script>
 const PROVIDERS={
-  groq:{name:'Groq',keyPlaceholder:'gsk_...',keyLabel:'Groq API Key',endpoint:'https://api.groq.com/openai/v1/chat/completions',format:'openai',hint:'✅ <strong>Groq is free — no credit card needed.</strong><br>1. Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> and sign up<br>2. API Keys → Create API Key → Copy below',hintClass:'free',models:[{value:'llama-3.3-70b-versatile',label:'Llama 3.3 70B — Best quality'},{value:'llama-3.1-8b-instant',label:'Llama 3.1 8B — Fastest'}],footerText:'Groq · Free tier · Your key, your usage'},
+  groq:{name:'Groq',keyPlaceholder:'gsk_...',keyLabel:'Groq API Key',endpoint:'https://api.groq.com/openai/v1/chat/completions',format:'openai',hint:'✅ <strong>Groq is free — no credit card needed.</strong><br>1. Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> and sign up<br>2. API Keys → Create API Key → Copy below',hintClass:'free',models:[{value:'llama-3.3-70b-versatile',label:'Llama 3.3 70B — Best quality'},{value:'llama-3.1-8b-instant',label:'Llama 3.1 8B — Fastest'},{value:'gemma2-9b-it',label:'Gemma 2 9B — Google'},{value:'mixtral-8x7b-32768',label:'Mixtral 8x7B — Strong reasoning'}],footerText:'Groq · Free tier · Your key, your usage'},
   openai:{name:'OpenAI',keyPlaceholder:'sk-...',keyLabel:'OpenAI API Key',endpoint:'https://api.openai.com/v1/chat/completions',format:'openai',hint:'💳 <strong>OpenAI requires a paid account.</strong><br>1. Go to <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a><br>2. Create new secret key → Copy below',hintClass:'paid',models:[{value:'gpt-4o-mini',label:'GPT-4o Mini — Most affordable'},{value:'gpt-4o',label:'GPT-4o — Best quality'}],footerText:'OpenAI · Paid tier · Your key, your usage'},
-  anthropic:{name:'Claude',keyPlaceholder:'sk-ant-...',keyLabel:'Anthropic API Key',endpoint:'https://api.anthropic.com/v1/messages',format:'anthropic',hint:'💳 <strong>Anthropic requires a paid account.</strong><br>1. Go to <a href="https://console.anthropic.com/api-keys" target="_blank">console.anthropic.com/api-keys</a><br>2. Create Key → Copy below',hintClass:'paid',models:[{value:'claude-haiku-4-5-20251001',label:'Claude Haiku — Fastest & cheapest'},{value:'claude-sonnet-4-6',label:'Claude Sonnet — Best balance'},{value:'claude-opus-4-8',label:'Claude Opus — Highest quality'}],footerText:'Anthropic Claude · Paid tier · Your key, your usage'},
+  anthropic:{name:'Claude',keyPlaceholder:'sk-ant-...',keyLabel:'Anthropic API Key',endpoint:'https://api.anthropic.com/v1/messages',format:'anthropic',hint:'💳 <strong>Anthropic requires a paid account.</strong><br>1. Go to <a href="https://console.anthropic.com/api-keys" target="_blank">console.anthropic.com/api-keys</a><br>2. Create Key → Copy below',hintClass:'paid',models:[{value:'claude-haiku-4-5-20251001',label:'Claude Haiku — Fastest & cheapest'},{value:'claude-sonnet-4-6',label:'Claude Sonnet — Best balance'},{value:'claude-opus-4-6',label:'Claude Opus — Highest quality'}],footerText:'Anthropic Claude · Paid tier · Your key, your usage'},
   custom:{name:'Custom',keyPlaceholder:'Your API key...',keyLabel:'API Key',endpoint:'',format:'openai',hint:'⚙️ <strong>Custom OpenAI-compatible provider.</strong><br>Works with OpenRouter, Ollama, LM Studio.',hintClass:'custom-hint',models:[],footerText:'Custom provider · Your key, your usage'}
 };
 
@@ -540,6 +541,7 @@ function updateUI(){
 }
 
 // Send prompt — shared logic
+let chatHistory=[]; // conversation memory: last 6 exchanges, cleared on template/category change
 async function doSend(prompt,areaId,btnId,btnTextId,wrapId){
   const apiKey=getKey();if(!apiKey){openSettings();return;}
   const pk=getProvider(),p=PROVIDERS[pk],model=getModel();
@@ -549,16 +551,18 @@ async function doSend(prompt,areaId,btnId,btnTextId,wrapId){
   const sys='You are a practical ADHD productivity coach. Be direct and concise. Give specific, actionable advice. No filler. Short paragraphs or numbered steps where helpful.';
   try{
     if(p.format==='anthropic'){
-      const res=await fetch(endpoint,{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},body:JSON.stringify({model,max_tokens:600,stream:true,system:sys,messages:[{role:'user',content:prompt}]})});
+      const res=await fetch(endpoint,{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model,max_tokens:600,stream:true,system:sys,messages:[...chatHistory,{role:'user',content:prompt}]})});
       if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
       area.textContent='';const reader=res.body.getReader(),dec=new TextDecoder();let buf='',lastEv='';
       while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){if(line.startsWith('event: ')){lastEv=line.slice(7).trim();}else if(line.startsWith('data: ')&&lastEv==='content_block_delta'){try{area.textContent+=JSON.parse(line.slice(6))?.delta?.text||'';area.scrollTop=area.scrollHeight;}catch{}}}}
     }else{
-      const res=await fetch(endpoint,{method:'POST',headers:{'Authorization':`Bearer ${apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model,stream:true,temperature:0.7,max_tokens:600,messages:[{role:'system',content:sys},{role:'user',content:prompt}]})});
+      const res=await fetch(endpoint,{method:'POST',headers:{'Authorization':`Bearer ${apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model,stream:true,temperature:0.7,max_tokens:600,messages:[{role:'system',content:sys},...chatHistory,{role:'user',content:prompt}]})});
       if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
       area.textContent='';const reader=res.body.getReader(),dec=new TextDecoder();let buf='';
       while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){if(!line.startsWith('data: '))continue;const raw=line.slice(6);if(raw==='[DONE]')continue;try{area.textContent+=JSON.parse(raw).choices?.[0]?.delta?.content||'';area.scrollTop=area.scrollHeight;}catch{}}}
     }
+    chatHistory.push({role:'user',content:prompt},{role:'assistant',content:area.textContent});
+    if(chatHistory.length>12)chatHistory=chatHistory.slice(-12); // cap at 6 exchanges to bound token cost
   }catch(err){area.textContent=`Error: ${err.message}\n\nCheck your API key in AI Settings.`;}
   finally{btn.disabled=false;btnTxt.textContent='Send to AI →';}
 }
@@ -567,8 +571,8 @@ function getFieldVals(prefix=''){const tpl=CATEGORIES[currentCat].templates[pars
 
 function sendPrompt(){const{tpl,vals,empty}=getFieldVals();if(empty){alert('Please fill in all fields.');return;}addPoints(5,'🤖 +5 — used AI coach');doSend(tpl.build(vals),'responseArea','sendBtn','btnText','responseWrap');}
 function sendPromptMob(){const{tpl,vals,empty}=getFieldVals('mob-');if(empty){alert('Please fill in all fields.');return;}addPoints(5,'🤖 +5 — used AI coach');doSend(tpl.build(vals),'responseAreaMob','sendBtnMob','btnTextMob','responseWrapMob');}
-function resetResponse(){document.getElementById('responseWrap').classList.remove('visible');document.getElementById('responseArea').textContent='';}
-function resetResponseMob(){document.getElementById('responseWrapMob').classList.remove('visible');document.getElementById('responseAreaMob').textContent='';}
+function resetResponse(){chatHistory=[];document.getElementById('responseWrap').classList.remove('visible');document.getElementById('responseArea').textContent='';}
+function resetResponseMob(){chatHistory=[];document.getElementById('responseWrapMob').classList.remove('visible');document.getElementById('responseAreaMob').textContent='';}
 
 // ── Brain Score ──────────────────────────────────────────
 const BS={td:'bs_td',tp:'bs_tp',ws:'bs_ws',wp:'bs_wp',bw:'bs_bw',aw:'bs_aw'};
@@ -627,7 +631,7 @@ init();
 // Register service worker for PWA / offline support
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js') // relative — survives repo rename
+    navigator.serviceWorker.register('/AI-Assistant/sw.js')
       .catch(() => {}); // silent fail — page works fine without it
   });
 }
