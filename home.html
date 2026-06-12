@@ -225,7 +225,7 @@
       </select>
     </div>
     <div class="hint free" id="providerHint" style="display:none"></div>
-    <div class="setup-field"><label for="keyInput" id="keyLabel">API Key</label><input type="text" id="keyInput" placeholder="Your API key..." autocomplete="off" spellcheck="false"></div>
+    <div class="setup-field"><label for="keyInput" id="keyLabel">API Key</label><input type="text" id="keyInput" placeholder="Your API key..." autocomplete="off" spellcheck="false"><div style="font-size:11px;color:#888;margin-top:4px">Tip: in the Notion app, paste your key with Ctrl+V (Cmd+V on Mac) — right-click paste may not work.</div></div>
     <div class="setup-field" id="customUrlField" style="display:none"><label for="customUrlInput">Base URL</label><input type="text" id="customUrlInput" placeholder="https://openrouter.ai/api/v1" autocomplete="off" spellcheck="false"></div>
     <div class="setup-field" id="modelSelectField"><label for="modelSelect">Model</label><select id="modelSelect"></select></div>
     <div class="setup-field" id="customModelField" style="display:none"><label for="customModelInput">Model Name</label><input type="text" id="customModelInput" placeholder="e.g. openai/gpt-4o" autocomplete="off" spellcheck="false"></div>
@@ -531,7 +531,7 @@ function updateUI(){
   const intro=document.getElementById('aiIntro');if(intro)intro.style.display=hasKey?'none':'block';
   const mobSettingsBtn=document.querySelector('.mob-sheet .settings-btn');if(mobSettingsBtn)mobSettingsBtn.textContent=hasKey?'⚙ AI Settings':'⚙ AI Settings — tap to connect your AI';
   const deskSettingsBtn=document.getElementById('desktopSettingsBtn');if(deskSettingsBtn)deskSettingsBtn.textContent=hasKey?'⚙ AI Settings':'⚙ AI Settings — click to connect your AI';
-  document.getElementById('aiFooter').textContent=p?p.footerText:'Your key, your usage · No data shared';
+  document.getElementById('aiFooter').textContent=(p?p.footerText:'Your key, your usage · No data shared')+' · Kanundrum';
   const pill=document.getElementById('connectionPill');if(hasKey&&p){pill.textContent=`Connected · ${p.name}`;pill.classList.add('connected');}else{pill.textContent='Not connected';pill.classList.remove('connected');}
   const model=getModel(),prov=PROVIDERS[pk];let label=pk==='custom'?model||'Custom':((prov?.models||[]).find(m=>m.value===model)?.label.split(' — ')[0]||model);
   document.getElementById('modelBadge').textContent=(hasKey&&p)?`${prov?.name||''} · ${label}`:'Not connected';
