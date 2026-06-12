@@ -31,6 +31,8 @@
     .pill.connected{border-color:var(--green);color:var(--green)}
     .settings-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:var(--radius);font-size:12px;cursor:pointer;transition:color .2s,border-color .2s}
     .settings-btn:hover{color:var(--text);border-color:var(--text)}
+    /* When embedded in Notion, drop topbar controls below Notion's hover-toolbar zone */
+    body.embedded .topbar{height:92px;align-items:flex-end;padding-bottom:10px}
     @media(max-width:700px){.topbar-settings{display:none}.topbar-right{display:none}}
 
     /* DESKTOP SPLIT LAYOUT */
@@ -197,6 +199,7 @@
 </head>
 <body>
 
+<script>if(window.self!==window.top)document.body.classList.add('embedded');</script>
 <div class="topbar">
   <div class="brand">🏠 Dashboard</div>
   <div class="topbar-right">
