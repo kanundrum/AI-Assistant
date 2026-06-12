@@ -1,9 +1,12 @@
-const CACHE = 'adhd-brain-os-v1';
+// Bump this version on every deploy — it triggers cache refresh for installed users.
+const CACHE = 'adhd-brain-os-v2';
+
+// Relative paths resolve against this file's location, so they survive a repo rename.
 const SHELL = [
-  '/AI-Assistant/home.html',
-  '/AI-Assistant/manifest.json',
-  '/AI-Assistant/icons/icon-192.png',
-  '/AI-Assistant/icons/icon-512.png'
+  'home.html',
+  'manifest.json',
+  'icons/icon-192.png',
+  'icons/icon-512.png'
 ];
 
 // Install — cache the app shell
@@ -22,37 +25,41 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Fetch — network first for API calls, cache first for app shell
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
-  // Always go network for AI API calls — they need live internet
-  if (
-    url.hostname.includes('groq.com') ||
-    url.hostname.includes('openai.com') ||
-    url.hostname.includes('anthropic.com') ||
-    url.hostname.includes('openrouter.ai')
-  ) {
-    return; // let browser handle it normally
-  }
+  // Only handle same-origin GETs. Everything else (AI APIs, CDNs, POSTs)
+  // goes straight to the network untouched.
+  if (e.request.method !== 'GET' || url.origin !== self.location.origin) return;
 
-  // App shell: cache first, network fallback
-  e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request).then(res => {
-        // Cache any same-origin GET responses
-        if (e.request.method === 'GET' && url.origin === self.location.origin) {
+  // HTML/navigations: network first, cache fallback.
+  // Users always get the latest deploy when online; offline still works.
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).then(res => {
+        if (res.ok) {
           const clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      }).catch(() => {
-        // Offline fallback — serve home.html for navigation requests
-        if (e.request.mode === 'navigate') {
-          return caches.match('/AI-Assistant/home.html');
+      }).catch(() =>
+        caches.match(e.request).then(cached => cached || caches.match('home.html'))
+      )
+    );
+    return;
+  }
+
+  // Static assets: cache first, network fallback. Only cache good responses.
+  e.respondWith(
+    caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      return fetch(e.request).then(res => {
+        if (res.ok) {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
         }
-      });
+        return res;
+      }).catch(() => Response.error());
     })
   );
 });
