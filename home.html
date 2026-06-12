@@ -551,7 +551,7 @@ async function doSend(prompt,areaId,btnId,btnTextId,wrapId){
   const sys='You are a practical ADHD productivity coach. Be direct and concise. Give specific, actionable advice. No filler. Short paragraphs or numbered steps where helpful.';
   try{
     if(p.format==='anthropic'){
-      const res=await fetch(endpoint,{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json'},body:JSON.stringify({model,max_tokens:600,stream:true,system:sys,messages:[...chatHistory,{role:'user',content:prompt}]})});
+      const res=await fetch(endpoint,{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},body:JSON.stringify({model,max_tokens:600,stream:true,system:sys,messages:[...chatHistory,{role:'user',content:prompt}]})});
       if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
       area.textContent='';const reader=res.body.getReader(),dec=new TextDecoder();let buf='',lastEv='';
       while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){if(line.startsWith('event: ')){lastEv=line.slice(7).trim();}else if(line.startsWith('data: ')&&lastEv==='content_block_delta'){try{area.textContent+=JSON.parse(line.slice(6))?.delta?.text||'';area.scrollTop=area.scrollHeight;}catch{}}}}
