@@ -131,7 +131,7 @@
     select,input[type="text"],textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:var(--radius);font-size:13px;font-family:inherit;appearance:none;transition:border-color .2s}
     select{padding-right:28px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23888' d='M5 6L0 0h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
     select:focus,input:focus,textarea:focus{outline:none;border-color:var(--accent)}
-    textarea{min-height:72px;resize:vertical;line-height:1.6}
+    textarea{min-height:110px;resize:vertical;line-height:1.6}
     .field-group{display:flex;flex-direction:column;gap:5px}
     label.field-label{font-size:11px;font-weight:500;color:var(--muted)}
 
@@ -142,7 +142,7 @@
     .response-wrap{display:none;flex-direction:column;gap:7px}
     .response-wrap.visible{display:flex}
     .resp-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-    .response-area{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:13px;line-height:1.75;white-space:pre-wrap;word-break:break-word;min-height:60px}
+    .response-area{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:13px;line-height:1.75;white-space:pre-wrap;word-break:break-word;min-height:180px;max-height:480px;overflow-y:auto}
     .thinking{color:var(--muted);font-style:italic}
     .reset-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 13px;border-radius:var(--radius);font-size:12px;cursor:pointer;align-self:flex-start;transition:color .2s,border-color .2s}
     .reset-btn:hover{color:var(--text);border-color:var(--text)}
@@ -201,7 +201,6 @@
 
 <script>if(window.self!==window.top)document.body.classList.add('embedded');</script>
 <div class="topbar">
-  <div class="brand">🏠 Dashboard</div>
   <div class="topbar-right">
     <span class="pill" id="connectionPill">Not connected</span>
     <button class="settings-btn topbar-settings" onclick="openSettings()">⚙ AI Settings</button>
