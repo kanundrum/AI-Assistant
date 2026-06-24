@@ -1,0 +1,14 @@
+{
+  "name": "florida-trip-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One-shot scraper that reports OMA -> Florida nonstop flights, Turo/rental cars, and beach lodging near Cape Canaveral National Cemetery for a specific trip window.",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "postinstall": "playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}
