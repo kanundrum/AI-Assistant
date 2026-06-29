@@ -195,6 +195,12 @@
       .inline-label{font-size:12px;color:var(--text)}
       .section-label{font-size:12px}
     }
+
+    /* === NOTION EMBED FIX === */
+    body.embedded{height:auto!important;overflow-y:auto!important}
+    body.embedded .layout{height:auto!important;overflow:visible!important}
+    body.embedded .left{overflow-y:visible!important}
+    body.embedded .right{height:auto!important;overflow:visible!important}
   </style>
 </head>
 <body>
@@ -633,6 +639,15 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/AI-Assistant/sw.js')
       .catch(() => {}); // silent fail — page works fine without it
   });
+}
+</script>
+
+<!-- === NOTION EMBED HEIGHT FIX === -->
+<script>
+if(window.self!==window.top){
+  const postH=()=>window.parent.postMessage({height:document.body.scrollHeight},'*');
+  new ResizeObserver(postH).observe(document.body);
+  postH();
 }
 </script>
 </body>
