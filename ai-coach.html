@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADHD AI Coach</title>
+  <style>
+    :root{
+      --bg:#1a1a1a;--surface:#252525;--surface2:#2f2f2f;--border:#3a3a3a;
+      --text:#e2e2e2;--muted:#aaa;--accent:#5e9cf5;--accent-h:#4a8ae8;
+      --radius:8px;--green:#4caf82;--amber:#f5a623;--purple:#9b7fe8;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+
+    /* TOP BAR */
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--border)}
+    .topbar-title{font-size:13px;font-weight:700;color:var(--text)}
+    .topbar-right{display:flex;align-items:center;gap:8px}
+    .pill{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--border);color:var(--muted);white-space:nowrap}
+    .pill.connected{border-color:var(--green);color:var(--green)}
+    .settings-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:var(--radius);font-size:11px;cursor:pointer;transition:color .2s,border-color .2s;white-space:nowrap}
+    .settings-btn:hover{color:var(--text);border-color:var(--text)}
+
+    /* MAIN BODY */
+    .coach{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+
+    /* ENERGY */
+    .energy-row{display:flex;align-items:center;gap:8px}
+    .energy-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+    .energy-btns{display:flex;gap:6px;flex:1}
+    .energy-btn{flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:6px;border-radius:var(--radius);font-size:11px;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+    .energy-btn:hover{color:var(--text);border-color:var(--text)}
+    .energy-btn.active-high{background:#1e3a1e;border-color:var(--green);color:var(--green)}
+    .energy-btn.active-med{background:#3a2e10;border-color:var(--amber);color:var(--amber)}
+    .energy-btn.active-low{background:#2a1e3a;border-color:var(--purple);color:var(--purple)}
+
+    /* CATEGORY TABS */
+    .cat-tabs{display:flex;gap:4px;flex-wrap:wrap}
+    .cat-tab{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:3px 9px;border-radius:99px;font-size:11px;cursor:pointer;transition:all .15s;white-space:nowrap}
+    .cat-tab:hover{color:var(--text);border-color:var(--text)}
+    .cat-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+    /* PROMPT SELECT + FIELDS */
+    select,input[type="text"],textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:var(--radius);font-size:12px;font-family:inherit;appearance:none;transition:border-color .2s}
+    select{padding-right:24px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23888' d='M5 6L0 0h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+    select:focus,input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+    textarea{min-height:70px;resize:vertical;line-height:1.5}
+    .field-group{display:flex;flex-direction:column;gap:4px}
+    label.field-label{font-size:11px;color:var(--muted)}
+
+    /* SEND */
+    .send-btn{background:var(--accent);color:#fff;border:none;padding:10px;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;width:100%;transition:background .2s}
+    .send-btn:hover:not(:disabled){background:var(--accent-h)}
+    .send-btn:disabled{background:var(--surface2);color:var(--muted);cursor:not-allowed}
+
+    /* RESPONSE */
+    .response-wrap{display:none;flex-direction:column;gap:6px}
+    .response-wrap.visible{display:flex}
+    .resp-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+    .response-area{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;font-size:12px;line-height:1.7;white-space:pre-wrap;word-break:break-word;min-height:120px;max-height:320px;overflow-y:auto}
+    .thinking{color:var(--muted);font-style:italic}
+    .reset-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:var(--radius);font-size:11px;cursor:pointer;align-self:flex-start;transition:color .2s}
+    .reset-btn:hover{color:var(--text)}
+
+    /* SETTINGS OVERLAY */
+    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;align-items:center;justify-content:center;padding:16px}
+    .overlay.visible{display:flex}
+    .setup-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;width:100%;max-width:460px;display:flex;flex-direction:column;gap:12px;max-height:90vh;overflow-y:auto}
+    .setup-title{font-size:16px;font-weight:700}
+    .setup-desc{font-size:12px;color:var(--muted);line-height:1.6}
+    .setup-desc a{color:var(--accent);text-decoration:none}
+    .setup-field{display:flex;flex-direction:column;gap:5px}
+    .setup-field label{font-size:12px;font-weight:500;color:var(--muted)}
+    .setup-field input,.setup-field select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:var(--radius);font-size:12px;font-family:inherit;width:100%}
+    .setup-field input:focus,.setup-field select:focus{outline:none;border-color:var(--accent)}
+    .setup-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23888' d='M5 6L0 0h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer;padding-right:30px}
+    .hint{font-size:11px;color:var(--muted);line-height:1.5;background:var(--surface2);border-radius:var(--radius);padding:9px 11px;border-left:3px solid var(--border)}
+    .hint a{color:var(--accent);text-decoration:none}
+    .hint.free{border-left-color:#4caf82}.hint.paid{border-left-color:#f5a623}.hint.custom-hint{border-left-color:#9b7fe8}
+    .setup-actions{display:flex;gap:8px}
+    .btn-primary{flex:1;background:var(--accent);color:#fff;border:none;padding:10px;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer}
+    .btn-primary:hover{background:var(--accent-h)}
+    .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--muted);padding:10px 14px;border-radius:var(--radius);font-size:12px;cursor:pointer}
+    .btn-secondary:hover{color:var(--text)}
+
+    /* NO KEY BANNER */
+    .no-key-banner{background:#1a1f2e;border:1px solid #2e4a5a;border-radius:var(--radius);padding:9px 12px;font-size:12px;color:#7ab0e0;cursor:pointer;text-align:center}
+    .no-key-banner:hover{border-color:#5e9cf5}
+  </style>
+</head>
+<body>
+
+<!-- SETTINGS OVERLAY -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeSettings()">
+  <div class="setup-card">
+    <div class="setup-title" id="setupTitle">👋 Connect your AI</div>
+    <div class="setup-desc">Your key stays in your browser only — never shared.<br><br>
+      • <strong>Groq</strong> — free, no credit card needed<br>
+      • <strong>Claude / Anthropic</strong> — paid<br>
+      • <strong>Custom</strong> — OpenRouter, Ollama, LM Studio
+    </div>
+    <div class="setup-field"><label for="providerSelect">AI Provider</label>
+      <select id="providerSelect" onchange="onProviderChange()">
+        <option value="" disabled selected>— Select provider —</option>
+        <option value="groq">Groq (Free)</option>
+        <option value="anthropic">Claude / Anthropic (Paid)</option>
+        <option value="custom">Custom / Other</option>
+      </select>
+    </div>
+    <div class="hint free" id="providerHint" style="display:none"></div>
+    <div class="setup-field">
+      <label for="keyInput" id="keyLabel">API Key</label>
+      <input type="text" id="keyInput" placeholder="Your API key..." autocomplete="off" spellcheck="false">
+      <div style="font-size:11px;color:#888;margin-top:3px">In Notion: use Ctrl+V (Cmd+V) to paste — right-click may not work.</div>
+    </div>
+    <div class="setup-field" id="customUrlField" style="display:none"><label>Base URL</label><input type="text" id="customUrlInput" placeholder="https://openrouter.ai/api/v1" autocomplete="off"></div>
+    <div class="setup-field" id="modelSelectField"><label>Model</label><select id="modelSelect"></select></div>
+    <div class="setup-field" id="customModelField" style="display:none"><label>Model Name</label><input type="text" id="customModelInput" placeholder="e.g. openai/gpt-4o" autocomplete="off"></div>
+    <div class="setup-actions">
+      <button class="btn-primary" onclick="saveSettings()">Save & Connect</button>
+      <button class="btn-secondary" onclick="closeSettings()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-title">🤖 ADHD AI Coach</div>
+  <div class="topbar-right">
+    <span class="pill" id="connectionPill">Not connected</span>
+    <button class="settings-btn" onclick="openSettings()" id="settingsBtn">⚙ Connect AI</button>
+  </div>
+</div>
+
+<!-- COACH UI -->
+<div class="coach">
+
+  <!-- No key banner -->
+  <div class="no-key-banner" id="noKeyBanner" onclick="openSettings()">
+    🔑 Connect your AI to use 35+ ADHD prompts — Groq is free, no credit card needed.
+  </div>
+
+  <!-- Energy -->
+  <div class="energy-row">
+    <div class="energy-label">Energy</div>
+    <div class="energy-btns">
+      <button class="energy-btn" id="eHigh" onclick="setEnergy('high')">🔋 High</button>
+      <button class="energy-btn" id="eMed"  onclick="setEnergy('med')">⚡ Medium</button>
+      <button class="energy-btn" id="eLow"  onclick="setEnergy('low')">😴 Low</button>
+    </div>
+  </div>
+
+  <!-- Category tabs -->
+  <div class="cat-tabs" id="catTabs"></div>
+
+  <!-- Prompt select -->
+  <div class="field-group">
+    <label class="field-label">Prompt</label>
+    <select id="templateSelect" onchange="onTemplateChange()"></select>
+  </div>
+
+  <!-- Dynamic fields -->
+  <div id="fields"></div>
+
+  <!-- Send -->
+  <button class="send-btn" id="sendBtn" onclick="sendPrompt()"><span id="btnText">Send to AI →</span></button>
+
+  <!-- Response -->
+  <div class="response-wrap" id="responseWrap">
+    <div class="resp-label">AI Response</div>
+    <div class="response-area" id="responseArea"></div>
+    <button class="reset-btn" onclick="resetResponse()">← Ask another</button>
+  </div>
+
+</div>
+
+<script>
+const PROVIDERS={
+  groq:{name:'Groq',keyPlaceholder:'gsk_...',keyLabel:'Groq API Key',endpoint:'https://api.groq.com/openai/v1/chat/completions',format:'openai',hint:'✅ <strong>Groq is free — no credit card needed.</strong><br>1. Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> → sign up<br>2. API Keys → Create → Copy below',hintClass:'free',models:[{value:'llama-3.3-70b-versatile',label:'Llama 3.3 70B — Best quality'},{value:'llama-3.1-8b-instant',label:'Llama 3.1 8B — Fastest'},{value:'gemma2-9b-it',label:'Gemma 2 9B'},{value:'mixtral-8x7b-32768',label:'Mixtral 8x7B'}],footerText:'Groq · Free · Your key, your usage'},
+  anthropic:{name:'Claude',keyPlaceholder:'sk-ant-...',keyLabel:'Anthropic API Key',endpoint:'https://api.anthropic.com/v1/messages',format:'anthropic',hint:'💳 <strong>Anthropic requires a paid account.</strong><br>1. Go to <a href="https://console.anthropic.com/api-keys" target="_blank">console.anthropic.com/api-keys</a><br>2. Create Key → Copy below',hintClass:'paid',models:[{value:'claude-haiku-4-5-20251001',label:'Claude Haiku — Fastest'},{value:'claude-sonnet-4-6',label:'Claude Sonnet — Best balance'},{value:'claude-opus-4-6',label:'Claude Opus — Highest quality'}],footerText:'Anthropic Claude · Paid · Your key, your usage'},
+  custom:{name:'Custom',keyPlaceholder:'Your API key...',keyLabel:'API Key',endpoint:'',format:'openai',hint:'⚙️ <strong>Custom OpenAI-compatible provider.</strong><br>Works with OpenRouter, Ollama, LM Studio.',hintClass:'custom-hint',models:[],footerText:'Custom provider · Your key, your usage'}
+};
+
+const LS={provider:'adhd_provider',key:'adhd_api_key',model:'adhd_model',customUrl:'adhd_custom_url',customModel:'adhd_custom_model',energy:'adhd_energy'};
+const get=k=>localStorage.getItem(k)||'';
+const set=(k,v)=>localStorage.setItem(k,v);
+const getProvider=()=>get(LS.provider);
+const getKey=()=>get(LS.key);
+const getModel=()=>{const p=getProvider();return get(LS.model)||(p&&PROVIDERS[p]?PROVIDERS[p].models[0]?.value||'':'')};
+const getCustomUrl=()=>get(LS.customUrl);
+
+const ENERGY_LABELS={'high':'🔋 High','med':'⚡ Medium','low':'😴 Low'};
+
+const CATEGORIES=[
+  {key:'general',label:'🏠 General',templates:[
+    {label:"I'm stuck — what do I do?",fields:[{id:'situation',label:"What's going on?",type:'textarea',placeholder:"Describe what you're stuck on..."}],build:f=>`I have ADHD and I'm stuck. Help me figure out the single best next action right now.\n\nSituation: ${f.situation}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nBe direct. One thing to do, why it's the right call, first step as small as possible.`},
+    {label:"I'm overwhelmed — help me triage",fields:[{id:'items',label:"What's on your mind?",type:'textarea',placeholder:"List everything — tasks, worries, anything..."}],build:f=>`I have ADHD and I'm overwhelmed.\n\n${f.items}\n\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nHelp me triage. What needs attention today? What can wait? What should I drop? Direct, not reassuring.`},
+    {label:"Pick my Top 3 for today",fields:[{id:'everything',label:"What's on your plate?",type:'textarea',placeholder:"Meetings, tasks, commitments..."}],build:f=>`Help me pick my Top 3 priorities for today. I have ADHD.\n\n${f.everything}\n\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nExactly 3, matched to my energy. If I only do these, the day is a win. Be ruthless.`},
+    {label:"End of day reflection",fields:[{id:'did',label:"What did you do today?",type:'textarea',placeholder:"Even unplanned things..."},{id:'missed',label:"What didn't happen?",type:'text',placeholder:"The thing(s) that slipped..."},{id:'feel',label:"How do you feel?",type:'select',options:['Good — better than expected','Okay — about right','Frustrated — below expectations','Wasted — nothing went right']}],build:f=>`Help me close out my day. I have ADHD.\n\nDid: ${f.did}\nMissed: ${f.missed}\nFeeling: ${f.feel}\n\nOne honest observation, what to carry into tomorrow, one thing to acknowledge.`},
+  ]},
+  {key:'tasks',label:'✅ Tasks',templates:[
+    {label:"Break a task into micro-steps",fields:[{id:'task',label:'What is the task?',type:'text',placeholder:'e.g. Write the quarterly report'}],build:f=>`Break this into micro-steps for someone with ADHD.\n\nTask: ${f.task}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\n5–8 steps, each under 10 minutes, matched to my energy. So small it's impossible to say no to.`},
+    {label:"Help me pick ONE task to start",fields:[{id:'tasks',label:'Your options (one per line)',type:'textarea',placeholder:'Task 1\nTask 2\nTask 3...'},{id:'time',label:'Time available',type:'select',options:['Under 15 min','15–30 min','30–60 min','Over an hour']}],build:f=>`I have ADHD and decision paralysis is real. Help me pick ONE task.\n\nOptions:\n${f.tasks}\n\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\nTime: ${f.time}\n\nPick the one that best matches my energy. Answer, not a framework. Then the first action.`},
+    {label:"I'm avoiding a task — help me start",fields:[{id:'task',label:"What are you avoiding?",type:'text',placeholder:'e.g. Responding to that email'},{id:'why',label:"Why? (optional)",type:'text',placeholder:'e.g. Feels overwhelming, boring...'}],build:f=>`I'm procrastinating. I have ADHD.\n\nTask: ${f.task}\n${f.why?`Why: ${f.why}`:''}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\n(1) Why I'm stuck, (2) one trick to start in 2 minutes, (3) first physical action right now.`},
+    {label:"Too many urgent tasks — cut it down",fields:[{id:'tasks',label:'Everything marked urgent',type:'textarea',placeholder:'List them all...'},{id:'deadline',label:'Hard deadlines today?',type:'text',placeholder:'e.g. 3pm meeting, EOD email'}],build:f=>`Everything feels urgent. I have ADHD.\n\nAll "urgent":\n${f.tasks}\nDeadlines: ${f.deadline||'None'}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nBe ruthless. Actually urgent vs fake urgent. Do today vs reschedule.`},
+  ]},
+  {key:'planning',label:'📅 Planning',templates:[
+    {label:"Help me plan my day",fields:[{id:'tasks',label:"What needs to happen today?",type:'textarea',placeholder:'Tasks, meetings, commitments...'},{id:'available',label:'Hours available',type:'select',options:['1–2 hours','3–4 hours','5–6 hours','Full day']}],build:f=>`Help me plan my day. I have ADHD.\n\nNeeds to happen:\n${f.tasks}\n\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\nHours: ${f.available}\n\nRealistic plan matched to my energy, suggested order, one thing to protect no matter what.`},
+    {label:"My day went sideways — reset me",fields:[{id:'plan',label:"What was your plan?",type:'text',placeholder:'What you intended to do...'},{id:'reality',label:"What actually happened?",type:'text',placeholder:'Interruptions, rabbit holes...'},{id:'left',label:'Hours left',type:'select',options:['Less than 1 hour','1–2 hours','2–3 hours','More than 3 hours']}],build:f=>`My day went sideways. I have ADHD.\n\nPlan: ${f.plan}\nReality: ${f.reality}\nLeft: ${f.left}\nEnergy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nDon't lecture me. What 1–2 things can I still do?`},
+  ]},
+  {key:'ef',label:'🧩 Exec Function',templates:[
+    {label:"I keep getting distracted",fields:[{id:'working',label:"What should you be working on?",type:'text',placeholder:'The task...'},{id:'distraction',label:"What keeps pulling you away?",type:'text',placeholder:'e.g. Phone, thoughts...'},{id:'time',label:"Focus needed",type:'select',options:['15 minutes','30 minutes','45 minutes','1 hour','More than 1 hour']}],build:f=>`I keep getting distracted. I have ADHD.\n\nTask: ${f.working}\nDistraction: ${f.distraction}\nFocus needed: ${f.time}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nOne environment tweak in 2 minutes, a technique matched to my energy, how to get through ${f.time}.`},
+    {label:"I'm in a shame spiral",fields:[{id:'task',label:"What haven't you done?",type:'text',placeholder:'The thing haunting you...'},{id:'since',label:"How long?",type:'text',placeholder:'e.g. 3 days, 2 weeks...'}],build:f=>`I'm in a shame spiral. I have ADHD.\n\nTask: ${f.task}\nHow long: ${f.since}\n\nWhy ADHD makes this sticky, a realistic reframe, smallest action to break the cycle — under 5 minutes.`},
+    {label:"Help me deal with RSD",fields:[{id:'situation',label:"What happened?",type:'textarea',placeholder:'What triggered the RSD...'},{id:'feeling',label:"What are you feeling?",type:'text',placeholder:'e.g. Crushed, angry, worthless...'}],build:f=>`I'm experiencing rejection sensitive dysphoria. I have ADHD.\n\nWhat happened: ${f.situation}\nFeeling: ${f.feeling}\n\nWhat RSD is neurologically (briefly), why this feels disproportionate but isn't my fault, 2–3 grounding techniques for RSD.`},
+    {label:"Task I really don't want to do",fields:[{id:'task',label:"What's the task?",type:'text',placeholder:'The thing you dread...'},{id:'why',label:"Why do you dread it?",type:'select',options:["It's boring",'It feels overwhelming',"I don't know where to start",'I might fail',"It's emotionally difficult"]}],build:f=>`I need to get through a task I dread. I have ADHD.\n\nTask: ${f.task}\nWhy I dread it: ${f.why}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nWhy this is hard for ADHD, one dopamine hack matched to my energy, plan in smallest chunks.`},
+  ]},
+  {key:'habits',label:'🔄 Habits',templates:[
+    {label:"Help me build a new habit",fields:[{id:'habit',label:'What habit?',type:'text',placeholder:'e.g. Exercise, drink water'},{id:'barrier',label:"What usually stops you?",type:'text',placeholder:'e.g. Forget, lose motivation'}],build:f=>`Help me build a habit that sticks with an ADHD brain.\n\nHabit: ${f.habit}\nBarrier: ${f.barrier||'Not sure'}\n\nMinimum viable version, habit stacking cue, one trick to remember it.`},
+    {label:"I missed my habit — restart me",fields:[{id:'habit',label:'Which habit?',type:'text',placeholder:'e.g. Daily exercise'},{id:'days',label:'How long since?',type:'text',placeholder:'e.g. 3 days, 2 weeks'}],build:f=>`I missed my habit. I have ADHD and breaks become permanent.\n\nHabit: ${f.habit}\nTime since: ${f.days}\n\nNo shame. Why this happens with ADHD, smallest restart today, how to make missing a day less catastrophic.`},
+  ]},
+  {key:'weekly',label:'📊 Weekly',templates:[
+    {label:"Summarize my week and find the wins",fields:[{id:'done',label:"What got done this week?",type:'textarea',placeholder:'Even small things count...'},{id:'missed',label:"What didn't happen?",type:'textarea',placeholder:'Tasks, intentions...'}],build:f=>`Review my week with an ADHD lens.\n\nGot done:\n${f.done}\n\nDidn't happen:\n${f.missed}\n\n(1) Real wins I might dismiss, (2) one honest observation about what got in the way, (3) one adjustment for next week.`},
+    {label:"Plan next week's Top 3",fields:[{id:'projects',label:'Active projects',type:'textarea',placeholder:'List what you have going on...'},{id:'energy',label:'Expected energy',type:'select',options:['High energy week','Normal week','Low energy / rough week']}],build:f=>`Help me pick my Top 3 focus areas for next week. I have ADHD.\n\nActive:\n${f.projects}\nExpected energy: ${f.energy}\n\nExactly 3 themes that make next week a win. One concrete first action for each.`},
+  ]},
+  {key:'projects',label:'🚀 Projects',templates:[
+    {label:"Turn a goal into an action plan",fields:[{id:'goal',label:'What is the goal?',type:'text',placeholder:'e.g. Launch my Gumroad product'},{id:'deadline',label:'Deadline or timeframe',type:'text',placeholder:'e.g. End of July'},{id:'constraints',label:'Constraints?',type:'text',placeholder:'e.g. 1 hour/day'}],build:f=>`Turn this goal into an action plan for someone with ADHD.\n\nGoal: ${f.goal}\nDeadline: ${f.deadline||'None'}\nConstraints: ${f.constraints||'None'}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nUp to 4 phases, next 3 actions I can start today, single biggest risk.`},
+    {label:"I'm stuck on a project",fields:[{id:'project',label:'What is the project?',type:'text',placeholder:'e.g. Redesigning my website'},{id:'stuck',label:"Where are you stuck?",type:'textarea',placeholder:"What's blocking you..."}],build:f=>`I'm stuck on a project. I have ADHD.\n\nProject: ${f.project}\nStuck: ${f.stuck}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nWhat's blocking me, one workaround, smallest next action in 30 minutes.`},
+  ]},
+  {key:'toolbox',label:'🧰 Toolbox',templates:[
+    {label:"I can't start anything",fields:[{id:'should',label:"What should you be working on?",type:'text',placeholder:"The thing you know you need to do..."}],build:f=>`I have ADHD and I'm completely frozen.\n\nShould be doing: ${f.should}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nNot "just start." Why this happens, 2-minute trick matched to my energy, tiniest possible first action.`},
+    {label:"Emotional regulation check-in",fields:[{id:'feeling',label:"What are you feeling?",type:'select',options:['Frustrated','Overwhelmed','Anxious','Angry','Sad','Ashamed','Bored','Shut down']},{id:'situation',label:"What triggered it?",type:'text',placeholder:'Brief description...'}],build:f=>`Emotional regulation help. I have ADHD.\n\nFeeling: ${f.feeling}\nTriggered by: ${f.situation}\n\nWhy ADHD makes this more intense, one physical action in 5 minutes, one honest reframe.`},
+    {label:"I need a dopamine reset",fields:[{id:'situation',label:"What drained you?",type:'text',placeholder:'e.g. Long meeting, boring task...'},{id:'time',label:"Time available",type:'select',options:['2–3 minutes','5 minutes','10 minutes','15–20 minutes']},{id:'location',label:"Where are you?",type:'select',options:['At my desk','At home','In an office/public space','Outside already']}],build:f=>`I need a dopamine reset. I have ADHD.\n\nDrained by: ${f.situation}\nTime: ${f.time}\nLocation: ${f.location}\n\n2–3 specific reset options for my time and location. When it's safe to go back to work.`},
+    {label:"I'm in a paralysis spiral",fields:[{id:'context',label:"What's the spiral about?",type:'textarea',placeholder:"Too many choices, can't start..."}],build:f=>`I'm in a full ADHD paralysis spiral.\n\nContext: ${f.context}\nMy energy: ${ENERGY_LABELS[get(LS.energy)]||'Not set'}\n\nSkip explaining paralysis. One thing in 90 seconds to interrupt it, one decision I can make right now, minimum to do today if everything stays stuck.`},
+  ]},
+];
+
+let currentCat=0;
+let chatHistory=[];
+
+// Settings
+function onProviderChange(){
+  const pk=document.getElementById('providerSelect').value;if(!pk)return;
+  const p=PROVIDERS[pk],hint=document.getElementById('providerHint'),isCustom=pk==='custom';
+  hint.innerHTML=p.hint;hint.className=`hint ${p.hintClass}`;hint.style.display='block';
+  document.getElementById('keyLabel').textContent=p.keyLabel;
+  document.getElementById('keyInput').placeholder=p.keyPlaceholder;
+  document.getElementById('keyInput').value='';
+  document.getElementById('customUrlField').style.display=isCustom?'block':'none';
+  document.getElementById('customModelField').style.display=isCustom?'block':'none';
+  document.getElementById('modelSelectField').style.display=isCustom?'none':'block';
+  if(!isCustom)populateModels(pk);
+}
+function populateModels(pk){
+  const sel=document.getElementById('modelSelect');sel.innerHTML='';
+  PROVIDERS[pk].models.forEach(m=>{const o=document.createElement('option');o.value=m.value;o.textContent=m.label;sel.appendChild(o);});
+}
+function openSettings(){
+  const hasKey=!!getKey(),pk=getProvider(),p=pk&&PROVIDERS[pk],isCustom=pk==='custom';
+  document.getElementById('setupTitle').textContent=hasKey?'⚙ AI Settings':'👋 Connect your AI';
+  document.getElementById('providerSelect').value=pk||'';
+  document.getElementById('keyInput').value=getKey();
+  const hint=document.getElementById('providerHint');
+  if(p){hint.innerHTML=p.hint;hint.className=`hint ${p.hintClass}`;hint.style.display='block';}else hint.style.display='none';
+  document.getElementById('keyLabel').textContent=p?p.keyLabel:'API Key';
+  document.getElementById('keyInput').placeholder=p?p.keyPlaceholder:'Your API key...';
+  document.getElementById('customUrlField').style.display=isCustom?'block':'none';
+  document.getElementById('customModelField').style.display=isCustom?'block':'none';
+  document.getElementById('modelSelectField').style.display=(p&&!isCustom)?'block':'none';
+  if(isCustom){document.getElementById('customUrlInput').value=getCustomUrl();document.getElementById('customModelInput').value=getModel();}
+  else if(pk){populateModels(pk);document.getElementById('modelSelect').value=getModel();}
+  document.getElementById('overlay').classList.add('visible');
+}
+function closeSettings(){document.getElementById('overlay').classList.remove('visible');}
+function saveSettings(){
+  const key=document.getElementById('keyInput').value.trim(),pk=document.getElementById('providerSelect').value,isCustom=pk==='custom';
+  if(!pk){alert('Please select a provider.');return;}
+  if(!key){alert('Please enter your API key.');return;}
+  let model;
+  if(isCustom){
+    const url=document.getElementById('customUrlInput').value.trim(),mod=document.getElementById('customModelInput').value.trim();
+    if(!url){alert('Enter your base URL.');return;}if(!mod){alert('Enter your model name.');return;}
+    set(LS.customUrl,url);set(LS.customModel,mod);model=mod;
+  }else model=document.getElementById('modelSelect').value;
+  set(LS.provider,pk);set(LS.key,key);set(LS.model,model);
+  closeSettings();updateUI();
+}
+
+// Energy
+function setEnergy(level){set(LS.energy,level);applyEnergy(level);}
+function applyEnergy(level){
+  ['eHigh','eMed','eLow'].forEach(id=>document.getElementById(id).className='energy-btn');
+  const map={high:'eHigh',med:'eMed',low:'eLow'};
+  if(level&&map[level])document.getElementById(map[level]).className=`energy-btn active-${level}`;
+}
+
+// Category tabs
+function buildCatTabs(){
+  const ct=document.getElementById('catTabs');ct.innerHTML='';
+  CATEGORIES.forEach((cat,i)=>{
+    const btn=document.createElement('button');btn.className='cat-tab'+(i===0?' active':'');
+    btn.textContent=cat.label;btn.onclick=()=>selectCategory(i);ct.appendChild(btn);
+  });
+}
+function selectCategory(i){
+  currentCat=i;
+  document.querySelectorAll('.cat-tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  buildTemplateSelect();renderFields(0);resetResponse();
+}
+function buildTemplateSelect(){
+  const sel=document.getElementById('templateSelect');sel.innerHTML='';
+  CATEGORIES[currentCat].templates.forEach((t,i)=>{const o=document.createElement('option');o.value=i;o.textContent=t.label;sel.appendChild(o);});
+}
+function onTemplateChange(){renderFields(parseInt(document.getElementById('templateSelect').value));resetResponse();}
+
+// Fields
+function renderFields(idx){
+  const tpl=CATEGORIES[currentCat].templates[idx];
+  const container=document.getElementById('fields');container.innerHTML='';
+  tpl.fields.forEach(f=>{
+    const g=document.createElement('div');g.className='field-group';
+    const lbl=document.createElement('label');lbl.className='field-label';lbl.textContent=f.label;lbl.htmlFor=`f-${f.id}`;g.appendChild(lbl);
+    let el;
+    if(f.type==='textarea'){el=document.createElement('textarea');el.placeholder=f.placeholder||'';}
+    else if(f.type==='select'){el=document.createElement('select');f.options.forEach(o=>{const opt=document.createElement('option');opt.value=opt.textContent=o;el.appendChild(opt);});}
+    else{el=document.createElement('input');el.type='text';el.placeholder=f.placeholder||'';}
+    el.id=`f-${f.id}`;g.appendChild(el);container.appendChild(g);
+  });
+}
+
+// Send
+async function sendPrompt(){
+  const apiKey=getKey();if(!apiKey){openSettings();return;}
+  const tpl=CATEGORIES[currentCat].templates[parseInt(document.getElementById('templateSelect').value)];
+  const vals={};let empty=false;
+  tpl.fields.forEach(f=>{const el=document.getElementById(`f-${f.id}`);const val=el?.value.trim()||'';if(!val&&f.type!=='select')empty=true;vals[f.id]=val;});
+  if(empty){alert('Please fill in all fields.');return;}
+  const prompt=tpl.build(vals);
+  const pk=getProvider(),p=PROVIDERS[pk],model=getModel();
+  const endpoint=pk==='custom'?(getCustomUrl().replace(/\/$/,'')+'/chat/completions'):p.endpoint;
+  const btn=document.getElementById('sendBtn'),btnTxt=document.getElementById('btnText');
+  const wrap=document.getElementById('responseWrap'),area=document.getElementById('responseArea');
+  btn.disabled=true;btnTxt.textContent='Thinking...';wrap.classList.add('visible');
+  area.innerHTML='<span class="thinking">Getting your answer…</span>';
+  const sys='You are a practical ADHD productivity coach. Be direct and concise. Give specific, actionable advice. No filler. Short paragraphs or numbered steps where helpful.';
+  try{
+    if(p.format==='anthropic'){
+      const res=await fetch(endpoint,{method:'POST',headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},body:JSON.stringify({model,max_tokens:600,stream:true,system:sys,messages:[...chatHistory,{role:'user',content:prompt}]})});
+      if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
+      area.textContent='';const reader=res.body.getReader(),dec=new TextDecoder();let buf='',lastEv='';
+      while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){if(line.startsWith('event: ')){lastEv=line.slice(7).trim();}else if(line.startsWith('data: ')&&lastEv==='content_block_delta'){try{area.textContent+=JSON.parse(line.slice(6))?.delta?.text||'';area.scrollTop=area.scrollHeight;}catch{}}}}
+    }else{
+      const res=await fetch(endpoint,{method:'POST',headers:{'Authorization':`Bearer ${apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model,stream:true,temperature:0.7,max_tokens:600,messages:[{role:'system',content:sys},...chatHistory,{role:'user',content:prompt}]})});
+      if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
+      area.textContent='';const reader=res.body.getReader(),dec=new TextDecoder();let buf='';
+      while(true){const{done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){if(!line.startsWith('data: '))continue;const raw=line.slice(6);if(raw==='[DONE]')continue;try{area.textContent+=JSON.parse(raw).choices?.[0]?.delta?.content||'';area.scrollTop=area.scrollHeight;}catch{}}}
+    }
+    chatHistory.push({role:'user',content:prompt},{role:'assistant',content:area.textContent});
+    if(chatHistory.length>12)chatHistory=chatHistory.slice(-12);
+  }catch(err){area.textContent=`Error: ${err.message}\n\nCheck your API key in ⚙ Connect AI.`;}
+  finally{btn.disabled=false;btnTxt.textContent='Send to AI →';}
+}
+
+function resetResponse(){chatHistory=[];document.getElementById('responseWrap').classList.remove('visible');document.getElementById('responseArea').textContent='';}
+
+function updateUI(){
+  const hasKey=!!getKey(),pk=getProvider(),p=pk&&PROVIDERS[pk];
+  document.getElementById('noKeyBanner').style.display=hasKey?'none':'block';
+  const pill=document.getElementById('connectionPill');
+  if(hasKey&&p){pill.textContent=`Connected · ${p.name}`;pill.classList.add('connected');}
+  else{pill.textContent='Not connected';pill.classList.remove('connected');}
+  document.getElementById('settingsBtn').textContent=hasKey?'⚙ AI Settings':'⚙ Connect AI';
+}
+
+function init(){
+  buildCatTabs();buildTemplateSelect();renderFields(0);updateUI();
+  const e=get(LS.energy);if(e)applyEnergy(e);
+}
+init();
+</script>
+</body>
+</html>
