@@ -87,6 +87,10 @@
     /* NO KEY BANNER */
     .no-key-banner{background:#1a1f2e;border:1px solid #2e4a5a;border-radius:var(--radius);padding:9px 12px;font-size:12px;color:#7ab0e0;cursor:pointer;text-align:center}
     .no-key-banner:hover{border-color:#5e9cf5}
+
+    /* ENERGY DESCRIPTION + DIVIDER */
+    .energy-desc{font-size:11px;color:var(--muted);padding-left:2px;margin-top:-4px}
+    .section-divider{border:none;border-top:1px solid var(--border);margin:4px 0}
   </style>
 </head>
 <body>
@@ -150,6 +154,9 @@
       <button class="energy-btn" id="eLow"  onclick="setEnergy('low')">😴 Low</button>
     </div>
   </div>
+  <div class="energy-desc">AI matches prompts &amp; suggestions to your energy level</div>
+
+  <hr class="section-divider">
 
   <!-- Category tabs -->
   <div class="cat-tabs" id="catTabs"></div>
